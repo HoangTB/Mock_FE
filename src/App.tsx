@@ -5,7 +5,7 @@ import router from './routes';
 import React from 'react';
 
 function App() {
-  return <RouterProvider router={router} fallbackElement={<p>Loading....</p>} />;
+  return <RouterProvider router={router} fallbackElement={<p>Loading on....</p>} />;
 }
 
 export default App;
