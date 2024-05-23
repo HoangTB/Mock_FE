@@ -1,11 +1,9 @@
-import { Col, Row } from 'react-bootstrap';
+import { Col, Row } from 'antd';
 import React from 'react';
 function Footer() {
   return (
-    <Row className="footer bg-dark-subtle p-3 m-0 mt-1 text-center w-100">
-      <Col md={12}>
-        <h6>&copy; Copyright of Fsoft Company</h6>
-      </Col>
+    <Row>
+      <Col span={24}>Footer</Col>
     </Row>
   );
 }
