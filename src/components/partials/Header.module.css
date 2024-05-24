@@ -1,0 +1,123 @@
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: auto 50px;
+  padding: 0 20px;
+  height: 72px;
+  background-color: white;
+  border-bottom: 1px solid rgb(212, 209, 209);
+}
+
+.headerLeft > div > img {
+  width: 70px;
+}
+
+.headerLinks {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.headerLinksShow {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.headerLinks > a {
+  cursor: pointer;
+  color: black;
+  padding: 10px 30px;
+}
+
+.headerLinksShow > a {
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+  color: black;
+  padding: 10px;
+}
+
+.headerLinks > a:hover,
+.headerLinksShow > a:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.headerRight {
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.headerRight > div > select {
+  border: none;
+  outline: none;
+}
+
+.headerRightLogin {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: bold;
+  padding: 10px 30px;
+  border-radius: 20px;
+}
+
+.headerRightUser {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+  background-color: #ffe9df;
+  color: black;
+  font-weight: bold;
+  padding: 5px 15px;
+  border-radius: 20px;
+  display: none;
+}
+
+.headerRightUser > p {
+  margin: 0;
+}
+
+.headerRightUser > img {
+  width: 30px;
+  border-radius: 50%;
+}
+
+.btnList {
+  background-color: white;
+  color: black;
+  font-weight: bolder;
+  outline: none;
+  display: none;
+}
+
+@media screen and (max-width: 1196px) {
+  .btnList {
+    display: block;
+  }
+
+  .headerLinks {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 730px) {
+  .headerRow {
+    margin: auto 10px;
+    padding: 0 10px;
+  }
+  .headerRight {
+    gap: 10px;
+  }
+  .headerRight select {
+    display: none;
+  }
+}

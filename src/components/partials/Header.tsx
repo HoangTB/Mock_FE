@@ -1,11 +1,71 @@
-import { Col, Row } from 'antd';
-import React from 'react';
+import { Button, Col, Drawer, DrawerProps, RadioChangeEvent, Row } from 'antd';
+import { UnorderedListOutlined } from '@ant-design/icons';
+import React, { useState } from 'react';
+import styles from './Header.module.css';
 function Header() {
+  const [open, setOpen] = useState(false);
+  const [placement, setPlacement] = useState<DrawerProps['placement']>('right');
+
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
+
+  const onChange = (e: RadioChangeEvent) => {
+    setPlacement(e.target.value);
+  };
   return (
-    <div className="header p-3 mb-1 bg-dark-subtle">
-      <Row>
-        <Col span={24}>Header</Col>
-      </Row>
+    <div className={styles.headerRow}>
+      <div className={styles.headerLeft}>
+        <div>
+          <img src="/images/logo.png" alt="" />
+        </div>
+      </div>
+      <div className={styles.headerLinks}>
+        <a>Home</a>
+        <a>Rooms</a>
+        <a>News</a>
+        <a>Contact</a>
+        <a>About Us</a>
+      </div>
+      <div className={styles.headerRight}>
+        <div>
+          <select name="" id="">
+            <option value="">English</option>
+            <option value="">Vietnamese</option>
+          </select>
+        </div>
+        {/* user */}
+        <div className={styles.headerRightLogin}>Login</div>
+        {/* login */}
+        <div className={styles.headerRightUser}>
+          <img src="https://pbs.twimg.com/profile_images/1744393322418802688/-ZF7VwbA_400x400.jpg" alt="..." />{' '}
+          <p>LamNT80</p>
+        </div>
+        <Button onClick={showDrawer} className={styles.btnList}>
+          <UnorderedListOutlined />
+        </Button>
+        <Drawer
+          title="Menu"
+          placement={placement}
+          closable={false}
+          onClose={onClose}
+          open={open}
+          key={placement}
+          width={250}
+        >
+          <div className={styles.headerLinksShow}>
+            <a>Home</a>
+            <a>Rooms</a>
+            <a>News</a>
+            <a>Contact</a>
+            <a>About Us</a>
+          </div>
+        </Drawer>
+      </div>
     </div>
   );
 }
