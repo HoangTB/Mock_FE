@@ -1,0 +1,20 @@
+body {
+    background-color: aquamarine;
+    padding: 2% 20%;
+}
+
+.form-container {
+    background-color: white;
+    padding: 2rem 8rem;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.input-custom {
+    height: 44px;
+    border-radius: 12px;
+}
+
+.button {
+    background-color: var(--primary-color);
+}
