@@ -35,7 +35,7 @@ function Header() {
         <div>
           <select name="" id="">
             <option value="">English</option>
-            <option value="">Vietnamese</option>
+            <option value="">Japanese</option>
           </select>
         </div>
         {/* user */}
