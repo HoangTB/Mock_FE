@@ -1,0 +1,25 @@
+/* Container.css */
+.customContainer {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+@media (min-width: 992px) {
+  .customContainer {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .customContainer {
+    max-width: 1140px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .customContainer {
+    max-width: 1320px;
+  }
+}
