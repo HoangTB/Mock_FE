@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import styles from './register.module.css';
 import { Button, Checkbox, Form, FormProps, Input } from 'antd';
 import CustomButton from '../../components/buttons/submit-button/custom-button';
@@ -18,7 +18,7 @@ function RegisterPage() {
         <div className={styles[`form-header`]}>
           <p className={styles.title}>Create an account</p>
           <p className={styles.subtitle}>
-            <a href="">log in instead</a>
+            <a href="./login">log in instead</a>
           </p>
         </div>
 
@@ -41,7 +41,33 @@ function RegisterPage() {
             <Input className={styles[`input-form`]} />
           </Form.Item>
 
-          <Form.Item label="Email" name="email" rules={[{ required: true, message: 'Please input your email!' }]}>
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              { required: true, message: 'Please input your email!' },
+              {
+                type: 'email',
+                message: 'The input is not valid E-mail!',
+              },
+            ]}
+          >
+            <Input className={styles[`input-form`]} />
+          </Form.Item>
+
+          <Form.Item
+            label="Phone number"
+            name="phone"
+            rules={[{ required: true, message: 'Please input your phone number!' }]}
+          >
+            <Input className={styles[`input-form`]} />
+          </Form.Item>
+
+          <Form.Item
+            label="ID Number"
+            name="idNumber"
+            rules={[{ required: true, message: 'Please input your id number!' }]}
+          >
             <Input className={styles[`input-form`]} />
           </Form.Item>
 

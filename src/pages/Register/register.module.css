@@ -2,8 +2,7 @@
   background: url('../../../public/images/background.png');
   object-fit: cover;
   background-size: cover;
-  background-repeat: no-repeat;
-  padding: 10% 30%;
+  padding: 4% 30%;
 }
 
 .form-header {
@@ -25,7 +24,7 @@
 .form-content {
   background-color: white;
   border-radius: 1.5rem;
-  padding: 5% 10%;
+  padding: 4% 10%;
 }
 
 .customBtn {
@@ -41,5 +40,38 @@
 }
 
 :global(.ant-form-item) {
-  margin-bottom: 0 !important;
+  margin-bottom: 11px !important;
+}
+
+:global(.ant-form-item-explain-error) {
+  padding-left: 5px;
+  font-size: 10px;
+}
+
+/* responsive  */
+/* // 1200px -> 768px */
+
+@media screen and (max-width: 1200px) {
+  .register-page {
+    padding: 7% 20%;
+  }
+}
+
+@media screen and (max-width: 820px) {
+  .register-page {
+    height: 70vh;
+    padding: 7% 10%;
+  }
+}
+
+@media screen and (max-width: 766px) {
+  .register-page {
+    padding: 0;
+    height: fit-content;
+    background: none;
+  }
+
+  .form-content {
+    padding: 4% 4%;
+  }
 }
