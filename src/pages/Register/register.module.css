@@ -48,9 +48,6 @@
   font-size: 10px;
 }
 
-/* responsive  */
-/* // 1200px -> 768px */
-
 @media screen and (max-width: 1200px) {
   .register-page {
     padding: 7% 20%;
