@@ -5,12 +5,14 @@ import DefaultLayout from '../layouts/DefaultLayout';
 import HelloPage from '../pages/HelloPage/HelloPage';
 import ListPage from '../pages/HelloPage/ListPage';
 import LoginPage from '../pages/LoginPage';
+import HomePage from '../pages/Home';
 
 const routes: RouteObject[] = [
   {
     path: '/login',
     Component: LoginPage,
   },
+
   {
     id: 'root',
     path: '/',
@@ -23,6 +25,10 @@ const routes: RouteObject[] = [
       {
         path: '/list/',
         Component: ListPage,
+      },
+      {
+        path: '/home',
+        Component: HomePage,
       },
     ],
   },
