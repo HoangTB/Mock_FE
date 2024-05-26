@@ -83,7 +83,7 @@ video {
   padding: 0;
   border: 0;
   font-size: 100%;
-  font: inherit;
+  font-family: 'Montserrat';
   vertical-align: baseline;
 }
 
@@ -130,6 +130,7 @@ table {
 
 :root {
   --primary-color: #36bffa;
+  --hr-color: rgb(212, 209, 209);
 }
 
 body {

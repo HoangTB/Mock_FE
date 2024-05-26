@@ -6,6 +6,7 @@ import HelloPage from '../pages/HelloPage/HelloPage';
 import ListPage from '../pages/HelloPage/ListPage';
 import LoginPage from '../pages/LoginPage';
 import RoomList from '../pages/room-list/RoomList';
+import Payment from '../pages/payment/Payment';
 
 const routes: RouteObject[] = [
   {
@@ -28,6 +29,10 @@ const routes: RouteObject[] = [
       {
         path: '/rooms/:id',
         Component: RoomList,
+      },
+      {
+        path: '/booking/:id',
+        Component: Payment,
       },
     ],
   },
