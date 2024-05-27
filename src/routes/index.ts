@@ -9,6 +9,7 @@ import LoginPage from '../pages/LoginPage';
 import RoomList from '../pages/room-list/RoomList';
 import EditProfile from '../pages/edit-profile/EditProfile';
 import Payment from '../pages/payment/Payment';
+import Completed from '../pages/payment-completed/Completed';
 
 const routes: RouteObject[] = [
   {
@@ -45,6 +46,10 @@ const routes: RouteObject[] = [
       {
         path: '/booking/:id',
         Component: Payment,
+      },
+      {
+        path: '/booking/completed',
+        Component: Completed,
       },
     ],
   },
