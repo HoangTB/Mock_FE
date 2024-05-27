@@ -10,7 +10,7 @@ const onFinishFailed: FormProps['onFinishFailed'] = (errorInfo) => {
   console.log('Failed:', errorInfo);
 };
 
-const Login = () => {
+const LoginPage = () => {
 
   return (
     <div className={style[`login-page`]} >
@@ -59,4 +59,4 @@ const Login = () => {
 }
 
 
-export default Login;
+export default LoginPage;

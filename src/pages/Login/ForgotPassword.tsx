@@ -1,49 +1,47 @@
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-
+import { Button, Checkbox, Form, FormProps, Input } from "antd";
+import style from "./LoginForm.module.css"
 import React, { useState } from 'react';
 
-const ForgotPassword: React.FC = () => {
-    const [email, setEmail] = useState('');
-    const [message, setMessage] = useState('');
+const onFinish: FormProps['onFinish'] = (values) => {
+  console.log('Success:', values);
+};
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-
-        try {
-            const response = await fetch('/api/forgot-password', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email })
-            });
-
-            if (response.ok) {
-                const result = await response.text();
-                setMessage(result);
-            } else {
-                throw new Error('Forgot password failed');
-            }
-        } catch (error) {
-            console.error('Forgot password error:', error);
-            alert('Forgot password failed');
-        }
-    };
-
+const onFinishFailed: FormProps['onFinishFailed'] = (errorInfo) => {
+  console.log('Failed:', errorInfo);
+};
+const ForgotPassword = () => {
     return (
-        <form onSubmit={handleSubmit}>
-            <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email"
-                required
-            />
-            <button type="submit">Send Reset Password Request</button>
-            {message && <p>{message}</p>}
-        </form>
-    );
+        <div className={style[`login-page`]} >
+        
+          <div className={style[`form-container`]}>
+            <h1>Forgot Password</h1>
+    
+            <Form
+              name="basic"
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
+              layout="vertical"
+            >
+              <Form.Item
+                label="Email address"
+                name="email"
+                rules={[{message: 'Please input your email!' }]}
+              >
+                <Input className={style['input-custom']} />
+              </Form.Item>
+    
+              <Form.Item>
+                <Button type="primary" htmlType="submit" className={style['button-custom']} >
+                  Send me
+                </Button>
+              </Form.Item>
+            </Form>
+    
+          </div>
+        </div>
+      )
 };
 
 export default ForgotPassword;

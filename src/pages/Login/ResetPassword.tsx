@@ -1,52 +1,54 @@
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-
+import { Button, Checkbox, Form, FormProps, Input } from "antd";
+import style from "./LoginForm.module.css"
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
 
-const ResetPassword: React.FC = () => {
-    const query = new URLSearchParams(useLocation().search);
-    const token = query.get('token') || '';
-    const [newPassword, setNewPassword] = useState('');
-    const [message, setMessage] = useState('');
+const onFinish: FormProps['onFinish'] = (values) => {
+  console.log('Success:', values);
+};
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-
-        try {
-            const response = await fetch('/api/reset-password', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ token, newPassword })
-            });
-
-            if (response.ok) {
-                const result = await response.text();
-                setMessage(result);
-            } else {
-                throw new Error('Reset password failed');
-            }
-        } catch (error) {
-            console.error('Reset password error:', error);
-            alert('Reset password failed');
-        }
-    };
-
+const onFinishFailed: FormProps['onFinishFailed'] = (errorInfo) => {
+  console.log('Failed:', errorInfo);
+};
+const ResetPassword = () => {
     return (
-        <form onSubmit={handleSubmit}>
-            <input
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="New Password"
-                required
-            />
-            <button type="submit">Reset Password</button>
-            {message && <p>{message}</p>}
-        </form>
-    );
+        <div className={style[`login-page`]} >
+        
+          <div className={style[`form-container`]}>
+            <h1>Reset Password</h1>
+    
+            <Form
+              name="basic"
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
+              layout="vertical"
+            >
+              <Form.Item
+                label="Password"
+                name="password"
+                rules={[{message: 'Please input your password!' }]}
+              >
+                <Input className={style['input-custom']} />
+              </Form.Item>
+    
+              <Form.Item
+                label="Confirm password"
+                name="confirm-password"
+                rules={[{message: 'Please input your Confirm password!' }]}
+              >
+                <Input.Password className={style['input-custom']} />
+              </Form.Item>
+    
+              <Form.Item>
+                <Button type="primary" htmlType="submit" className={style['button-custom']} >
+                  Reset Password
+                </Button>
+              </Form.Item>
+            </Form>
+              </div>
+        </div>
+      )
 };
 
 export default ResetPassword;
