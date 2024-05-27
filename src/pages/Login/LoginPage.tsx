@@ -44,7 +44,7 @@ const LoginPage = () => {
           >
             <Input className={styles[`input-form`]} />
           </Form.Item >
-          <Form.Item wrapperCol={{ offset: 15, span: 11 }}>
+          <Form.Item className={styles.customText}>
             <a href="./forgot">Forgot your password</a>
           </Form.Item>
           <Form.Item className={styles.customBtn}>

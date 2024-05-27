@@ -12,9 +12,10 @@ import Payment from '../pages/payment/Payment';
 import LoginPage from '../pages/Login/LoginPage';
 import ForgotPassword from '../pages/Login/ForgotPassword';
 import ResetPassword from '../pages/Login/ResetPassword';
+import Completed from '../pages/payment-completed/Completed';
 
 const routes: RouteObject[] = [
-  
+
   {
     id: 'root',
     path: '/',
@@ -61,6 +62,9 @@ const routes: RouteObject[] = [
       {
         path: '/reset',
         Component: ResetPassword
+      }, {
+        path: '/booking/completed',
+        Component: Completed,
       },
     ],
   },
