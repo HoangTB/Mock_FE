@@ -1,0 +1,30 @@
+.title {
+  text-align: center;
+}
+
+.table {
+  padding: 15px;
+}
+
+.modal {
+  text-align: center;
+}
+
+.formUpdate {
+  display: flex;
+  flex-direction: column;
+}
+
+.formUpdate > div {
+  text-align: right;
+}
+
+.btnSubmit:hover {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+  border: 1px solid var(--primary-color) !important;
+}
+
+.input {
+  width: 350px;
+}
