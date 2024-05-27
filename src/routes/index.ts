@@ -14,6 +14,8 @@ import Payment from '../pages/payment/Payment';
 import BookedHistory from '../pages/booked-history/BookedHistory';
 import Completed from '../pages/payment-completed/Completed';
 import VoteHistory from '../pages/vote-history/VoteHistory';
+import Contact from '../pages/contact/Contact';
+import AboutUs from '../pages/about-us/AboutUs';
 
 const routes: RouteObject[] = [
   {
@@ -68,6 +70,14 @@ const routes: RouteObject[] = [
       {
         path: '/booking/completed',
         Component: Completed,
+      },
+      {
+        path: '/contact',
+        Component: Contact,
+      },
+      {
+        path: 'about-us',
+        Component: AboutUs
       },
     ],
   },
