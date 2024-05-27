@@ -44,7 +44,7 @@ function SlideImage() {
           return (
             <div className={style.carousel}>
               <div key={index} className={style['image-container']}>
-                <img src={item.link} alt="ok" style={contentStyle} />
+                <img src={item.link} alt="ok" style={contentStyle} className={style.contentStyle} />
                 <div className={style['gradient-overlay']} />
               </div>
               <div className={style.content}>

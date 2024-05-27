@@ -1,6 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import SlideImage from '../../components/carousel/carousel';
-import ListHotel from '../../components/item-hotel/listHotel';
+import ListCity from '../../components/list-city/listCity';
+import ListHotel from '../../components/list-hotel/listHotel';
+
+const cities = [
+  {
+    name: 'Hà Nội',
+    image: 'https://i.pinimg.com/736x/3d/82/85/3d8285aebaac5e39ba6db55e76327200.jpg',
+  },
+  {
+    name: 'Đà Nẵng',
+    image: 'https://www.hotelavanti.cz/wp-content/uploads/sites/329/2024/01/JPrerovsky_Hotel-Avanti_Exterior_1-1.jpg',
+  },
+  {
+    name: 'Hồ Chí Minh',
+    image: 'https://peninsulahotel.vn/uploads/gallery/slider-peninsula-hotel-danang-1686535714.webp',
+  },
+];
+
 const data = [
   {
     address: '17 Liêu Giai, Ba Đình',
@@ -39,9 +56,9 @@ const HomePage = () => {
     <>
       <SlideImage />
 
+      <ListCity cities={cities} />
       <ListHotel data={data} />
     </>
   );
 };
-
 export default HomePage;
