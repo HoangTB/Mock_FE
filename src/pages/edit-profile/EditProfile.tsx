@@ -27,7 +27,12 @@ const EditProfile = () => {
             <Title level={4} style={{ marginTop: '10px' }}>
               LamNT80
             </Title>
-            <Button type="primary">
+            <Button
+              type="primary"
+              style={{
+                background: 'var(--primary-color)',
+              }}
+            >
               <CameraOutlined />
               Change avatar
             </Button>
@@ -63,7 +68,13 @@ const EditProfile = () => {
               <Input />
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit">
+              <Button
+                type="primary"
+                htmlType="submit"
+                style={{
+                  background: 'var(--primary-color)',
+                }}
+              >
                 Save changes
               </Button>
             </Form.Item>

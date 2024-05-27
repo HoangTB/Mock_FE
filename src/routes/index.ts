@@ -9,6 +9,7 @@ import LoginPage from '../pages/LoginPage';
 import RoomList from '../pages/room-list/RoomList';
 import EditProfile from '../pages/edit-profile/EditProfile';
 import Payment from '../pages/payment/Payment';
+import BookedHistory from '../pages/booked-history/BookedHistory';
 
 const routes: RouteObject[] = [
   {
@@ -39,6 +40,10 @@ const routes: RouteObject[] = [
           {
             path: '/edit-profile',
             Component: EditProfile,
+          },
+          {
+            path: '/booked-history',
+            Component: BookedHistory,
           },
         ],
       },
