@@ -31,8 +31,14 @@
 .headerLinks > a {
   cursor: pointer;
   color: black;
-  padding: 10px 30px;
+  padding: 10px 20px;
   font-size: 17px;
+  border-bottom: 1px solid transparent;
+  text-decoration: none;
+  transition:
+    font-size 0.1s,
+    font-weight 0.1s,
+    border-bottom 0.1s;
 }
 
 .headerLinksShow > a {
@@ -41,12 +47,16 @@
   cursor: pointer;
   color: black;
   padding: 10px;
+  border-bottom: 1px solid transparent;
+  text-decoration: none;
 }
 
 .headerLinks > a:hover,
 .headerLinksShow > a:hover {
-  background-color: var(--primary-color);
-  color: white;
+  font-weight: bold;
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
+  font-size: 18px;
 }
 
 .headerRight {
@@ -55,6 +65,16 @@
   gap: 50px;
   justify-content: flex-end;
   align-items: center;
+}
+
+.language {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  border: 1px solid var(--primary-color);
+  padding: 8px;
+  border-radius: 5px;
 }
 
 .headerRight > div > select {
@@ -118,7 +138,10 @@
   .headerRight {
     gap: 10px;
   }
-  .headerRight select {
-    display: none;
+}
+
+@media screen and (max-width: 475px) {
+  .language {
+display: none;
   }
 }

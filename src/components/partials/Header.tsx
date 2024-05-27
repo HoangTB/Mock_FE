@@ -1,7 +1,8 @@
-import { UnorderedListOutlined } from '@ant-design/icons';
+import { GlobalOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import { Button, Drawer, DrawerProps, RadioChangeEvent } from 'antd';
 import React, { useState } from 'react';
 import styles from './Header.module.css';
+import { Link } from 'react-router-dom';
 function Header() {
   const [open, setOpen] = useState(false);
   const [placement, setPlacement] = useState<DrawerProps['placement']>('right');
@@ -25,14 +26,14 @@ function Header() {
         </div>
       </div>
       <div className={styles.headerLinks}>
-        <a>Home</a>
-        <a>Rooms</a>
-        <a>News</a>
+        <Link to="/">Home</Link>
+        <Link to="/branch">Branch</Link>
         <a>Contact</a>
         <a>About Us</a>
       </div>
       <div className={styles.headerRight}>
-        <div>
+        <div className={styles.language}>
+          <GlobalOutlined />
           <select name="" id="">
             <option value="">English</option>
             <option value="">Japanese</option>
