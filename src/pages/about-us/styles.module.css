@@ -1,0 +1,46 @@
+.aboutContainer {
+  position: relative;
+  padding: 50px;
+  background-image: url('https://media.cnn.com/api/v1/images/stellar/prod/140127103345-peninsula-shanghai-deluxe-mock-up.jpg?q=w_2226,h_1449,x_0,y_0,c_fill'); /* Add your background image */
+  background-size: cover;
+  background-position: center;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); /* Black overlay with 50% opacity */
+  z-index: 1;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 50px;
+  z-index: 2;
+  position: relative;
+  color: white;
+}
+
+.content {
+  z-index: 2;
+  position: relative;
+}
+
+.aboutInfo {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.6);
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.aboutInfo h3 {
+  color: black;
+}
+
+.aboutInfo p {
+  color: black;
+}
