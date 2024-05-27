@@ -13,8 +13,8 @@ const onFinishFailed: FormProps['onFinishFailed'] = (errorInfo) => {
 const Login = () => {
 
   return (
-    <>
-      {/* <img src="" alt="" /> */}
+    <div className={style[`login-page`]} >
+    
       <div className={style[`form-container`]}>
         <h1>Login</h1>
 
@@ -29,7 +29,7 @@ const Login = () => {
           <Form.Item
             label="Email address"
             name="email"
-            rules={[{ required: true, message: 'Please input your email!' }]}
+            rules={[{message: 'Please input your email!' }]}
           >
             <Input className={style['input-custom']} />
           </Form.Item>
@@ -37,7 +37,7 @@ const Login = () => {
           <Form.Item
             label="Password"
             name="password"
-            rules={[{ required: true, message: 'Please input your password!' }]}
+            rules={[{message: 'Please input your password!' }]}
           >
             <Input.Password className={style['input-custom']} />
           </Form.Item>
@@ -46,7 +46,7 @@ const Login = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" className={style.button} >
+            <Button type="primary" htmlType="submit" className={style['button-custom']} >
               Login
             </Button>
           </Form.Item>
@@ -54,7 +54,7 @@ const Login = () => {
 
         <p>Don’t have an acount? <a href="">Sign up </a> </p>
       </div>
-    </>
+    </div>
   )
 }
 

@@ -1,6 +1,8 @@
-body {
-    background-color: aquamarine;
+.login-page {
     padding: 2% 20%;
+    background-color: antiquewhite;
+    background-image: url("../../../public/images/background.png");
+    height: 100vh;
 }
 
 .form-container {
@@ -15,6 +17,21 @@ body {
     border-radius: 12px;
 }
 
-.button {
+.button-custom {
     background-color: var(--primary-color);
+    width: 40%;
+    height: 44px;
+    border-radius: 12px;
+}
+
+img {
+    object-fit: cover;
+}
+
+h1 {
+    font-size: 32px;
+}
+
+.form-item-custom {
+    margin-bottom: 5px;
 }
