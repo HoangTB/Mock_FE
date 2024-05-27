@@ -10,6 +10,7 @@ import RoomList from '../pages/room-list/RoomList';
 import RegisterPage from '../pages/Register';
 import EditProfile from '../pages/edit-profile/EditProfile';
 import Payment from '../pages/payment/Payment';
+import BookedHistory from '../pages/booked-history/BookedHistory';
 import Completed from '../pages/payment-completed/Completed';
 import VoteHistory from '../pages/vote-history/VoteHistory';
 
@@ -48,9 +49,10 @@ const routes: RouteObject[] = [
             Component: EditProfile,
           },
           {
-            path: '/voted-history',
-            Component: VoteHistory,
+            path: '/booked-history',
+            Component: BookedHistory,
           },
+          { path: '/voted-history', Component: VoteHistory },
         ],
       },
       {
