@@ -7,11 +7,11 @@ const { Option } = Select;
 
 const EditProfile = () => {
   return (
-    <div style={{ padding: '20px' }}>
+    <div>
       <Row>
         <Col span={24}>
           <Title
-            level={2}
+            level={3}
             style={{
               textAlign: 'center',
             }}

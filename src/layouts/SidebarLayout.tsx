@@ -7,6 +7,7 @@ import Container from '../components/container/Container';
 const SidebarLayout = () => {
   const location = useLocation();
   const [menuMode, setMenuMode] = useState<'inline' | 'horizontal'>('inline');
+  const [width, setWidth] = useState<number>(250);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(max-width: 768px)');
@@ -14,8 +15,10 @@ const SidebarLayout = () => {
     const handleMediaQueryChange = (e: MediaQueryListEvent) => {
       if (e.matches) {
         setMenuMode('horizontal');
+        setWidth(450);
       } else {
         setMenuMode('inline');
+        setWidth(200);
       }
     };
 
@@ -56,7 +59,8 @@ const SidebarLayout = () => {
               style={{
                 background: '#fff',
                 border: 'none',
-                width: '450px',
+                width: width,
+                marginBottom: 20,
               }}
             >
               <Menu.Item key="/edit-profile" icon={<UserOutlined />}>
