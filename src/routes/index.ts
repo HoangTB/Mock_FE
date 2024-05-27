@@ -6,6 +6,7 @@ import SidebarLayout from '../layouts/SidebarLayout';
 import HelloPage from '../pages/HelloPage/HelloPage';
 import ListPage from '../pages/HelloPage/ListPage';
 import LoginPage from '../pages/LoginPage';
+import HomePage from '../pages/Home';
 import RoomList from '../pages/room-list/RoomList';
 import RegisterPage from '../pages/Register';
 import EditProfile from '../pages/edit-profile/EditProfile';
@@ -21,6 +22,7 @@ const routes: RouteObject[] = [
     path: '/login',
     Component: LoginPage,
   },
+
   {
     id: 'root',
     path: '/',
@@ -33,6 +35,10 @@ const routes: RouteObject[] = [
       {
         path: '/list/',
         Component: ListPage,
+      },
+      {
+        path: '/home',
+        Component: HomePage,
       },
       {
         path: '/rooms/:id',
