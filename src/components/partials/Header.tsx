@@ -29,7 +29,9 @@ function Header() {
     <div className={styles.headerRow}>
       <div className={styles.headerLeft}>
         <div>
-          <img src="/images/logo.png" alt="" />
+          <Link to="/">
+            <img src="/images/logo.png" alt="" />
+          </Link>
         </div>
       </div>
       <nav className={styles.headerLinks}>
@@ -42,7 +44,7 @@ function Header() {
         <Link to="/contact" className={location.pathname === '/contact' ? styles.active : ''}>
           Contact
         </Link>
-        <Link to="/about" className={location.pathname === '/about' ? styles.active : ''}>
+        <Link to="/about-us" className={location.pathname === '/about-us' ? styles.active : ''}>
           About Us
         </Link>
       </nav>
@@ -87,7 +89,7 @@ function Header() {
             <Link to="/contact" className={location.pathname === '/contact' ? styles.active : ''}>
               Contact
             </Link>
-            <Link to="/about" className={location.pathname === '/about' ? styles.active : ''}>
+            <Link to="/about-us" className={location.pathname === '/about-us' ? styles.active : ''}>
               About Us
             </Link>
           </nav>
