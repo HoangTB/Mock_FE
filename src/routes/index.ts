@@ -5,6 +5,7 @@ import DefaultLayout from '../layouts/DefaultLayout';
 import HelloPage from '../pages/HelloPage/HelloPage';
 import ListPage from '../pages/HelloPage/ListPage';
 import LoginPage from '../pages/LoginPage';
+import { RoomManagement } from '../pages/RoomManagement/RoomManagement';
 
 const routes: RouteObject[] = [
   {
@@ -23,6 +24,10 @@ const routes: RouteObject[] = [
       {
         path: '/list/',
         Component: ListPage,
+      },
+      {
+        path: '/admin/roomManagement',
+        Component: RoomManagement,
       },
     ],
   },
