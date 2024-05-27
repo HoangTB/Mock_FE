@@ -1,107 +1,152 @@
 import React, { useState } from 'react';
+import { DashBoardLayout } from '../../layouts/DashBoardLayout';
 import { styled } from '@mui/material/styles';
-import { Box, Link, Typography, Avatar } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
-import DashboardNavbar from '../../components/dashBoardNavbar/DashBoardNavbar';
-import Scrollbar from '../../components/scrollBar/ScrollBar';
-import NavSection from '../../components/navSection/NavSection';
-import sidebarConfig from '../../components/sideBar/SideBarConfig';
+import plusFill from '@iconify/icons-eva/plus-fill';
+import {
+  Card,
+  Table,
+  Stack,
+  Button,
+  TableRow,
+  TableBody,
+  TableCell,
+  Container,
+  Typography,
+  TableContainer,
+  TextField,
+  InputAdornment,
+} from '@mui/material';
+import SearchNotFound from '../SearchNotFound';
+import RoomListHead from './RoomListHead';
+import RoomMoreMenu from './RoomMoreMenu';
+import { Icon } from '@iconify/react';
+import { CreateRoomDialog } from './dialog/CreateDialog';
+import SearchIcon from '@mui/icons-material/Search';
 
-// ----------------------------------------------------------------------
+const TABLE_HEAD = [
+  { id: 'MaxNumberPeopleOfRoom', label: 'Max number people', alignRight: false },
+  { id: 'NumberOfBeds', label: 'Number of beds', alignRight: false },
+  { id: 'PriceOfRoom', label: 'Price', alignRight: false },
+  { id: 'RoomNumber', label: 'Room number', alignRight: false },
+  { id: 'StatusOfRoom', label: 'Status', alignRight: false },
+  { id: 'Description', label: 'Description', alignRight: false },
+  { id: 'Action', label: 'Action', alignRight: false },
+];
 
-const APP_BAR_MOBILE = 64;
-const APP_BAR_DESKTOP = 92;
-
-const RootStyle = styled('div')({
-  display: 'flex',
-  minHeight: '100%',
-  overflow: 'hidden',
-});
-
-const MainStyle = styled('div')(({ theme }) => ({
-  flexGrow: 1,
-  overflow: 'auto',
-  minHeight: '100%',
-  paddingTop: APP_BAR_MOBILE + 24,
-  paddingBottom: theme.spacing(10),
-  [theme.breakpoints.up('lg')]: {
-    paddingTop: APP_BAR_DESKTOP + 24,
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(even)': {
+    backgroundColor: 'rgb(255, 247, 205)',
+  },
+  '&:last-child td, &:last-child th': {
+    border: 0,
   },
 }));
 
-const DRAWER_WIDTH = 280;
-
-const AccountStyle = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(2, 2.5),
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: theme.palette.grey[200],
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  backgroundColor: 'var(--primary-color)',
+  color: theme.palette.common.white,
+  fontWeight: 'bold',
 }));
 
-// ----------------------------------------------------------------------
+export default function RoomManagement(props: any) {
+  const [data, setData] = useState([]);
+  const [openAdd, setOpenAdd] = useState(false);
+  const [reRender, setRerender] = useState(false);
+  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
+  const [orderBy, setOrderBy] = useState<string>('');
+  const [selected, setSelected] = useState<string[]>([]);
 
-const renderContent = (
-  <Scrollbar
-    sx={{
-      height: '100%',
-      '& .simplebar-content': { height: '100%', display: 'flex', flexDirection: 'column' },
-    }}
-  >
-    <Box sx={{ py: 3, textAlign: 'left', ml: 3 }}>
-      <Box component={RouterLink} to="/" sx={{ display: 'inline-flex' }}>
-        <Box component="img" src="/images/logo-icon.png" sx={{ width: 50, height: 50, zIndex: 99 }} />
-      </Box>
-    </Box>
+  const searchFilterFunction = (text: string) => {};
 
-    <Box sx={{ mb: 5, mx: 2.5 }}>
-      <Link component={RouterLink} underline="none" to="#">
-        <AccountStyle>
-          <Avatar src="/images/admin_button.svg" alt="photoURL" />
-          <Box sx={{ ml: 2 }}>
-            <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-              Gage Pham
-            </Typography>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              ADMIN
-            </Typography>
-          </Box>
-        </AccountStyle>
-      </Link>
-    </Box>
-    <NavSection navConfig={sidebarConfig} />
+  const handleRequestSort = (event: React.MouseEvent<unknown>, property: string) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
 
-    <Box sx={{ flexGrow: 1 }} />
-  </Scrollbar>
-);
+  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      const newSelecteds = data.map((n: any) => n.NameDisease);
+      setSelected(newSelecteds);
+      return;
+    }
+    setSelected([]);
+  };
 
-interface RoomManagementProps {
-  children?: React.ReactNode;
-}
+  const handleOpenAddDialog = () => {
+    setOpenAdd(true);
+  };
 
-const RoomManagement: React.FC<RoomManagementProps> = ({ children }) => {
-  const [open, setOpen] = useState(false);
+  const handleCloseAddDialog = () => {
+    setOpenAdd(false);
+    props.onClose();
+  };
 
   return (
-    <RootStyle>
-      <DashboardNavbar onOpenSidebar={() => setOpen(true)} />
-      <Box
-        sx={{
-          height: 755,
-          position: 'relative',
-          zIndex: 1200,
-          minWidth: DRAWER_WIDTH,
-          backgroundColor: 'rgb(208, 242, 255)',
+    <DashBoardLayout>
+      <CreateRoomDialog
+        open={openAdd}
+        onCloseEdit={handleCloseAddDialog}
+        onUpdateSuccess={() => {
+          setRerender(!reRender);
         }}
-      >
-        {renderContent}
-      </Box>
-
-      <MainStyle>{children}</MainStyle>
-    </RootStyle>
+      />
+      <Container style={{ maxHeight: 550 }}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+          <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold' }}>
+            Room management
+          </Typography>
+          <Button
+            sx={{ backgroundColor: '#00AB55' }}
+            variant="contained"
+            startIcon={<Icon icon={plusFill} style={{ color: 'black' }} />}
+            onClick={handleOpenAddDialog}
+          >
+            New room
+          </Button>
+        </Stack>
+        <Card>
+          {/* <TextField
+            label="Search Disease...."
+            style={{ margin: 10, right: 420 }}
+            onChange={(e) => searchFilterFunction(e.target.value)}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton>
+                    <SearchIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          /> */}
+          <TableContainer sx={{ minWidth: 800, maxHeight: 400 }}>
+            <Table>
+              <RoomListHead
+                order={order}
+                orderBy={orderBy}
+                rowCount={data.length}
+                numSelected={selected.length}
+                onRequestSort={handleRequestSort}
+                onSelectAllClick={handleSelectAllClick}
+                headLabel={TABLE_HEAD}
+                StyledTableCell={StyledTableCell}
+              />
+              <TableBody>
+                <StyledTableRow hover>
+                  <TableCell align="left" width={100}>
+                    <RoomMoreMenu
+                      onClose={() => setRerender(!reRender)}
+                      onDeleteSuccess={() => setRerender(!reRender)}
+                      onUpdateSuccess={() => setRerender(!reRender)}
+                    />
+                  </TableCell>
+                </StyledTableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Card>
+      </Container>
+    </DashBoardLayout>
   );
-};
-
-export { RoomManagement };
+}

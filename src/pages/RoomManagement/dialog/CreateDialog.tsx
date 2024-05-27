@@ -1,34 +1,31 @@
-import { Button, Dialog, DialogContent, DialogTitle, TextField } from '@mui/material';
-import { Box } from '@mui/system';
-import { Form, Formik } from 'formik';
+import React from 'react';
+import { Dialog, DialogTitle, DialogContent, TextField, Button, Box, DialogProps } from '@mui/material';
+import { Formik, Form } from 'formik';
 import UpdateIcon from '@mui/icons-material/Update';
 import DeleteIcon from '@mui/icons-material/Delete';
-import React from 'react';
 import { ToastContainer, toast, ToastPosition } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-interface EditRoomDialogProps {
+// Define the props for the component
+interface CreateRoomDialogProps extends DialogProps {
   open: boolean;
-  IDDisease: number;
-  onCloseEdit: () => void;
+  onCloseEdit: (isSuccessEdit: boolean) => void;
   onUpdateSuccess: () => void;
 }
 
-export function EditRoomDialog(props: EditRoomDialogProps) {
-  const handleClose = () => {
-    props.onCloseEdit();
-  };
+export const CreateRoomDialog: React.FC<CreateRoomDialogProps> = (props) => {
+  const { open, onCloseEdit, onUpdateSuccess } = props;
 
-  const updateRoom = () => {};
+  const updateDisease = () => {};
 
   const notify = () => {
-    toast.success('Update Disease Success!', {
+    toast.success('Create ROom Success!', {
       position: 'top-center' as ToastPosition,
     });
   };
 
   return (
-    <Dialog open={props.open} onClose={handleClose} aria-labelledby="form-dialog-title">
+    <Dialog open={open} onClose={() => onCloseEdit(false)} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Edit Room</DialogTitle>
       <DialogContent sx={{ minWidth: 500 }}>
         <Formik
@@ -87,7 +84,7 @@ export function EditRoomDialog(props: EditRoomDialogProps) {
               sx={{ width: '100%', mt: 3 }}
             />
             <Box sx={{ mt: 3, textAlign: 'right' }}>
-              <Button variant="outlined" startIcon={<DeleteIcon />} onClick={handleClose}>
+              <Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => onCloseEdit(false)}>
                 Cancel
               </Button>
               <Button
@@ -96,7 +93,7 @@ export function EditRoomDialog(props: EditRoomDialogProps) {
                 sx={{ ml: 3 }}
                 onClick={() => {
                   notify();
-                  updateRoom();
+                  updateDisease();
                 }}
               >
                 Update
@@ -108,4 +105,4 @@ export function EditRoomDialog(props: EditRoomDialogProps) {
       </DialogContent>
     </Dialog>
   );
-}
+};

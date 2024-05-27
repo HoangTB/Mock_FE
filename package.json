@@ -6,6 +6,7 @@
     "@ant-design/icons": "^5.3.7",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@fontsource/montserrat": "^5.0.18",
     "@hookform/resolvers": "^3.4.2",
     "@iconify/icons-eva": "^1.2.6",
     "@iconify/react": "^4.1.1",

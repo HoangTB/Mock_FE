@@ -119,11 +119,6 @@ const NavItem: React.FC<NavItemProps> = ({ item, active }) => {
                           alignItems: 'center',
                           justifyContent: 'center',
                           bgcolor: 'text.disabled',
-                          transition: (theme) => theme.transitions.create('transform'),
-                          ...(isActiveSub && {
-                            transform: 'scale(2)',
-                            bgcolor: 'primary.main',
-                          }),
                         }}
                       />
                     </ListItemIconStyle>

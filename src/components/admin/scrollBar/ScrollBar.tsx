@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import SimpleBarReact from 'simplebar-react';
 // material
-import { alpha, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import { Box, SxProps } from '@mui/material';
 import { Theme } from '@mui/system';
 
@@ -16,14 +16,6 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 const SimpleBarStyle = styled(SimpleBarReact)(({ theme }) => ({
   maxHeight: '100%',
-  '& .simplebar-scrollbar': {
-    '&:before': {
-      backgroundColor: alpha(theme.palette.grey[600], 0.48),
-    },
-    '&.simplebar-visible:before': {
-      opacity: 1,
-    },
-  },
   '& .simplebar-track.simplebar-vertical': {
     width: 10,
   },
