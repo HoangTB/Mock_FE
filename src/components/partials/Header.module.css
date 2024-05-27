@@ -9,7 +9,7 @@
   border-bottom: 1px solid var(--hr-color);
 }
 
-.headerLeft > div > img {
+.headerLeft > div > a > img {
   width: 70px;
 }
 
@@ -29,6 +29,7 @@
 }
 
 .headerLinks > a {
+  color: black;
   cursor: pointer;
   padding: 10px 20px;
   font-size: 17px;
