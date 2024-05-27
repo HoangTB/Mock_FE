@@ -11,6 +11,7 @@ import RegisterPage from '../pages/Register';
 import EditProfile from '../pages/edit-profile/EditProfile';
 import Payment from '../pages/payment/Payment';
 import Completed from '../pages/payment-completed/Completed';
+import VoteHistory from '../pages/vote-history/VoteHistory';
 
 const routes: RouteObject[] = [
   {
@@ -45,6 +46,10 @@ const routes: RouteObject[] = [
           {
             path: '/edit-profile',
             Component: EditProfile,
+          },
+          {
+            path: '/voted-history',
+            Component: VoteHistory,
           },
         ],
       },
