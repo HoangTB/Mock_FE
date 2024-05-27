@@ -13,12 +13,12 @@ const StepByStep = () => {
       items={[
         {
           title: 'Select hotel',
-          status: 'finish',
+          status: 'wait',
           icon: <HomeOutlined className={styles.icon} />,
         },
         {
           title: 'Select room',
-          status: 'process',
+          status: 'wait',
           icon: <LoadingOutlined className={styles.icon} />,
         },
         {
@@ -28,7 +28,7 @@ const StepByStep = () => {
         },
         {
           title: 'Booking room',
-          status: 'wait',
+          status: 'finish',
           icon: <CheckOutlined className={styles.icon} />,
         },
         {

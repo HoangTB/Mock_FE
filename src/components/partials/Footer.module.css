@@ -16,7 +16,7 @@
   justify-content: space-between;
   gap: 30px;
   padding: 15px;
-  border-top: 1px solid rgb(212, 209, 209);
+  border-top: 1px solid var(--hr-color);
   margin: 0 50px;
 }
 

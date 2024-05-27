@@ -8,6 +8,7 @@ import ListPage from '../pages/HelloPage/ListPage';
 import LoginPage from '../pages/LoginPage';
 import RoomList from '../pages/room-list/RoomList';
 import EditProfile from '../pages/edit-profile/EditProfile';
+import Payment from '../pages/payment/Payment';
 
 const routes: RouteObject[] = [
   {
@@ -40,6 +41,10 @@ const routes: RouteObject[] = [
             Component: EditProfile,
           },
         ],
+      },
+      {
+        path: '/booking/:id',
+        Component: Payment,
       },
     ],
   },
