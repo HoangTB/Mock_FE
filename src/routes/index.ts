@@ -13,6 +13,7 @@ import LoginPage from '../pages/Login/LoginPage';
 import ForgotPassword from '../pages/Login/ForgotPassword';
 import ResetPassword from '../pages/Login/ResetPassword';
 import Completed from '../pages/payment-completed/Completed';
+import VoteHistory from '../pages/vote-history/VoteHistory';
 
 const routes: RouteObject[] = [
 
@@ -44,6 +45,10 @@ const routes: RouteObject[] = [
           {
             path: '/edit-profile',
             Component: EditProfile,
+          },
+          {
+            path: '/voted-history',
+            Component: VoteHistory,
           },
         ],
       },
