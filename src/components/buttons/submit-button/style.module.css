@@ -1,0 +1,23 @@
+.custom-button {
+  background-color: #36bffa;
+  border-radius: 32px;
+  color: #fff;
+  border: none;
+  transition: background-color 0.3s ease;
+  text-align: center;
+  width: 60%;
+  height: 44px;
+  font-size: 18px;
+}
+
+.custom-button:hover {
+  background-color: #2ba4d4 !important; /* Màu đậm hơn một chút */
+}
+
+.custom-button:focus {
+  background-color: #2ba4d4 !important; /* Đảm bảo khi focus cũng có màu đậm hơn */
+}
+
+.custom-button:active {
+  background-color: #010304; /* Màu đậm hơn khi nhấn vào */
+}
