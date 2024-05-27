@@ -65,9 +65,9 @@ const RoomSearch: React.FC = () => {
           </div>
         </Col>
         <Col xs={24} sm={24} md={4}>
-          <Button type="primary" size="middle" style={{ width: '100%' }}>
+          <Button size="middle" type="primary" style={{ width: '100%', background: 'var(--primary-color)' }}>
             <SearchOutlined />
-            Check Availability
+            Search
           </Button>
         </Col>
       </Row>

@@ -1,0 +1,53 @@
+.title {
+  padding: 15px 0;
+}
+
+.checked {
+  color: var(--primary-color);
+  font-size: 25px;
+}
+
+.titleSuccess {
+  color: var(--primary-color) !important;
+  margin: 0 !important;
+}
+
+.titleThanks {
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.titleOrderId {
+  text-align: center;
+}
+
+.formInfo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.information {
+  border: 1px solid var(--hr-color);
+  border-radius: 5px;
+  padding: 15px;
+  width: 500px;
+}
+
+.information > h4 {
+  font-size: 20px;
+  border-bottom: 1px solid var(--hr-color);
+  padding-bottom: 15px;
+}
+
+.information > div {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 15px;
+}
+
+.information > div:nth-child(6),
+.information > div:nth-child(8) {
+  border-bottom: 1px solid var(--hr-color);
+  padding-bottom: 15px;
+}
