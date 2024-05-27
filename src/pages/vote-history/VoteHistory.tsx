@@ -55,31 +55,36 @@ const VoteHistory = () => {
       title: '#',
       dataIndex: 'voteID',
       key: 'voteID',
+      responsive: ['md'],
     },
     {
       title: 'Title',
       dataIndex: 'title',
       key: 'title',
+      responsive: ['md'],
     },
     {
       title: 'Branch',
       dataIndex: 'branch',
       key: 'branch',
+      responsive: ['md'],
     },
     {
       title: 'Type',
       dataIndex: 'typeRoom',
       key: 'typeRoom',
+      responsive: ['md'],
     },
     {
       title: 'Date Created',
       dataIndex: 'dateCreated',
       key: 'dateCreated',
+      responsive: ['md'],
     },
 
     {
       title: '',
-      key: 'dateCreated',
+      key: 'action',
       render: (_, record: Voted) => (
         <Space size="middle">
           <Dropdown menu={menu(record)}>
@@ -89,6 +94,7 @@ const VoteHistory = () => {
           </Dropdown>
         </Space>
       ),
+      responsive: ['md'],
     },
   ];
   const data: Voted[] = [
@@ -127,8 +133,8 @@ const VoteHistory = () => {
         <Col span={24} className={styles.title}>
           <Title level={3}>Voted History</Title>
         </Col>
-        <Col span={24} className={styles.table}>
-          <Table columns={columns} dataSource={data} />
+        <Col span={24} className={styles.colTable}>
+          <Table columns={columns} dataSource={data} className={styles.table} />
         </Col>
       </Row>
 
