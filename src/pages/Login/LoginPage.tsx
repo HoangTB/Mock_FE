@@ -1,6 +1,7 @@
 import { Button, Checkbox, Form, FormProps, Input } from "antd";
-import style from "./LoginForm.module.css"
+import styles from "./LoginForm.module.css"
 import React, { useState } from 'react';
+import CustomButton from "../../components/buttons/submit-button/custom-button";
 
 const onFinish: FormProps['onFinish'] = (values) => {
   console.log('Success:', values);
@@ -13,46 +14,46 @@ const onFinishFailed: FormProps['onFinishFailed'] = (errorInfo) => {
 const LoginPage = () => {
 
   return (
-    <div className={style[`login-page`]} >
-    
-      <div className={style[`form-container`]}>
-        <h1>Login</h1>
-
+    <div className={styles[`login-page`]}>
+      <div className={styles[`form-content`]}>
+        <p className={styles.title}>Login</p>
         <Form
-          name="basic"
-          initialValues={{ remember: true }}
+          name="login"
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
-          autoComplete="off"
+          initialValues={{
+            remember: true,
+          }}
           layout="vertical"
+          className={styles[`login-form`]}
         >
           <Form.Item
             label="Email address"
             name="email"
-            rules={[{message: 'Please input your email!' }]}
+            colon={false}
+            rules={[{ required: true, message: 'Please input your Email!!' }]}
           >
-            <Input className={style['input-custom']} />
+            <Input className={styles[`input-form`]} />
           </Form.Item>
 
           <Form.Item
             label="Password"
             name="password"
-            rules={[{message: 'Please input your password!' }]}
+            colon={false}
+            rules={[{ required: true, message: 'Please input your Password!!' }]}
           >
-            <Input.Password className={style['input-custom']} />
+            <Input className={styles[`input-form`]} />
+          </Form.Item >
+          <Form.Item wrapperCol={{ offset: 15, span: 11 }}>
+            <a href="./forgot">Forgot your password</a>
           </Form.Item>
-          <Form.Item  wrapperCol={{ offset: 15, span: 11 }}>
-            <a href="">Forget your password</a>
-          </Form.Item>
-
-          <Form.Item>
-            <Button type="primary" htmlType="submit" className={style['button-custom']} >
-              Login
-            </Button>
+          <Form.Item className={styles.customBtn}>
+            <CustomButton type="primary" htmlType="submit">
+              Log in
+            </CustomButton>
           </Form.Item>
         </Form>
-
-        <p>Don’t have an acount? <a href="">Sign up </a> </p>
+        <p>Don’t have an acount? <a href="./register">Sign up </a> </p>
       </div>
     </div>
   )

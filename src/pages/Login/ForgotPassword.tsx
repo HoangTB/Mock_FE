@@ -1,6 +1,7 @@
 import { Button, Checkbox, Form, FormProps, Input } from "antd";
-import style from "./LoginForm.module.css"
+import styles from "./LoginForm.module.css"
 import React, { useState } from 'react';
+import CustomButton from "../../components/buttons/submit-button/custom-button";
 
 const onFinish: FormProps['onFinish'] = (values) => {
   console.log('Success:', values);
@@ -11,36 +12,36 @@ const onFinishFailed: FormProps['onFinishFailed'] = (errorInfo) => {
 };
 const ForgotPassword = () => {
     return (
-        <div className={style[`login-page`]} >
-        
-          <div className={style[`form-container`]}>
-            <h1>Forgot Password</h1>
-    
-            <Form
-              name="basic"
-              initialValues={{ remember: true }}
-              onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
-              autoComplete="off"
-              layout="vertical"
-            >
-              <Form.Item
-                label="Email address"
-                name="email"
-                rules={[{message: 'Please input your email!' }]}
-              >
-                <Input className={style['input-custom']} />
-              </Form.Item>
-    
-              <Form.Item>
-                <Button type="primary" htmlType="submit" className={style['button-custom']} >
-                  Send me
-                </Button>
-              </Form.Item>
-            </Form>
-    
-          </div>
-        </div>
+      <div className={styles[`login-page`]}>
+      <div className={styles[`form-content`]}>
+        <p className={styles.title}>Forgot Password</p>
+        <Form
+          name="forgot"
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          initialValues={{
+            remember: true,
+          }}
+          layout="vertical"
+          className={styles[`register-form`]}
+        >
+          <Form.Item
+            label="Email address"
+            name="email"
+            colon={false}
+            rules={[{ required: true, message: 'Please input your Email!!' }]}
+          >
+            <Input className={styles[`input-form`]} />
+          </Form.Item>
+          
+          <Form.Item className={styles.customBtn}>
+            <CustomButton type="primary" htmlType="submit">
+              Send me
+            </CustomButton>
+          </Form.Item>
+        </Form>
+      </div>
+    </div>
       )
 };
 

@@ -6,6 +6,7 @@ import SidebarLayout from '../layouts/SidebarLayout';
 import HelloPage from '../pages/HelloPage/HelloPage';
 import ListPage from '../pages/HelloPage/ListPage';
 import RoomList from '../pages/room-list/RoomList';
+import RegisterPage from '../pages/Register';
 import EditProfile from '../pages/edit-profile/EditProfile';
 import Payment from '../pages/payment/Payment';
 import LoginPage from '../pages/Login/LoginPage';
@@ -30,6 +31,10 @@ const routes: RouteObject[] = [
       {
         path: '/rooms/:id',
         Component: RoomList,
+      },
+      {
+        path: '/register',
+        Component: RegisterPage,
       },
       {
         path: '/',

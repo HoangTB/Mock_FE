@@ -1,6 +1,7 @@
 import { Button, Checkbox, Form, FormProps, Input } from "antd";
-import style from "./LoginForm.module.css"
+import styles from "./LoginForm.module.css"
 import React, { useState } from 'react';
+import CustomButton from "../../components/buttons/submit-button/custom-button";
 
 const onFinish: FormProps['onFinish'] = (values) => {
   console.log('Success:', values);
@@ -11,43 +12,44 @@ const onFinishFailed: FormProps['onFinishFailed'] = (errorInfo) => {
 };
 const ResetPassword = () => {
     return (
-        <div className={style[`login-page`]} >
-        
-          <div className={style[`form-container`]}>
-            <h1>Reset Password</h1>
-    
-            <Form
-              name="basic"
-              initialValues={{ remember: true }}
-              onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
-              autoComplete="off"
-              layout="vertical"
-            >
-              <Form.Item
-                label="Password"
-                name="password"
-                rules={[{message: 'Please input your password!' }]}
-              >
-                <Input className={style['input-custom']} />
-              </Form.Item>
-    
-              <Form.Item
-                label="Confirm password"
-                name="confirm-password"
-                rules={[{message: 'Please input your Confirm password!' }]}
-              >
-                <Input.Password className={style['input-custom']} />
-              </Form.Item>
-    
-              <Form.Item>
-                <Button type="primary" htmlType="submit" className={style['button-custom']} >
-                  Reset Password
-                </Button>
-              </Form.Item>
-            </Form>
-              </div>
-        </div>
+      <div className={styles[`login-page`]}>
+      <div className={styles[`form-content`]}>
+        <p className={styles.title}>Reset Password</p>
+        <Form
+          name="reset"
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          initialValues={{
+            remember: true,
+          }}
+          layout="vertical"
+          className={styles[`register-form`]}
+        >
+          <Form.Item
+            label="Password"
+            name="password"
+            colon={false}
+            rules={[{ required: true, message: 'Please input your Password!!' }]}
+          >
+            <Input className={styles[`input-form`]} />
+          </Form.Item>
+          <Form.Item
+            label="Confirm Password"
+            name="confirm"
+            colon={false}
+            rules={[{ required: true, message: 'Please input your Password!!' }]}
+          >
+            <Input className={styles[`input-form`]} />
+          </Form.Item>
+          
+          <Form.Item className={styles.customBtn}>
+            <CustomButton type="primary" htmlType="submit">
+              Reset Password
+            </CustomButton>
+          </Form.Item>
+        </Form>
+      </div>
+    </div>
       )
 };
 
