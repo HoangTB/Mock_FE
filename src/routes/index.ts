@@ -12,6 +12,8 @@ import ForgotPassword from '../pages/Login/ForgotPassword';
 import ResetPassword from '../pages/Login/ResetPassword';
 import BookedHistory from '../pages/booked-history/BookedHistory';
 import Completed from '../pages/payment-completed/Completed';
+import BookingRoom from '../pages/Booking/indexBooking';
+
 import VoteHistory from '../pages/vote-history/VoteHistory';
 import Contact from '../pages/contact/Contact';
 import AboutUs from '../pages/about-us/AboutUs';
@@ -72,6 +74,10 @@ const routes: RouteObject[] = [
       }, {
         path: '/booking/completed',
         Component: Completed,
+      },
+      {
+        path: '/booking',
+        Component: BookingRoom,
       },
       {
         path: '/contact',

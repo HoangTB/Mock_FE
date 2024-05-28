@@ -1,0 +1,173 @@
+.banner {
+    height: 600px;
+    width: 100%;
+}
+
+.price {
+    padding-right: 30px;
+    font-size: 30px;
+}
+
+.title {
+    font-size: 25px;
+
+}
+
+.address {
+    margin: 0 50px;
+
+}
+
+.imageroom {
+    width: 100%;
+    height: 70%;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    object-fit: cover;
+}
+
+.border {
+    margin: 50px 100px 0px 100px;
+}
+
+.border2 {
+    width: 500px;
+    text-align: center;
+    margin-bottom: 80px;
+}
+
+.border3 {
+    width: 1000px;
+    text-align: center;
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+
+.flex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 30px;
+}
+
+.flexmiddle {
+    display: flex;
+    margin: 0 30px;
+    flex-direction: column;
+    align-items: center;
+    line-height: 30px;
+}
+
+.roomBorder1 {
+    border: 1px solid var(--hr-color);
+    padding: 0 0 10px 0 !important;
+    height: 600px;
+    border-radius: 2%;
+
+}
+
+.roomBorder2 {
+    border: 1px solid var(--hr-color);
+
+    border-radius: 2%;
+    padding: 5% 0 0 4% !important;
+    height: 600px;
+}
+
+.labelStyle {
+    font-size: 17px;
+}
+
+.inputStyle {
+    font-size: 17px;
+    margin-left: 10px;
+    width: 80%;
+    height: 40px;
+    border: none;
+    border-radius: 0;
+    border-bottom-style: solid;
+}
+
+.inputStyleSelect {
+    font-size: 17px;
+    margin-left: 10px;
+    width: 80% !important;
+    height: 40px;
+    border: none !important;
+    border-radius: 0;
+    border-bottom-style: solid !important;
+}
+
+.inputStyleSelect.ant-select-selector {
+    border: none !important;
+}
+
+.inputStyle:focus {
+    box-shadow: none;
+}
+
+.totalPrice {
+    font-size: 35px;
+}
+
+/* For screen size less than 1100px */
+@media screen and (max-width: 1100px) {}
+
+@media (min-width: 768px) and (max-width: 1512px) {
+
+    .roomBorder1 {
+        height: auto !important;
+
+    }
+
+    .roomBorder2 {
+        height: auto !important;
+        padding-bottom: 3% !important;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .price {
+        padding-top: 30px;
+    }
+
+    .btnSubmit {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .border2 {
+        width: 100px;
+        text-align: center;
+        margin-bottom: 80px;
+    }
+
+    .roomBorder1 {
+        height: auto !important;
+    }
+
+    .roomBorder2 {
+        border: 1px solid var(--hr-color);
+        height: auto !important;
+        border-radius: 2%;
+        /* padding: 20px 0 0 30px !important; */
+    }
+
+    .inputStyle {
+        width: 90%;
+    }
+
+    .inputStyleSelect {
+        width: 90% !important;
+    }
+
+    .flex {
+        text-align: center;
+        line-height: 1.5;
+    }
+
+    .flexmiddle {
+        text-align: center;
+        line-height: 1.5;
+    }
+}
