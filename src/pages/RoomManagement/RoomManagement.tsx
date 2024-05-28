@@ -1,86 +1,139 @@
-import React, { useState } from 'react';
-import { DashBoardLayout } from '../../layouts/DashBoardLayout';
-import { styled } from '@mui/material/styles';
-import plusFill from '@iconify/icons-eva/plus-fill';
-import {
-  Card,
-  Table,
-  Stack,
-  Button,
-  TableRow,
-  TableBody,
-  TableCell,
-  Container,
-  Typography,
-  TableContainer,
-  TextField,
-  InputAdornment,
-} from '@mui/material';
-import SearchNotFound from '../SearchNotFound';
-import RoomListHead from './RoomListHead';
-import RoomMoreMenu from './RoomMoreMenu';
-import { Icon } from '@iconify/react';
-import { CreateRoomDialog } from './dialog/CreateDialog';
-import SearchIcon from '@mui/icons-material/Search';
+import React, { useState, useEffect } from 'react';
+import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
+import { Layout, Table, Button, Input, Typography, Card, Row, Col } from 'antd';
+import type { SortOrder } from 'antd/es/table/interface';
+import RoomMoreMenu from './RoomMoreMenu/RoomMoreMenu';
+import { CreateRoomDialog } from './Dialog/CreateDialog/CreateDialog';
+import { DashBoardLayout } from '../../layouts/AdminLayout/DashBoardLayout';
+import './RoomManagement.css';
+
+const { Content } = Layout;
+const { Title } = Typography;
 
 const TABLE_HEAD = [
-  { id: 'MaxNumberPeopleOfRoom', label: 'Max number people', alignRight: false },
-  { id: 'NumberOfBeds', label: 'Number of beds', alignRight: false },
-  { id: 'PriceOfRoom', label: 'Price', alignRight: false },
-  { id: 'RoomNumber', label: 'Room number', alignRight: false },
-  { id: 'StatusOfRoom', label: 'Status', alignRight: false },
-  { id: 'Description', label: 'Description', alignRight: false },
-  { id: 'Action', label: 'Action', alignRight: false },
+  { id: 'MaxNumberPeopleOfRoom', label: 'Max number people', align: 'left' },
+  { id: 'NumberOfBeds', label: 'Number of beds', align: 'left' },
+  { id: 'PriceOfRoom', label: 'Price', align: 'left' },
+  { id: 'RoomNumber', label: 'Room number', align: 'left' },
+  { id: 'StatusOfRoom', label: 'Status', align: 'left' },
+  { id: 'Description', label: 'Description', align: 'left' },
+  { id: 'Action', label: 'Action', align: 'left' },
 ];
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(even)': {
-    backgroundColor: 'rgb(255, 247, 205)',
-  },
-  '&:last-child td, &:last-child th': {
-    border: 0,
-  },
-}));
+interface RoomData {
+  MaxNumberPeopleOfRoom: number;
+  NumberOfBeds: number;
+  PriceOfRoom: string;
+  RoomNumber: string;
+  StatusOfRoom: string;
+  Description: string;
+  key: string; // Ensure each RoomData has a unique key
+}
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  backgroundColor: 'var(--primary-color)',
-  color: theme.palette.common.white,
-  fontWeight: 'bold',
-}));
+const fakeData: RoomData[] = [
+  {
+    MaxNumberPeopleOfRoom: 2,
+    NumberOfBeds: 1,
+    PriceOfRoom: '$100',
+    RoomNumber: '101',
+    StatusOfRoom: 'Available',
+    Description: 'A cozy room for two.',
+    key: '101',
+  },
+  {
+    MaxNumberPeopleOfRoom: 4,
+    NumberOfBeds: 2,
+    PriceOfRoom: '$200',
+    RoomNumber: '102',
+    StatusOfRoom: 'Occupied',
+    Description: 'A spacious room for a family.',
+    key: '102',
+  },
+  {
+    MaxNumberPeopleOfRoom: 1,
+    NumberOfBeds: 1,
+    PriceOfRoom: '$80',
+    RoomNumber: '103',
+    StatusOfRoom: 'Available',
+    Description: 'A single room for solo travelers.',
+    key: '103',
+  },
+  // Add more fake data as needed
+];
 
-export default function RoomManagement(props: any) {
-  const [data, setData] = useState([]);
+const isRoomDataKey = (key: string): key is keyof RoomData => {
+  return ['MaxNumberPeopleOfRoom', 'NumberOfBeds', 'PriceOfRoom', 'RoomNumber', 'StatusOfRoom', 'Description'].includes(
+    key,
+  );
+};
+
+const RoomManagement: React.FC<any> = (props) => {
+  const [data, setData] = useState<RoomData[]>([]);
   const [openAdd, setOpenAdd] = useState(false);
   const [reRender, setRerender] = useState(false);
-  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
-  const [orderBy, setOrderBy] = useState<string>('');
+  const [order, setOrder] = useState<'ascend' | 'descend'>('ascend');
+  const [orderBy, setOrderBy] = useState<keyof RoomData | ''>('');
   const [selected, setSelected] = useState<string[]>([]);
 
-  const searchFilterFunction = (text: string) => {};
+  useEffect(() => {
+    // Load fake data initially
+    setData(fakeData);
+  }, []);
 
-  const handleRequestSort = (event: React.MouseEvent<unknown>, property: string) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+  const searchFilterFunction = (text: string) => {
+    const filteredData = fakeData.filter((room) =>
+      Object.values(room).some((value) => String(value).toLowerCase().includes(text.toLowerCase())),
+    );
+    setData(filteredData);
+  };
+
+  const handleRequestSort = (property: keyof RoomData) => {
+    const isAscend = orderBy === property && order === 'ascend';
+    setOrder(isAscend ? 'descend' : 'ascend');
     setOrderBy(property);
+    const sortedData = [...data].sort((a, b) => {
+      if (isRoomDataKey(property)) {
+        const aValue = a[property];
+        const bValue = b[property];
+        if (typeof aValue === 'number' && typeof bValue === 'number') {
+          return isAscend ? aValue - bValue : bValue - aValue;
+        } else {
+          return isAscend ? String(aValue).localeCompare(String(bValue)) : String(bValue).localeCompare(String(aValue));
+        }
+      }
+      return 0;
+    });
+    setData(sortedData);
   };
 
-  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      const newSelecteds = data.map((n: any) => n.NameDisease);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleOpenAddDialog = () => {
-    setOpenAdd(true);
-  };
+  // const handleOpenAddDialog = () => {
+  //   setOpenAdd(true);
+  // };
 
   const handleCloseAddDialog = () => {
     setOpenAdd(false);
     props.onClose();
   };
+
+  const columns = TABLE_HEAD.map((col) => ({
+    title: col.label,
+    dataIndex: col.id,
+    key: col.id,
+    align: col.align as 'left' | 'right' | 'center' | undefined,
+    sorter: true,
+    sortOrder: orderBy === col.id ? (order as SortOrder) : undefined,
+    render:
+      col.id === 'Action'
+        ? (_: any, record: RoomData) => (
+            <RoomMoreMenu
+              key={record.RoomNumber}
+              onClose={() => setRerender(!reRender)}
+              onDeleteSuccess={() => setRerender(!reRender)}
+              onUpdateSuccess={() => setRerender(!reRender)}
+            />
+          )
+        : undefined,
+  }));
 
   return (
     <DashBoardLayout>
@@ -91,62 +144,44 @@ export default function RoomManagement(props: any) {
           setRerender(!reRender);
         }}
       />
-      <Container style={{ maxHeight: 550 }}>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold' }}>
-            Room management
-          </Typography>
-          <Button
-            sx={{ backgroundColor: '#00AB55' }}
-            variant="contained"
-            startIcon={<Icon icon={plusFill} style={{ color: 'black' }} />}
-            onClick={handleOpenAddDialog}
-          >
-            New room
-          </Button>
-        </Stack>
-        <Card>
-          {/* <TextField
-            label="Search Disease...."
-            style={{ margin: 10, right: 420 }}
-            onChange={(e) => searchFilterFunction(e.target.value)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton>
-                    <SearchIcon />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          /> */}
-          <TableContainer sx={{ minWidth: 800, maxHeight: 400 }}>
-            <Table>
-              <RoomListHead
-                order={order}
-                orderBy={orderBy}
-                rowCount={data.length}
-                numSelected={selected.length}
-                onRequestSort={handleRequestSort}
-                onSelectAllClick={handleSelectAllClick}
-                headLabel={TABLE_HEAD}
-                StyledTableCell={StyledTableCell}
-              />
-              <TableBody>
-                <StyledTableRow hover>
-                  <TableCell align="left" width={100}>
-                    <RoomMoreMenu
-                      onClose={() => setRerender(!reRender)}
-                      onDeleteSuccess={() => setRerender(!reRender)}
-                      onUpdateSuccess={() => setRerender(!reRender)}
-                    />
-                  </TableCell>
-                </StyledTableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Card>
-      </Container>
+      <Content>
+        <div className="site-layout-content">
+          <Row justify="space-between" align="middle" style={{ marginBottom: '16px' }}>
+            <Col>
+              <Title level={2} className="title">
+                Room management
+              </Title>
+            </Col>
+            {/* <Col>
+              <Button type="primary" icon={<PlusOutlined />} onClick={handleOpenAddDialog} className="add-button">
+                New room
+              </Button>
+            </Col> */}
+          </Row>
+          <Card>
+            <Input
+              placeholder="Search Room..."
+              onChange={(e) => searchFilterFunction(e.target.value)}
+              suffix={<SearchOutlined />}
+              className="search-input"
+            />
+            <Table
+              dataSource={data}
+              columns={columns}
+              rowKey="RoomNumber" // Ensure each row has a unique key
+              rowClassName={(record, index) => (index % 2 === 0 ? 'table-row-light' : 'table-row-dark')}
+              pagination={false}
+              onChange={(pagination, filters, sorter) => {
+                // if (sorter.order) {
+                //   handleRequestSort(sorter.columnKey as keyof RoomData);
+                // }
+              }}
+            />
+          </Card>
+        </div>
+      </Content>
     </DashBoardLayout>
   );
-}
+};
+
+export default RoomManagement;

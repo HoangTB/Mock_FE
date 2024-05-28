@@ -1,38 +1,14 @@
 import React, { ReactNode } from 'react';
 import SimpleBarReact from 'simplebar-react';
-// material
-import { styled } from '@mui/material/styles';
-import { Box, SxProps } from '@mui/material';
-import { Theme } from '@mui/system';
-
-// ----------------------------------------------------------------------
-
-const RootStyle = styled('div')(({ theme }) => ({
-  flexGrow: 1,
-  height: '100%',
-  overflow: 'hidden',
-  ...(theme.typography.body2 as object),
-}));
-
-const SimpleBarStyle = styled(SimpleBarReact)(({ theme }) => ({
-  maxHeight: '100%',
-  '& .simplebar-track.simplebar-vertical': {
-    width: 10,
-  },
-  '& .simplebar-track.simplebar-horizontal .simplebar-scrollbar': {
-    height: 6,
-  },
-  '& .simplebar-mask': {
-    zIndex: 'inherit',
-  },
-}));
+import 'simplebar/dist/simplebar.min.css';
+import './Scrollbar.css'; // Import the CSS file here
 
 // ----------------------------------------------------------------------
 
 // Define props for the Scrollbar component
 interface ScrollbarProps {
   children: ReactNode;
-  sx?: SxProps<Theme>;
+  sx?: React.CSSProperties;
 }
 
 const Scrollbar: React.FC<ScrollbarProps> = ({ children, sx, ...other }) => {
@@ -40,18 +16,16 @@ const Scrollbar: React.FC<ScrollbarProps> = ({ children, sx, ...other }) => {
 
   if (isMobile) {
     return (
-      <Box sx={{ overflowX: 'auto', ...sx }} {...other}>
+      <div style={{ overflowX: 'auto', ...sx }} {...other}>
         {children}
-      </Box>
+      </div>
     );
   }
 
   return (
-    <RootStyle sx={{ ...sx }}>
-      <SimpleBarStyle clickOnTrack={false} {...other}>
-        {children}
-      </SimpleBarStyle>
-    </RootStyle>
+    <SimpleBarReact style={{ maxHeight: '100%', ...sx }} {...other}>
+      {children}
+    </SimpleBarReact>
   );
 };
 

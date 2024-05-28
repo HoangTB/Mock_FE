@@ -1,0 +1,21 @@
+.rootStyle {
+  height: 96px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 16px 0 24px;
+}
+
+.searchStyle {
+  width: 240px;
+  transition: all 0.3s ease-in-out;
+}
+
+.searchStyle .ant-input-affix-wrapper:focus-within,
+.searchStyle .ant-input-affix-wrapper-focused {
+  width: 320px;
+}
+
+.searchStyle .ant-input {
+  border-width: 1px !important;
+  border-color: grey !important;
+}

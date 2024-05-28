@@ -1,0 +1,15 @@
+.create-room-dialog .ant-modal-body {
+  min-width: 500px;
+}
+
+.create-room-dialog .dialog-footer {
+  text-align: right;
+  margin-top: 20px;
+}
+
+.create-room-dialog .dialog-footer button {
+  margin-right: 25px;
+}
+.create-room-dialog .ant-form-item {
+  margin-right: 25px; /* Adjust the value to your preference */
+}

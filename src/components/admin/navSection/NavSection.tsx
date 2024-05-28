@@ -3,41 +3,13 @@ import { Icon } from '@iconify/react';
 import { NavLink as RouterLink, matchPath, useLocation } from 'react-router-dom';
 import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
-// material
-import { alpha, useTheme, styled } from '@mui/material/styles';
-import { Box, List, Collapse, ListItemText, ListItemIcon, Button } from '@mui/material';
+import { Menu, Collapse } from 'antd';
+import './NavSection.css';
 
 // ----------------------------------------------------------------------
 
-const ListItemStyle = styled('div')(({ theme }) => ({
-  ...theme.typography.body2,
-  height: 48,
-  position: 'relative',
-  textTransform: 'capitalize',
-  paddingLeft: theme.spacing(5),
-  paddingRight: theme.spacing(2.5),
-  color: theme.palette.text.secondary,
-  '&:before': {
-    top: 0,
-    right: 0,
-    width: 3,
-    bottom: 0,
-    content: "''",
-    display: 'none',
-    position: 'absolute',
-    borderTopLeftRadius: 4,
-    borderBottomLeftRadius: 4,
-    backgroundColor: theme.palette.primary.main,
-  },
-}));
-
-const ListItemIconStyle = styled(ListItemIcon)({
-  width: 22,
-  height: 22,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-});
+const { SubMenu } = Menu;
+const { Panel } = Collapse;
 
 // Type definitions for NavItem props
 interface NavItemProps {
@@ -52,7 +24,6 @@ interface NavItemProps {
 }
 
 const NavItem: React.FC<NavItemProps> = ({ item, active }) => {
-  const theme = useTheme();
   const isActiveRoot = active(item.path);
   const { title, path, icon, info, children } = item;
   const [open, setOpen] = useState(isActiveRoot);
@@ -61,93 +32,46 @@ const NavItem: React.FC<NavItemProps> = ({ item, active }) => {
     setOpen((prev) => !prev);
   };
 
-  const activeRootStyle = {
-    color: 'primary.main',
-    fontWeight: 'fontWeightMedium',
-    bgcolor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
-    '&:before': { display: 'block' },
-  };
-
-  const activeSubStyle = {
-    color: 'text.primary',
-    fontWeight: 'fontWeightMedium',
-  };
+  const activeRootClass = isActiveRoot ? 'active-root' : 'active-root';
+  const activeSubClass = 'active-sub';
 
   if (children) {
     return (
-      <>
-        <ListItemStyle
-          onClick={handleOpen}
-          sx={{
-            ...(isActiveRoot && activeRootStyle),
-          }}
-        >
-          <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
-          <ListItemText disableTypography primary={title} />
+      <div>
+        <div className={`list-item ${activeRootClass}`} onClick={handleOpen}>
+          <span className="list-item-icon">{icon && icon}</span>
+          <span className="menu-item-text">{title}</span>
           {info && info}
-          <Box
-            component={Icon}
-            icon={open ? arrowIosDownwardFill : arrowIosForwardFill}
-            sx={{ width: 16, height: 16, ml: 1 }}
-          />
-        </ListItemStyle>
-
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            {children.map((child) => {
-              const { title, path } = child;
-              const isActiveSub = active(path);
-
-              return (
-                <ListItemStyle key={title}>
-                  <Button
-                    component={RouterLink}
-                    to={path}
-                    sx={{
-                      width: '100%',
-                      ...(isActiveSub && activeSubStyle),
-                    }}
-                  >
-                    <ListItemIconStyle>
-                      <Box
-                        component="span"
-                        sx={{
-                          width: 4,
-                          height: 4,
-                          display: 'flex',
-                          borderRadius: '50%',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          bgcolor: 'text.disabled',
-                        }}
-                      />
-                    </ListItemIconStyle>
-                    <ListItemText disableTypography primary={title} />
-                  </Button>
-                </ListItemStyle>
-              );
-            })}
-          </List>
+          <Icon icon={open ? arrowIosDownwardFill : arrowIosForwardFill} className="icon-box" />
+        </div>
+        <Collapse activeKey={open ? '1' : undefined}>
+          <Panel key="1" showArrow={false} header="">
+            <Menu
+              mode="vertical"
+              items={children.map((child) => ({
+                key: child.title,
+                icon: <span className="list-item-icon" />,
+                label: (
+                  <RouterLink to={child.path} className={active(child.path) ? activeSubClass : ''}>
+                    <span className="menu-item-text">{child.title}</span>
+                  </RouterLink>
+                ),
+              }))}
+            />
+          </Panel>
         </Collapse>
-      </>
+      </div>
     );
   }
 
   return (
-    <ListItemStyle>
-      <Button
-        component={RouterLink}
-        to={path}
-        sx={{
-          width: '100%',
-          ...(isActiveRoot && activeRootStyle),
-        }}
-      >
-        <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
-        <ListItemText disableTypography primary={title} />
+    <div className="list-item">
+      <RouterLink to={path} className={activeRootClass}>
+        <span className="list-item-icon">{icon && icon}</span>
+        <span className="menu-item-text">{title}</span>
         {info && info}
-      </Button>
-    </ListItemStyle>
+      </RouterLink>
+    </div>
   );
 };
 
@@ -160,13 +84,19 @@ const NavSection: React.FC<NavSectionProps> = ({ navConfig, ...other }) => {
   const match = (path: string) => (path ? !!matchPath({ path, end: false }, pathname) : false);
 
   return (
-    <Box {...other}>
-      <List disablePadding>
-        {navConfig.map((item) => (
-          <NavItem key={item.title} item={item} active={match} />
-        ))}
-      </List>
-    </Box>
+    <div className="nav-section" {...other}>
+      <Menu
+        mode="vertical"
+        items={navConfig.map((item) => ({
+          key: item.title,
+          label: <NavItem item={item} active={match} />,
+          children: item.children?.map((child) => ({
+            key: child.title,
+            label: <NavItem item={child} active={match} />,
+          })),
+        }))}
+      />
+    </div>
   );
 };
 

@@ -1,32 +1,28 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import PropTypes from 'prop-types';
-// material
-import { Popover, PopoverProps } from '@mui/material';
-import { alpha, styled } from '@mui/material/styles';
-import React from 'react';
+import { Dropdown, Menu } from 'antd';
+import { DropdownProps } from 'antd';
+import { styled } from 'styled-components';
+import './MenuPopover.css';
 
-// ----------------------------------------------------------------------
+const ArrowStyle = styled.span`
+  @media (min-width: 600px) {
+    top: -7px;
+    z-index: 1;
+    width: 12px;
+    right: 20px;
+    height: 12px;
+    content: '';
+    position: absolute;
+    border-radius: 0 0 4px 0;
+    transform: rotate(-135deg);
+    background: white;
+    border-right: solid 1px rgba(0, 0, 0, 0.12);
+    border-bottom: solid 1px rgba(0, 0, 0, 0.12);
+  }
+`;
 
-const ArrowStyle = styled('span')(({ theme }) => ({
-  [theme.breakpoints.up('sm')]: {
-    top: -7,
-    zIndex: 1,
-    width: 12,
-    right: 20,
-    height: 12,
-    content: "''",
-    position: 'absolute',
-    borderRadius: '0 0 4px 0',
-    transform: 'rotate(-135deg)',
-    background: theme.palette.background.paper,
-    borderRight: `solid 1px ${alpha(theme.palette.grey[500], 0.12)}`,
-    borderBottom: `solid 1px ${alpha(theme.palette.grey[500], 0.12)}`,
-  },
-}));
-
-// ----------------------------------------------------------------------
-
-interface MenuPopoverProps extends Omit<PopoverProps, 'children'> {
+interface MenuPopoverProps extends Omit<DropdownProps, 'overlay'> {
   children: ReactNode;
   sx?: object;
 }
@@ -37,14 +33,17 @@ MenuPopover.propTypes = {
 };
 
 export default function MenuPopover({ children, sx, ...other }: MenuPopoverProps) {
+  const menu = (
+    <Menu>
+      {React.Children.map(children, (child, index) => (
+        <Menu.Item key={index}>{child}</Menu.Item>
+      ))}
+    </Menu>
+  );
+
   return (
-    <Popover
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      {...other}
-    >
-      <ArrowStyle className="arrow" />
-      {children}
-    </Popover>
+    <Dropdown overlay={menu} {...other} arrow>
+      <span className="menu-popover-trigger">{children}</span>
+    </Dropdown>
   );
 }

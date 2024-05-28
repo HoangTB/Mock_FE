@@ -1,14 +1,13 @@
-import React, { useRef, useState, MouseEvent } from 'react';
+import React, { useRef, useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+import { Button, Menu, Typography, Avatar, Dropdown } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 import { Icon } from '@iconify/react';
 import homeFill from '@iconify/icons-eva/home-fill';
 import personFill from '@iconify/icons-eva/person-fill';
 import settings2Fill from '@iconify/icons-eva/settings-2-fill';
-import { Link as RouterLink } from 'react-router-dom';
-// material
-import { alpha } from '@mui/material/styles';
-import { Button, Box, Divider, MenuItem, Typography, Avatar, IconButton } from '@mui/material';
-// components
-import MenuPopover from '../menuPopover/MenuPopover';
+import './AdminPopover.css';
+import type { MenuProps } from 'antd';
 
 // Types for menu options
 interface MenuOption {
@@ -17,6 +16,7 @@ interface MenuOption {
   linkTo: string;
 }
 
+// Define menu options
 const MENU_OPTIONS: MenuOption[] = [
   {
     label: 'Home',
@@ -35,91 +35,71 @@ const MENU_OPTIONS: MenuOption[] = [
   },
 ];
 
-// ----------------------------------------------------------------------
+// Create menu items for Ant Design Menu component
+const menuItems: MenuProps['items'] = [
+  {
+    key: 'header',
+    label: (
+      <>
+        <Typography.Text strong>Admin</Typography.Text>
+        <br />
+        <Typography.Text type="secondary">admin@gmail.com</Typography.Text>
+      </>
+    ),
+    disabled: true,
+  },
+  { type: 'divider' },
+  ...MENU_OPTIONS.map((option) => ({
+    key: option.label,
+    icon: <Icon icon={option.icon} />,
+    label: <RouterLink to={option.linkTo}>{option.label}</RouterLink>,
+  })),
+  { type: 'divider' },
+  {
+    key: 'logout',
+    label: (
+      <Button type="text" block>
+        Logout
+      </Button>
+    ),
+  },
+];
 
-export default function AdminPopover() {
-  const anchorRef = useRef<HTMLButtonElement | null>(null);
+const AdminPopover: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const anchorRef = useRef<HTMLDivElement | null>(null);
 
-  const onLogout = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  const onLogout = () => {
     localStorage.clear();
     window.location.href = '/';
   };
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
+  const handleMenuClick: MenuProps['onClick'] = (info) => {
+    if (info.key === 'logout') {
+      onLogout();
+    }
     setOpen(false);
   };
 
   return (
-    <>
-      <IconButton
+    <Dropdown
+      menu={{
+        items: menuItems,
+        onClick: handleMenuClick,
+      }}
+      trigger={['click']}
+      open={open}
+      onOpenChange={setOpen}
+    >
+      <Avatar
         ref={anchorRef}
-        onClick={handleOpen}
-        sx={{
-          padding: 0,
-          width: 44,
-          height: 44,
-          ...(open && {
-            '&:before': {
-              zIndex: 1,
-              content: "''",
-              width: '100%',
-              height: '100%',
-              borderRadius: '50%',
-              position: 'absolute',
-              bgcolor: (theme) => alpha(theme.palette.grey[900], 0.72),
-            },
-          }),
-        }}
-      >
-        <Avatar src="/images/admin_button.svg" alt="photoURL" />
-      </IconButton>
-
-      <MenuPopover open={open} onClose={handleClose} anchorEl={anchorRef.current} sx={{ width: 220 }}>
-        <Box sx={{ my: 1.5, px: 2.5 }}>
-          <Typography variant="subtitle1" noWrap>
-            Admin
-          </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            admin@gmail.com
-          </Typography>
-        </Box>
-
-        <Divider sx={{ my: 1 }} />
-
-        {MENU_OPTIONS.map((option) => (
-          <MenuItem
-            key={option.label}
-            to={option.linkTo}
-            component={RouterLink}
-            onClick={handleClose}
-            sx={{ typography: 'body2', py: 1, px: 2.5 }}
-          >
-            <Box
-              component={Icon}
-              icon={option.icon}
-              sx={{
-                mr: 2,
-                width: 24,
-                height: 24,
-              }}
-            />
-
-            {option.label}
-          </MenuItem>
-        ))}
-
-        <Box sx={{ p: 2, pt: 1.5 }}>
-          <Button fullWidth color="inherit" variant="outlined" onClick={onLogout}>
-            Logout
-          </Button>
-        </Box>
-      </MenuPopover>
-    </>
+        onClick={() => setOpen(!open)}
+        size={44}
+        icon={<UserOutlined />}
+        className="avatar-style"
+      />
+    </Dropdown>
   );
-}
+};
+
+export default AdminPopover;
