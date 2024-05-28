@@ -1,18 +1,14 @@
 import React, { useRef, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Button, Menu, Typography, Avatar, Dropdown } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
-import { Icon } from '@iconify/react';
-import homeFill from '@iconify/icons-eva/home-fill';
-import personFill from '@iconify/icons-eva/person-fill';
-import settings2Fill from '@iconify/icons-eva/settings-2-fill';
+import { Button, Typography, Avatar, Dropdown } from 'antd';
+import { UserOutlined, HomeOutlined, SettingOutlined, UserOutlined as ProfileOutlined } from '@ant-design/icons';
 import './AdminPopover.css';
 import type { MenuProps } from 'antd';
 
 // Types for menu options
 interface MenuOption {
   label: string;
-  icon: any;
+  icon: React.ReactNode;
   linkTo: string;
 }
 
@@ -20,17 +16,17 @@ interface MenuOption {
 const MENU_OPTIONS: MenuOption[] = [
   {
     label: 'Home',
-    icon: homeFill,
+    icon: <HomeOutlined />,
     linkTo: '/',
   },
   {
     label: 'Profile',
-    icon: personFill,
+    icon: <ProfileOutlined />,
     linkTo: '#',
   },
   {
     label: 'Settings',
-    icon: settings2Fill,
+    icon: <SettingOutlined />,
     linkTo: '#',
   },
 ];
@@ -51,7 +47,7 @@ const menuItems: MenuProps['items'] = [
   { type: 'divider' },
   ...MENU_OPTIONS.map((option) => ({
     key: option.label,
-    icon: <Icon icon={option.icon} />,
+    icon: option.icon,
     label: <RouterLink to={option.linkTo}>{option.label}</RouterLink>,
   })),
   { type: 'divider' },

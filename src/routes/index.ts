@@ -14,16 +14,13 @@ import Payment from '../pages/payment/Payment';
 import BookedHistory from '../pages/booked-history/BookedHistory';
 import Completed from '../pages/payment-completed/Completed';
 import VoteHistory from '../pages/vote-history/VoteHistory';
+import { DashBoardLayout } from '../layouts/AdminLayout/DashBoardLayout';
+import ServiceManagement from '../pages/ServiceManagement/ServiceManagement';
+import BranchManagement from '../pages/BranchManagement/BranchManagement';
+import BookingManagement from '../pages/BookingManagement/BookingManagement';
+import PaymentRevenueManagement from '../pages/PaymentRevenueManagement/PaymentRevenueManagement';
 
 const routes: RouteObject[] = [
-  {
-    path: '/login',
-    Component: LoginPage,
-  },
-  {
-    path: '/admin/roomManagement',
-    Component: RoomManagement,
-  },
   {
     id: 'root',
     path: '/',
@@ -67,6 +64,32 @@ const routes: RouteObject[] = [
       {
         path: '/booking/completed',
         Component: Completed,
+      },
+    ],
+  },
+  {
+    path: '/admin',
+    Component: DashBoardLayout,
+    children: [
+      {
+        path: 'branch',
+        Component: BranchManagement,
+      },
+      {
+        path: 'room',
+        Component: RoomManagement,
+      },
+      {
+        path: 'service',
+        Component: ServiceManagement,
+      },
+      {
+        path: 'booking',
+        Component: BookingManagement,
+      },
+      {
+        path: 'paymentRevenue',
+        Component: PaymentRevenueManagement,
       },
     ],
   },

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout } from 'antd';
-import { Link as RouterLink } from 'react-router-dom';
+import { Outlet, Link as RouterLink } from 'react-router-dom';
 import DashboardNavbar from '../../components/admin/dashBoardNavbar/DashBoardNavbar';
 import NavSection from '../../components/admin/navSection/NavSection';
 import sidebarConfig from '../../components/admin/sideBar/SideBarConfig';
@@ -25,7 +25,7 @@ const DashBoardLayout: React.FC<{ children?: React.ReactNode }> = ({ children })
           </div>
           <NavSection navConfig={sidebarConfig} />
         </Sider>
-        <Content>{children}</Content>
+        <Outlet />
       </Layout>
     </Layout>
   );

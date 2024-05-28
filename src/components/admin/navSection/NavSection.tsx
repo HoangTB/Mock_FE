@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
-import { Icon } from '@iconify/react';
 import { NavLink as RouterLink, matchPath, useLocation } from 'react-router-dom';
-import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
-import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
 import { Menu, Collapse } from 'antd';
+import { ArrowRightOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import './NavSection.css';
-
-// ----------------------------------------------------------------------
 
 const { SubMenu } = Menu;
 const { Panel } = Collapse;
@@ -42,7 +38,7 @@ const NavItem: React.FC<NavItemProps> = ({ item, active }) => {
           <span className="list-item-icon">{icon && icon}</span>
           <span className="menu-item-text">{title}</span>
           {info && info}
-          <Icon icon={open ? arrowIosDownwardFill : arrowIosForwardFill} className="icon-box" />
+          {open ? <ArrowDownOutlined className="icon-box" /> : <ArrowRightOutlined className="icon-box" />}
         </div>
         <Collapse activeKey={open ? '1' : undefined}>
           <Panel key="1" showArrow={false} header="">

@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import SimpleBarReact from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
-import './Scrollbar.css'; // Import the CSS file here
+import './Scrollbar.css';
 
 // ----------------------------------------------------------------------
 

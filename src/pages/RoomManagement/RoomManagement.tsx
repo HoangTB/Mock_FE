@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
-import { Layout, Table, Button, Input, Typography, Card, Row, Col } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
+import { Layout, Table, Input, Typography, Card, Row, Col } from 'antd';
 import type { SortOrder } from 'antd/es/table/interface';
 import RoomMoreMenu from './RoomMoreMenu/RoomMoreMenu';
 import { CreateRoomDialog } from './Dialog/CreateDialog/CreateDialog';
@@ -67,13 +67,12 @@ const isRoomDataKey = (key: string): key is keyof RoomData => {
   );
 };
 
-const RoomManagement: React.FC<any> = (props) => {
+const RoomManagement = (props: any) => {
   const [data, setData] = useState<RoomData[]>([]);
   const [openAdd, setOpenAdd] = useState(false);
   const [reRender, setRerender] = useState(false);
   const [order, setOrder] = useState<'ascend' | 'descend'>('ascend');
   const [orderBy, setOrderBy] = useState<keyof RoomData | ''>('');
-  const [selected, setSelected] = useState<string[]>([]);
 
   useEffect(() => {
     // Load fake data initially
@@ -136,51 +135,42 @@ const RoomManagement: React.FC<any> = (props) => {
   }));
 
   return (
-    <DashBoardLayout>
-      <CreateRoomDialog
-        open={openAdd}
-        onCloseEdit={handleCloseAddDialog}
-        onUpdateSuccess={() => {
-          setRerender(!reRender);
-        }}
-      />
-      <Content>
-        <div className="site-layout-content">
-          <Row justify="space-between" align="middle" style={{ marginBottom: '16px' }}>
-            <Col>
-              <Title level={2} className="title">
-                Room management
-              </Title>
-            </Col>
-            {/* <Col>
+    <Content>
+      <div className="site-layout-content">
+        <Row justify="space-between" align="middle" style={{ marginBottom: '16px' }}>
+          <Col>
+            <Title level={2} className="title">
+              Room management
+            </Title>
+          </Col>
+          {/* <Col>
               <Button type="primary" icon={<PlusOutlined />} onClick={handleOpenAddDialog} className="add-button">
                 New room
               </Button>
             </Col> */}
-          </Row>
-          <Card>
-            <Input
-              placeholder="Search Room..."
-              onChange={(e) => searchFilterFunction(e.target.value)}
-              suffix={<SearchOutlined />}
-              className="search-input"
-            />
-            <Table
-              dataSource={data}
-              columns={columns}
-              rowKey="RoomNumber" // Ensure each row has a unique key
-              rowClassName={(record, index) => (index % 2 === 0 ? 'table-row-light' : 'table-row-dark')}
-              pagination={false}
-              onChange={(pagination, filters, sorter) => {
-                // if (sorter.order) {
-                //   handleRequestSort(sorter.columnKey as keyof RoomData);
-                // }
-              }}
-            />
-          </Card>
-        </div>
-      </Content>
-    </DashBoardLayout>
+        </Row>
+        <Card>
+          <Input
+            placeholder="Search Room..."
+            onChange={(e) => searchFilterFunction(e.target.value)}
+            suffix={<SearchOutlined />}
+            className="search-input"
+          />
+          <Table
+            dataSource={data}
+            columns={columns}
+            rowKey="RoomNumber" // Ensure each row has a unique key
+            rowClassName={(record, index) => (index % 2 === 0 ? 'table-row-light' : 'table-row-dark')}
+            pagination={false}
+            onChange={(pagination, filters, sorter) => {
+              // if (sorter.order) {
+              //   handleRequestSort(sorter.columnKey as keyof RoomData);
+              // }
+            }}
+          />
+        </Card>
+      </div>
+    </Content>
   );
 };
 

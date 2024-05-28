@@ -5,23 +5,6 @@ import { DropdownProps } from 'antd';
 import { styled } from 'styled-components';
 import './MenuPopover.css';
 
-const ArrowStyle = styled.span`
-  @media (min-width: 600px) {
-    top: -7px;
-    z-index: 1;
-    width: 12px;
-    right: 20px;
-    height: 12px;
-    content: '';
-    position: absolute;
-    border-radius: 0 0 4px 0;
-    transform: rotate(-135deg);
-    background: white;
-    border-right: solid 1px rgba(0, 0, 0, 0.12);
-    border-bottom: solid 1px rgba(0, 0, 0, 0.12);
-  }
-`;
-
 interface MenuPopoverProps extends Omit<DropdownProps, 'overlay'> {
   children: ReactNode;
   sx?: object;
