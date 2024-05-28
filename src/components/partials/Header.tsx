@@ -1,50 +1,72 @@
-import { UnorderedListOutlined } from '@ant-design/icons';
+import { GlobalOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import { Button, Drawer, DrawerProps, RadioChangeEvent } from 'antd';
 import React, { useState } from 'react';
 import styles from './Header.module.css';
+import { Link, useLocation } from 'react-router-dom';
 function Header() {
   const [open, setOpen] = useState(false);
+  const [openProfile, setOpenProfile] = useState(false);
   const [placement, setPlacement] = useState<DrawerProps['placement']>('right');
 
   const showDrawer = () => {
     setOpen(true);
   };
 
+  const showProfile = () => {
+    setOpenProfile(true);
+  };
+
+  const onCloseProfile = () => {
+    setOpenProfile(false);
+  };
+
   const onClose = () => {
     setOpen(false);
   };
+  const location = useLocation();
 
-  const onChange = (e: RadioChangeEvent) => {
-    setPlacement(e.target.value);
-  };
   return (
     <div className={styles.headerRow}>
       <div className={styles.headerLeft}>
         <div>
-          <img src="/images/logo.png" alt="" />
+          <Link to="/">
+            <img src="/images/logo.png" alt="" />
+          </Link>
         </div>
       </div>
-      <div className={styles.headerLinks}>
-        <a>Home</a>
-        <a>Rooms</a>
-        <a>News</a>
-        <a>Contact</a>
-        <a>About Us</a>
-      </div>
+      <nav className={styles.headerLinks}>
+        <Link to="/" className={location.pathname === '/' ? styles.active : ''}>
+          Home
+        </Link>
+        <Link to="/branch" className={location.pathname === '/branch' ? styles.active : ''}>
+          Branch
+        </Link>
+        <Link to="/contact" className={location.pathname === '/contact' ? styles.active : ''}>
+          Contact
+        </Link>
+        <Link to="/about-us" className={location.pathname === '/about-us' ? styles.active : ''}>
+          About Us
+        </Link>
+      </nav>
       <div className={styles.headerRight}>
-        <div>
+        <div className={styles.language}>
+          <GlobalOutlined />
           <select name="" id="">
             <option value="">English</option>
             <option value="">Japanese</option>
           </select>
         </div>
-        {/* user */}
-        <div className={styles.headerRightLogin}>Login</div>
         {/* login */}
+        <div className={styles.headerRightLogin}>
+          <Link to="/login">Login</Link>
+        </div>
+        {/* user */}
         <div className={styles.headerRightUser}>
           <img src="https://pbs.twimg.com/profile_images/1744393322418802688/-ZF7VwbA_400x400.jpg" alt="..." />{' '}
           <p>LamNT80</p>
         </div>
+
+        {/* list menu header */}
         <Button onClick={showDrawer} className={styles.btnList}>
           <UnorderedListOutlined />
         </Button>
@@ -57,13 +79,20 @@ function Header() {
           key={placement}
           width={250}
         >
-          <div className={styles.headerLinksShow}>
-            <a>Home</a>
-            <a>Rooms</a>
-            <a>News</a>
-            <a>Contact</a>
-            <a>About Us</a>
-          </div>
+          <nav className={styles.headerLinksShow}>
+            <Link to="/" className={location.pathname === '/' ? styles.active : ''}>
+              Home
+            </Link>
+            <Link to="/branch" className={location.pathname === '/branch' ? styles.active : ''}>
+              Branch
+            </Link>
+            <Link to="/contact" className={location.pathname === '/contact' ? styles.active : ''}>
+              Contact
+            </Link>
+            <Link to="/about-us" className={location.pathname === '/about-us' ? styles.active : ''}>
+              About Us
+            </Link>
+          </nav>
         </Drawer>
       </div>
     </div>

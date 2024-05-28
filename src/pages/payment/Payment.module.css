@@ -177,14 +177,15 @@
   font-weight: bold;
 }
 
-@media(max-width:1054px){
+@media (max-width: 1054px) {
   .form {
     flex-direction: column;
   }
 }
 
-@media(max-width:428px) {
-  .formLeftTop > ul > div:nth-child(1), .formLeftTop>ul>div:nth-child(2) {
+@media (max-width: 428px) {
+  .formLeftTop > ul > div:nth-child(1),
+  .formLeftTop > ul > div:nth-child(2) {
     flex-direction: column;
     gap: 10px;
   }

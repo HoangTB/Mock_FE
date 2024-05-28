@@ -9,7 +9,7 @@
   border-bottom: 1px solid var(--hr-color);
 }
 
-.headerLeft > div > img {
+.headerLeft > div > a > img {
   width: 70px;
 }
 
@@ -29,24 +29,37 @@
 }
 
 .headerLinks > a {
-  cursor: pointer;
   color: black;
-  padding: 10px 30px;
+  cursor: pointer;
+  padding: 10px 20px;
   font-size: 17px;
+  border-bottom: 1px solid transparent;
+  text-decoration: none;
 }
 
 .headerLinksShow > a {
   width: 100%;
+  font-size: 17px;
+  color: black;
   text-align: center;
   cursor: pointer;
-  color: black;
   padding: 10px;
+  border-bottom: 1px solid transparent;
+  text-decoration: none;
 }
 
 .headerLinks > a:hover,
 .headerLinksShow > a:hover {
-  background-color: var(--primary-color);
-  color: white;
+  font-weight: bold;
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.active {
+  font-weight: bold;
+  color: var(--primary-color) !important;
+  border-bottom: 2px solid var(--primary-color) !important;
+  font-size: 18px;
 }
 
 .headerRight {
@@ -57,17 +70,27 @@
   align-items: center;
 }
 
+.language {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  border: 1px solid var(--primary-color);
+  padding: 8px;
+  border-radius: 20px;
+}
+
 .headerRight > div > select {
   border: none;
   outline: none;
 }
 
-.headerRightLogin {
+.headerRightLogin > a {
   background-color: var(--primary-color);
   color: white;
-  font-weight: bold;
   padding: 10px 30px;
   border-radius: 20px;
+  text-decoration: none;
 }
 
 .headerRightUser {
@@ -75,10 +98,10 @@
   flex-direction: row;
   gap: 20px;
   align-items: center;
-  background-color: #ffe9df;
-  color: black;
+  background-color: #ff5100;
+  color: rgb(255, 255, 255);
   font-weight: bold;
-  padding: 5px 15px;
+  padding: 4px 15px;
   border-radius: 20px;
   display: none;
 }
@@ -90,6 +113,7 @@
 .headerRightUser > img {
   width: 30px;
   border-radius: 50%;
+  border: 1px solid white;
 }
 
 .btnList {
@@ -98,6 +122,21 @@
   font-weight: bolder;
   outline: none;
   display: none;
+}
+
+.fromProfile {
+  background-color: rgb(189, 189, 189);
+  padding: 10px 20px;
+}
+
+.fromProfile > li {
+  padding-top: 10px;
+}
+
+.userProfile > a {
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+  margin-bottom: 10px;
 }
 
 @media screen and (max-width: 1196px) {
@@ -118,7 +157,10 @@
   .headerRight {
     gap: 10px;
   }
-  .headerRight select {
+}
+
+@media screen and (max-width: 475px) {
+  .language {
     display: none;
   }
 }
