@@ -1,7 +1,7 @@
-import { Button, Checkbox, Form, FormProps, Input } from "antd";
-import styles from "./LoginForm.module.css"
+import { Button, Checkbox, Form, FormProps, Input } from 'antd';
+import styles from './LoginForm.module.css';
 import React, { useState } from 'react';
-import CustomButton from "../../components/buttons/submit-button/custom-button";
+import CustomButton from '../../components/buttons/submit-button/custom-button';
 
 const onFinish: FormProps['onFinish'] = (values) => {
   console.log('Success:', values);
@@ -11,10 +11,11 @@ const onFinishFailed: FormProps['onFinishFailed'] = (errorInfo) => {
   console.log('Failed:', errorInfo);
 };
 const ResetPassword = () => {
-    return (
-      <div className={styles[`layout`]}>
+  return (
+    <div className={styles[`layout`]}>
       <div className={styles[`form-content`]}>
-        <p className={styles.title}>Reset Password</p><br></br>
+        <p className={styles.title}>Reset Password</p>
+        <br></br>
         <Form
           name="reset"
           onFinish={onFinish}
@@ -40,7 +41,7 @@ const ResetPassword = () => {
           >
             <Input className={styles[`input-form`]} />
           </Form.Item>
-          
+
           <Form.Item className={styles.customBtn}>
             <CustomButton type="primary" htmlType="submit">
               Reset Password
@@ -49,7 +50,7 @@ const ResetPassword = () => {
         </Form>
       </div>
     </div>
-      )
+  );
 };
 
 export default ResetPassword;

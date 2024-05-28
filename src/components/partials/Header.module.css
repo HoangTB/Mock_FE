@@ -76,8 +76,23 @@
   gap: 10px;
   align-items: center;
   border: 1px solid var(--primary-color);
-  padding: 8px;
+  padding: 7px;
   border-radius: 20px;
+}
+
+.select {
+  width: 110px !important;
+  height:20px;
+    outline: none !important;
+}
+
+.select > div {
+  border: none !important;
+  outline: none !important;
+}
+
+.ant-select-selector{
+  padding: 0 !important;
 }
 
 .headerRight > div > select {
@@ -138,6 +153,12 @@
   color: rgb(255, 255, 255);
   margin-bottom: 10px;
 }
+
+.select {
+ width: 80px;
+}
+
+
 
 @media screen and (max-width: 1196px) {
   .btnList {

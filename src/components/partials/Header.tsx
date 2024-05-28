@@ -1,5 +1,5 @@
 import { GlobalOutlined, UnorderedListOutlined } from '@ant-design/icons';
-import { Button, Drawer, DrawerProps, RadioChangeEvent } from 'antd';
+import { Button, Drawer, DrawerProps, RadioChangeEvent, Select } from 'antd';
 import React, { useState } from 'react';
 import styles from './Header.module.css';
 import { Link, useLocation } from 'react-router-dom';
@@ -25,6 +25,14 @@ function Header() {
   };
   const location = useLocation();
 
+  const handleLinkClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    event.preventDefault();
+    const branchSection = document.getElementById('branch');
+    if (branchSection) {
+      branchSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className={styles.headerRow}>
       <div className={styles.headerLeft}>
@@ -38,9 +46,9 @@ function Header() {
         <Link to="/" className={location.pathname === '/' ? styles.active : ''}>
           Home
         </Link>
-        <Link to="/branch" className={location.pathname === '/branch' ? styles.active : ''}>
+        <a href="#branch" className={location.pathname === '/branch' ? styles.active : ''} onClick={handleLinkClick}>
           Branch
-        </Link>
+        </a>
         <Link to="/contact" className={location.pathname === '/contact' ? styles.active : ''}>
           Contact
         </Link>
@@ -51,10 +59,21 @@ function Header() {
       <div className={styles.headerRight}>
         <div className={styles.language}>
           <GlobalOutlined />
-          <select name="" id="">
-            <option value="">English</option>
-            <option value="">Japanese</option>
-          </select>
+          <Select
+            className={styles.select}
+    labelInValue
+    defaultValue={{ value: 'English', label: 'English' }}
+    options={[
+      {
+        value: 'English',
+        label: 'English',
+      },
+      {
+        value: 'Japanese',
+        label: 'Japanese',
+      },
+    ]}
+  />
         </div>
         {/* login */}
         <div className={styles.headerRightLogin}>

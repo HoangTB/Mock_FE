@@ -70,8 +70,9 @@ const routes: RouteObject[] = [
       },
       {
         path: '/reset',
-        Component: ResetPassword
-      }, {
+        Component: ResetPassword,
+      },
+      {
         path: '/booking/completed',
         Component: Completed,
       },
