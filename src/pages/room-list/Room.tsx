@@ -55,7 +55,13 @@ const Room = ({ room }: { room: IRoom }) => {
             {price}
           </Title>
           {status === 'empty' ? (
-            <Button type="primary" size="middle">
+            <Button
+              type="primary"
+              size="middle"
+              style={{
+                background: 'var(--primary-color)',
+              }}
+            >
               <HomeOutlined />
               Book now
             </Button>

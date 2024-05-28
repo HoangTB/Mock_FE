@@ -5,9 +5,9 @@ import Footer from '../components/partials/Footer';
 import React from 'react';
 function DefaultLayout() {
   return (
-    <div className="default-layout-wrapper container-fluid">
+    <div className="">
       <Header />
-      <div className="row m-0 main-content">
+      <div className="">
         <Outlet />
       </div>
       <Footer />
