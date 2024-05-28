@@ -1,0 +1,83 @@
+.container {
+  padding: 0 8rem;
+}
+
+.container h2 {
+  font-size: 35px;
+}
+
+.citySection {
+  margin-bottom: 40px;
+}
+
+.branchList {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.branch {
+  flex: 0 1 calc(30% - 1rem);
+  margin: 1%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  text-align: center;
+}
+.branch:hover {
+  transform: scale(1.01);
+  transition: transform 0.5s;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+.image {
+  width: 100%;
+  object-fit: cover;
+  height: 260px;
+  border-radius: 8px 8px 0 0;
+}
+
+.branch p {
+  margin: 20px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+  .container {
+    padding: 0 4rem;
+  }
+
+  .branch {
+    flex: 0 1 calc(45% - 1rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 2rem;
+  }
+
+  .branch {
+    flex: 0 1 calc(100% - 1rem);
+    margin: 10px 0;
+  }
+
+  .branchList {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  .container h2 {
+    font-size: 28px;
+  }
+
+  .branch p {
+    font-size: 14px;
+    margin: 10px;
+  }
+}
