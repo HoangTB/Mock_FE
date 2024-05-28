@@ -12,9 +12,9 @@ const onFinishFailed: FormProps['onFinishFailed'] = (errorInfo) => {
 };
 const ResetPassword = () => {
     return (
-      <div className={styles[`login-page`]}>
+      <div className={styles[`layout`]}>
       <div className={styles[`form-content`]}>
-        <p className={styles.title}>Reset Password</p>
+        <p className={styles.title}>Reset Password</p><br></br>
         <Form
           name="reset"
           onFinish={onFinish}
@@ -23,7 +23,6 @@ const ResetPassword = () => {
             remember: true,
           }}
           layout="vertical"
-          className={styles[`register-form`]}
         >
           <Form.Item
             label="Password"

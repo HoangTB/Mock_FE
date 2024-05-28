@@ -43,9 +43,9 @@ const LoginPage = () => {
   };
 
   return (
-    <div className={styles['login-page']}>
+    <div className={styles['layout']}>
       <div className={styles['form-content']}>
-        <p className={styles.title}>Login</p>
+        <p className={styles.title}>Login</p><br></br>
         {error && <div className={styles.error}>{error}</div>}
         <Form
           name="login"
@@ -55,7 +55,6 @@ const LoginPage = () => {
             remember: true,
           }}
           layout="vertical"
-          className={styles['login-form']}
         >
           <Form.Item
             label="Email address"
