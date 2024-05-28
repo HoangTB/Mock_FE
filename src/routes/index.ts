@@ -3,10 +3,6 @@ import { createBrowserRouter, RouteObject } from 'react-router-dom';
 import PageNotFound from '../components/errors/PageNotFound';
 import DefaultLayout from '../layouts/DefaultLayout';
 import SidebarLayout from '../layouts/SidebarLayout';
-import HelloPage from '../pages/HelloPage/HelloPage';
-import ListPage from '../pages/HelloPage/ListPage';
-import LoginPage from '../pages/LoginPage';
-import RoomManagement from '../pages/RoomManagement/RoomManagement';
 import RoomList from '../pages/room-list/RoomList';
 import RegisterPage from '../pages/Register';
 import EditProfile from '../pages/edit-profile/EditProfile';
@@ -14,11 +10,12 @@ import Payment from '../pages/payment/Payment';
 import BookedHistory from '../pages/booked-history/BookedHistory';
 import Completed from '../pages/payment-completed/Completed';
 import VoteHistory from '../pages/vote-history/VoteHistory';
-import { DashBoardLayout } from '../layouts/AdminLayout/DashBoardLayout';
-import ServiceManagement from '../pages/ServiceManagement/ServiceManagement';
-import BranchManagement from '../pages/BranchManagement/BranchManagement';
-import BookingManagement from '../pages/BookingManagement/BookingManagement';
-import PaymentRevenueManagement from '../pages/PaymentRevenueManagement/PaymentRevenueManagement';
+import ServiceManagement from '../pages/admin/ServiceManagement/ServiceManagement';
+import BranchManagement from '../pages/admin/BranchManagement/BranchManagement';
+import RoomManagement from '../pages/admin/RoomManagement/RoomManagement';
+import BookingManagement from '../pages/admin/BookingManagement/BookingManagement';
+import PaymentRevenueManagement from '../pages/admin/PaymentRevenueManagement/PaymentRevenueManagement';
+import { AdminLayout } from '../layouts/adminLayout/AdminLayout';
 
 const routes: RouteObject[] = [
   {
@@ -26,14 +23,6 @@ const routes: RouteObject[] = [
     path: '/',
     Component: DefaultLayout,
     children: [
-      {
-        index: true,
-        Component: HelloPage,
-      },
-      {
-        path: '/list/',
-        Component: ListPage,
-      },
       {
         path: '/rooms/:id',
         Component: RoomList,
@@ -69,7 +58,7 @@ const routes: RouteObject[] = [
   },
   {
     path: '/admin',
-    Component: DashBoardLayout,
+    Component: AdminLayout,
     children: [
       {
         path: 'branch',
@@ -88,7 +77,7 @@ const routes: RouteObject[] = [
         Component: BookingManagement,
       },
       {
-        path: 'paymentRevenue',
+        path: 'payment',
         Component: PaymentRevenueManagement,
       },
     ],
