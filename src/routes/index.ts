@@ -11,6 +11,8 @@ import RegisterPage from '../pages/Register';
 import EditProfile from '../pages/edit-profile/EditProfile';
 import Payment from '../pages/payment/Payment';
 import Completed from '../pages/payment-completed/Completed';
+import BookingRoom from '../pages/Booking/indexBooking';
+
 
 const routes: RouteObject[] = [
   {
@@ -55,6 +57,10 @@ const routes: RouteObject[] = [
       {
         path: '/booking/completed',
         Component: Completed,
+      },
+      {
+        path: '/booking',
+        Component: BookingRoom,
       },
     ],
   },
