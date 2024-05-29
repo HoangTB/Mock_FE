@@ -1,21 +1,29 @@
 import { Router } from '@remix-run/router';
 import { createBrowserRouter, RouteObject } from 'react-router-dom';
-import PageNotFound from '../components/errors/PageNotFound';
-import DefaultLayout from '../layouts/DefaultLayout';
-import SidebarLayout from '../layouts/SidebarLayout';
-import HomePage from '../pages/Home';
-import RoomList from '../pages/room-list/RoomList';
-import RegisterPage from '../pages/Register';
-import EditProfile from '../pages/edit-profile/EditProfile';
-import Payment from '../pages/payment/Payment';
-import ForgotPassword from '../pages/Login/ForgotPassword';
-import ResetPassword from '../pages/Login/ResetPassword';
-import BookedHistory from '../pages/booked-history/BookedHistory';
-import Completed from '../pages/payment-completed/Completed';
-import VoteHistory from '../pages/vote-history/VoteHistory';
-import Contact from '../pages/contact/Contact';
-import AboutUs from '../pages/about-us/AboutUs';
-import LoginPage from '../pages/Login/LoginPage';
+import PageNotFound from '../components/errors';
+import DefaultLayout from '../layouts/default-layout';
+import SidebarLayout from '../layouts/sidebar-layout';
+import RoomList from '../pages/room-list/room-list';
+import EditProfile from '../pages/edit-profile';
+import Payment from '../pages/payment';
+import ForgotPassword from '../pages/login/forgot-password';
+import ResetPassword from '../pages/login/reset-password';
+import BookedHistory from '../pages/booked-history';
+import BookingRoom from '../pages/booking';
+
+import VoteHistory from '../pages/vote-history';
+import ServiceManagement from '../pages/admin/service-management';
+import BranchManagement from '../pages/admin/branch-management';
+import RoomManagement from '../pages/admin/room-management';
+import BookingManagement from '../pages/admin/booking-management';
+import PaymentRevenueManagement from '../pages/admin/payment-revenue-management';
+import { AdminLayout } from '../layouts/adminLayout/admin-layout';
+import Contact from '../pages/contact';
+import AboutUs from '../pages/about-us';
+import LoginPage from '../pages/login/login-page';
+import Completed from '../pages/payment-completed';
+import HomePage from '../pages/home';
+import RegisterPage from '../pages/register';
 
 const routes: RouteObject[] = [
   {
@@ -68,10 +76,15 @@ const routes: RouteObject[] = [
       },
       {
         path: '/reset',
-        Component: ResetPassword
-      }, {
+        Component: ResetPassword,
+      },
+      {
         path: '/booking/completed',
         Component: Completed,
+      },
+      {
+        path: '/booking',
+        Component: BookingRoom,
       },
       {
         path: '/contact',
@@ -80,6 +93,32 @@ const routes: RouteObject[] = [
       {
         path: 'about-us',
         Component: AboutUs,
+      },
+    ],
+  },
+  {
+    path: '/admin',
+    Component: AdminLayout,
+    children: [
+      {
+        path: 'branch',
+        Component: BranchManagement,
+      },
+      {
+        path: 'room',
+        Component: RoomManagement,
+      },
+      {
+        path: 'service',
+        Component: ServiceManagement,
+      },
+      {
+        path: 'booking',
+        Component: BookingManagement,
+      },
+      {
+        path: 'payment',
+        Component: PaymentRevenueManagement,
       },
     ],
   },

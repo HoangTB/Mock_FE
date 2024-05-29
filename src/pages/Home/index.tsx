@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import SlideImage from '../../components/carousel/carousel';
-import ListCity from '../../components/list-city/listCity';
+import ListCity from '../../components/list-city';
 import ListHotel from '../../components/list-hotel/listHotel';
 
 const cities = [
