@@ -1,7 +1,7 @@
 import { Col, Row } from 'antd';
 import React from 'react';
 import TableComponent from '../../../components/table/table-component';
-import { Item } from '../../../types/admin/item';
+import { Item } from '../../../types/admin/items';
 
 const BookingManagement = () => {
   const originData: Item[] = [];

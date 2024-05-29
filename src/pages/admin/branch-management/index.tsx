@@ -1,7 +1,7 @@
 import React from 'react';
 import TableComponent from '../../../components/table/table-component';
 import { Col, Row } from 'antd';
-import { Item } from '../../../types/admin/item';
+import { Item } from '../../../types/admin/items';
 
 const BranchManagement = () => {
   const originData: Item[] = [];

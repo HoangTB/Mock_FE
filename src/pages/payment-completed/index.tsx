@@ -4,7 +4,7 @@ import StepByStep from '../../components/step-by-step';
 import { Col, Flex, Row } from 'antd';
 import { CheckCircleOutlined } from '@ant-design/icons';
 import Title from 'antd/es/typography/Title';
-import styles from './completed.module.css';
+import styles from './style.module.css';
 const Completed = () => {
   return (
     <>

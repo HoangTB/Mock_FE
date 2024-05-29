@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import type { TableProps } from 'antd';
 import { Form, Input, InputNumber, Popconfirm, Table, Typography } from 'antd';
-import { Item } from '../../types/admin/item';
+import { Item } from '../../types/admin/items';
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
