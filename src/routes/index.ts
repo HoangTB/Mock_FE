@@ -1,29 +1,29 @@
 import { Router } from '@remix-run/router';
 import { createBrowserRouter, RouteObject } from 'react-router-dom';
-import PageNotFound from '../components/errors/PageNotFound';
-import DefaultLayout from '../layouts/DefaultLayout';
-import SidebarLayout from '../layouts/SidebarLayout';
-import RoomList from '../pages/room-list/RoomList';
-import RegisterPage from '../pages/Register';
-import EditProfile from '../pages/edit-profile/EditProfile';
-import Payment from '../pages/payment/Payment';
-import ForgotPassword from '../pages/Login/ForgotPassword';
-import ResetPassword from '../pages/Login/ResetPassword';
-import BookedHistory from '../pages/booked-history/BookedHistory';
-import Completed from '../pages/payment-completed/Completed';
-import BookingRoom from '../pages/Booking/indexBooking';
+import PageNotFound from '../components/errors';
+import DefaultLayout from '../layouts/default-layout';
+import SidebarLayout from '../layouts/sidebar-layout';
+import RoomList from '../pages/room-list/room-list';
+import RegisterPage from '../pages/register';
+import EditProfile from '../pages/edit-profile';
+import Payment from '../pages/payment';
+import ForgotPassword from '../pages/login/forgot-password';
+import ResetPassword from '../pages/login/reset-password';
+import BookedHistory from '../pages/booked-history';
+import BookingRoom from '../pages/booking';
 
-import VoteHistory from '../pages/vote-history/VoteHistory';
-import ServiceManagement from '../pages/admin/ServiceManagement/ServiceManagement';
-import BranchManagement from '../pages/admin/BranchManagement/BranchManagement';
-import RoomManagement from '../pages/admin/RoomManagement/RoomManagement';
-import BookingManagement from '../pages/admin/BookingManagement/BookingManagement';
-import PaymentRevenueManagement from '../pages/admin/PaymentRevenueManagement/PaymentRevenueManagement';
-import { AdminLayout } from '../layouts/adminLayout/AdminLayout';
-import Contact from '../pages/contact/Contact';
-import AboutUs from '../pages/about-us/AboutUs';
-import LoginPage from '../pages/Login/LoginPage';
-import HomePage from '../pages/Home';
+import VoteHistory from '../pages/vote-history';
+import ServiceManagement from '../pages/admin/service-management';
+import BranchManagement from '../pages/admin/branch-management';
+import RoomManagement from '../pages/admin/room-management';
+import BookingManagement from '../pages/admin/booking-management';
+import PaymentRevenueManagement from '../pages/admin/payment-revenue-management';
+import { AdminLayout } from '../layouts/adminLayout/admin-layout';
+import Contact from '../pages/contact';
+import AboutUs from '../pages/about-us';
+import LoginPage from '../pages/login/login-page';
+import HomePage from '../pages/home';
+import Completed from '../pages/payment-completed';
 
 const routes: RouteObject[] = [
   {
