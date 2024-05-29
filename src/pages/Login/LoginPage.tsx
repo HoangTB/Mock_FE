@@ -31,7 +31,7 @@ const LoginPage = () => {
       localStorage.setItem('roleList', JSON.stringify(roleList));
 
       // Redirect to a protected route, e.g., dashboard
-      navigate('/dashboard');
+      navigate('/home');
     } catch (error) {
       setError('Login failed. Please check your email and password.');
       setLoading(false);
