@@ -1,5 +1,4 @@
 import React from 'react';
-import { Line } from '@ant-design/charts';
 
 const Chart: React.FC = () => {
   // const data = [
