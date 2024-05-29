@@ -2,19 +2,25 @@
   height: 600px;
   width: 100%;
   margin-top: 30px;
+  object-fit: fill;
 }
 
+.roomElement {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
 .price {
-  padding-right: 30px;
   font-size: 30px;
 }
-
 .title {
   font-size: 25px;
 }
 
 .address {
-  margin: 0 50px;
+  margin: 40px 0;
 }
 
 .imageroom {
@@ -22,24 +28,24 @@
   height: 70%;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  object-fit: cover;
 }
 
 .border {
-  margin: 50px 100px 0px 100px;
+  width: 100%;
+  margin: 40px 0;
 }
 
 .border2 {
-  width: 500px;
-  text-align: center;
-  margin-bottom: 80px;
+  width: 200px;
+  margin: 40px auto;
 }
 
 .border3 {
-  width: 1000px;
-  text-align: center;
-  margin-bottom: 30px;
-  margin-top: 30px;
+  width: 100%;
+  margin: 40px 0;
+}
+.rowLeft {
+  justify-content: space-between;
 }
 
 .flex {
@@ -59,20 +65,14 @@
 
 .roomBorder1 {
   border: 1px solid var(--hr-color);
-  padding: 0 0 10px 0 !important;
-  height: 600px;
   border-radius: 2%;
 }
 
 .roomBorder2 {
   border: 1px solid var(--hr-color);
-
   border-radius: 2%;
-  padding: 5% 5% 0 4% !important;
-  height: 600px;
+  padding: 40px !important;
   border-radius: 2%;
-  padding: 5% 0 0 4% !important;
-  height: 600px;
 }
 
 .labelStyle {
@@ -80,51 +80,16 @@
 }
 
 .inputStyle {
-  font-size: 17px;
-  margin-left: 10px;
-
-  height: 40px;
   border: none;
   border-radius: 0;
   border-bottom: 1px solid var(--hr-color) !important;
 }
 
 .inputStyleSelect > div {
-  font-size: 17px !important;
-  margin-left: 10px !important;
-
-  height: 40px !important;
-  border-radius: 0 !important;
   border: none !important;
   border-bottom: 1px solid var(--hr-color) !important;
-
-  font-size: 17px;
-  margin-left: 10px;
-  width: 80%;
-  height: 40px;
-  border: none;
-  border-radius: 0;
-  border-bottom-style: solid;
+  border-radius: 0 !important;
 }
-
-.inputStyleSelect {
-  font-size: 17px;
-  margin-left: 10px;
-  width: 80% !important;
-  height: 40px;
-  border: none !important;
-  border-radius: 0;
-  border-bottom-style: solid !important;
-}
-
-/* .inputStyleSelect .ant-select-selector {
-    border: none !important;
-    background: #ffffff !important;
-  }
-
-.inputStyleSelect.ant-select-selector {
-    border: none !important;
-} */
 
 .inputStyle:focus {
   box-shadow: none;
@@ -134,63 +99,27 @@
   font-size: 35px;
 }
 
-/* For screen size less than 1100px */
-@media screen and (max-width: 1100px) {
+.btnCheckout {
+  width: 200px;
+  background-color: var(--primary-color);
+  color: white;
+  border: 1px solid var(--primary-color);
 }
 
-@media (min-width: 768px) and (max-width: 1512px) {
-  .roomBorder1 {
-    height: auto !important;
+@media (max-width: 754px) {
+  .rowLeft {
+    gap: 30px;
   }
-
-  .roomBorder2 {
-    height: auto !important;
-    padding-bottom: 3% !important;
+  .title {
+    display: none !important;
   }
 }
 
-@media screen and (max-width: 767px) {
-  .price {
-    padding-top: 30px;
+@media (max-width: 490px) {
+  .rowLeft {
+    gap: 30px;
   }
-
-  .btnSubmit {
-    text-align: center;
-    margin-top: 30px;
-  }
-
-  .border2 {
-    width: 100px;
-    text-align: center;
-    margin-bottom: 80px;
-  }
-
-  .roomBorder1 {
-    height: auto !important;
-  }
-
-  .roomBorder2 {
-    border: 1px solid var(--hr-color);
-    height: auto !important;
-    border-radius: 2%;
-    /* padding: 20px 0 0 30px !important; */
-  }
-
-  .inputStyle {
-    width: 90%;
-  }
-
-  .inputStyleSelect {
-    width: 90% !important;
-  }
-
-  .flex {
-    text-align: center;
-    line-height: 1.5;
-  }
-
-  .flexmiddle {
-    text-align: center;
-    line-height: 1.5;
+  .roomElement {
+    display: none;
   }
 }
