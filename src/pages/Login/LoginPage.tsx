@@ -1,7 +1,7 @@
-import { Button, Checkbox, Form, FormProps, Input } from "antd";
-import styles from "./LoginForm.module.css";
+import { Button, Checkbox, Form, FormProps, Input } from 'antd';
+import styles from './LoginForm.module.css';
 import React, { useState } from 'react';
-import CustomButton from "../../components/buttons/submit-button/custom-button";
+import CustomButton from '../../components/buttons/submit-button/custom-button';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -45,7 +45,8 @@ const LoginPage = () => {
   return (
     <div className={styles['layout']}>
       <div className={styles['form-content']}>
-        <p className={styles.title}>Login</p><br></br>
+        <p className={styles.title}>Login</p>
+        <br></br>
         {error && <div className={styles.error}>{error}</div>}
         <Form
           name="login"
@@ -72,20 +73,22 @@ const LoginPage = () => {
             rules={[{ required: true, message: 'Please input your Password!' }]}
           >
             <Input.Password className={styles['input-form']} />
-          </Form.Item >
+          </Form.Item>
           <Form.Item className={styles.customText}>
             <a href="./forgot">Forgot your password</a>
           </Form.Item>
           <Form.Item className={styles.customBtn}>
-            <CustomButton type="primary" htmlType="submit" >
+            <CustomButton type="primary" htmlType="submit">
               Log in
             </CustomButton>
           </Form.Item>
         </Form>
-        <p>Don’t have an account? <a href="./register">Sign up</a></p>
+        <p>
+          Don’t have an account? <a href="./register">Sign up</a>
+        </p>
       </div>
     </div>
   );
-}
+};
 
 export default LoginPage;

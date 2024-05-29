@@ -21,7 +21,7 @@ const ListHotel = ({ data }: ListHotelProps) => {
   }, {});
 
   return (
-    <div className={style.container}>
+    <div className={style.container} id="branch">
       {Object.keys(locations).map((city) => (
         <div key={city} className={style.citySection}>
           <h2>{city}</h2>

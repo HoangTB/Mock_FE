@@ -1,0 +1,18 @@
+.dashboard-navbar {
+  box-shadow: none;
+  background-color: var(--primary-color);
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 64px;
+}
+
+.navbar-content {
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+.navbar-space {
+  flex-grow: 1;
+}

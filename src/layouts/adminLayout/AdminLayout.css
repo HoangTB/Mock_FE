@@ -1,0 +1,28 @@
+.layout {
+  min-height: 100vh;
+}
+
+.header {
+  background-color: white;
+  padding: 0;
+}
+
+.sider {
+  background-color: white;
+}
+
+.logo {
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo img {
+  width: 150px;
+  height: 150px;
+}
+
+:global(.ant-layout-sider) {
+  background-color: white;
+}

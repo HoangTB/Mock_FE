@@ -1,0 +1,43 @@
+/* Root container for NavSection */
+.nav-section {
+  width: 100%;
+}
+
+/* List item styles */
+.list-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.list-item-icon {
+  align-items: center;
+  justify-content: center;
+}
+
+.active-root {
+  width: 100vw;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  row-gap: 5px;
+}
+
+.active-sub {
+  font-weight: 500;
+  color: black;
+  background-color: red !important;
+}
+
+.menu-item-text {
+  color: black;
+}
+
+.ant-menu-item:hover {
+  border-radius: 0 !important;
+}
+
+.ant-menu-item-selected {
+  background-color: #36bffa !important;
+  border-radius: 0 !important;
+}
