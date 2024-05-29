@@ -82,8 +82,8 @@
 
 .select {
   width: 110px !important;
-  height:20px;
-    outline: none !important;
+  height: 20px;
+  outline: none !important;
 }
 
 .select > div {
@@ -91,7 +91,7 @@
   outline: none !important;
 }
 
-.ant-select-selector{
+.ant-select-selector {
   padding: 0 !important;
 }
 
@@ -155,10 +155,8 @@
 }
 
 .select {
- width: 80px;
+  width: 80px;
 }
-
-
 
 @media screen and (max-width: 1196px) {
   .btnList {

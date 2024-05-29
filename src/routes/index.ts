@@ -4,7 +4,6 @@ import PageNotFound from '../components/errors';
 import DefaultLayout from '../layouts/default-layout';
 import SidebarLayout from '../layouts/sidebar-layout';
 import RoomList from '../pages/room-list/room-list';
-import RegisterPage from '../pages/register';
 import EditProfile from '../pages/edit-profile';
 import Payment from '../pages/payment';
 import ForgotPassword from '../pages/login/forgot-password';
@@ -22,8 +21,9 @@ import { AdminLayout } from '../layouts/adminLayout/admin-layout';
 import Contact from '../pages/contact';
 import AboutUs from '../pages/about-us';
 import LoginPage from '../pages/login/login-page';
-import HomePage from '../pages/home';
 import Completed from '../pages/payment-completed';
+import HomePage from '../pages/home';
+import RegisterPage from '../pages/register';
 
 const routes: RouteObject[] = [
   {

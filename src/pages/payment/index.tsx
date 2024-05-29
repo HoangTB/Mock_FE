@@ -2,7 +2,7 @@ import { Checkbox, Radio, RadioChangeEvent, Typography } from 'antd';
 import React, { useState } from 'react';
 import Container from '../../components/container';
 import StepByStep from '../../components/step-by-step';
-import styles from './payment.module.css';
+import styles from './payments.module.css';
 const { Paragraph } = Typography;
 
 const UserInfoForm = () => {
