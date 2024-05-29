@@ -2,10 +2,9 @@ import React from 'react';
 import styles from './style.module.css';
 import { Flex, Typography, Form, Select, Input, Row, Col, GetProp, Checkbox, Button } from 'antd';
 
-
-import {CarOutlined, DesktopOutlined, UserOutlined } from '@ant-design/icons';
-import StepByStep from "../../components/step-by-step/StepByStep";
-import Container from "../../components/container/Container";
+import { CarOutlined, DesktopOutlined, UserOutlined } from '@ant-design/icons';
+import Container from '../../components/container';
+import StepByStep from '../../components/step-by-step';
 const { Title } = Typography;
 
 const onChange: GetProp<typeof Checkbox.Group, 'onChange'> = (checkedValues) => {
@@ -22,12 +21,14 @@ const options1 = [
 ];
 
 const BookingRoom = () => {
-    const [form] = Form.useForm();
-       
-        
+  const [form] = Form.useForm();
 
   return (
-    <> <Container><StepByStep/></Container>
+    <>
+      {' '}
+      <Container>
+        <StepByStep />
+      </Container>
       <div>
         <img
           src="https://cdn.britannica.com/96/115096-050-5AFDAF5D/Bellagio-Hotel-Casino-Las-Vegas.jpg"
@@ -67,50 +68,13 @@ const BookingRoom = () => {
               justifyContent: 'space-between',
             }}
           >
+            <Col span={13} md={11} sm={24} xs={24} className={styles.roomBorder1}>
+              <img
+                className={styles.imageroom}
+                alt="example"
+                src="https://www.claridges.co.uk/siteassets/rooms/2023-claridges-rooms-and-suites-balcony-room-1920_720.jpg"
+              />
 
-
-                    <Col span={13} md={11} sm={24} xs={24} className={styles.roomBorder1}>
-
-                        <img className={styles.imageroom} alt="example" src="https://www.claridges.co.uk/siteassets/rooms/2023-claridges-rooms-and-suites-balcony-room-1920_720.jpg" />
-
-                        <Flex justify="space-between" align="center">
-                            <div style={{ padding: 10 }}>
-                                <b className={styles.title}>Room vip</b>
-                                <ul style={{ listStyle: "disc", marginLeft: 35 }}>
-                                    <li key="1">Guong tran</li>
-                                    <li key="2">Ghe tinh yeu</li>
-                                    <li key="3">Cua so</li>
-                                </ul>
-                            </div>
-                            <b className={styles.price}>24$</b>
-                        </Flex>
-
-
-                    </Col>
-                    <Col span={11} md={12} sm={24} xs={24} className={styles.roomBorder2}
-                    >
-                        <Form.Item name="fullName" label={<span className={styles.labelStyle}>FullName</span>} labelCol={{ span: 24 }} rules={[{ required: true, message: 'Please input your full name!!' }]}>
-                            <Input className={styles.inputStyle} />
-                        </Form.Item>
-                        <Form.Item name="cccd" label={<span className={styles.labelStyle}>CCCD</span>} labelCol={{ span: 24 }} rules={[{ required: true }]}>
-                            <Input className={styles.inputStyle} />
-                        </Form.Item>
-                        <Form.Item name="email" label={<span className={styles.labelStyle}>Email</span>} labelCol={{ span: 24 }} rules={[{ required: true }]}>
-                            <Input className={styles.inputStyle} />
-                        </Form.Item>
-                        <Form.Item name="phone" label={<span className={styles.labelStyle}>Phone</span>} labelCol={{ span: 24 }} rules={[{ required: true }]}>
-                            <Input className={styles.inputStyle} />
-                        </Form.Item>
-                        <Form.Item name="gender" label={<span className={styles.labelStyle}>Gender</span>} labelCol={{ span: 24 }} rules={[{ required: true }]}>
-                            <Select className={styles.inputStyleSelect}>
-                                <Select.Option value="male">Male</Select.Option>
-                                <Select.Option value="female">Female</Select.Option>
-                                <Select.Option value="other">Other</Select.Option>
-                            </Select>
-                        </Form.Item>
-                    </Col>
-                    <hr className={styles.border3}></hr>
-                </Row>
               <Flex justify="space-between" align="center">
                 <div style={{ padding: 10 }}>
                   <b className={styles.title}>Room vip</b>
@@ -122,7 +86,7 @@ const BookingRoom = () => {
                 </div>
                 <b className={styles.price}>24$</b>
               </Flex>
-            
+            </Col>
             <Col span={11} md={12} sm={24} xs={24} className={styles.roomBorder2}>
               <Form.Item
                 name="fullName"
@@ -162,11 +126,69 @@ const BookingRoom = () => {
                 labelCol={{ span: 24 }}
                 rules={[{ required: true }]}
               >
-               
+                <Select className={styles.inputStyleSelect}>
+                  <Select.Option value="male">Male</Select.Option>
+                  <Select.Option value="female">Female</Select.Option>
+                  <Select.Option value="other">Other</Select.Option>
+                </Select>
               </Form.Item>
             </Col>
             <hr className={styles.border3}></hr>
-          
+          </Row>
+          <Flex justify="space-between" align="center">
+            <div style={{ padding: 10 }}>
+              <b className={styles.title}>Room vip</b>
+              <ul style={{ listStyle: 'disc', marginLeft: 35 }}>
+                <li key="1">Guong tran</li>
+                <li key="2">Ghe tinh yeu</li>
+                <li key="3">Cua so</li>
+              </ul>
+            </div>
+            <b className={styles.price}>24$</b>
+          </Flex>
+
+          <Col span={11} md={12} sm={24} xs={24} className={styles.roomBorder2}>
+            <Form.Item
+              name="fullName"
+              label={<span className={styles.labelStyle}>FullName</span>}
+              labelCol={{ span: 24 }}
+              rules={[{ required: true, message: 'Please input your full name!!' }]}
+            >
+              <Input className={styles.inputStyle} />
+            </Form.Item>
+            <Form.Item
+              name="cccd"
+              label={<span className={styles.labelStyle}>CCCD</span>}
+              labelCol={{ span: 24 }}
+              rules={[{ required: true }]}
+            >
+              <Input className={styles.inputStyle} />
+            </Form.Item>
+            <Form.Item
+              name="email"
+              label={<span className={styles.labelStyle}>Email</span>}
+              labelCol={{ span: 24 }}
+              rules={[{ required: true }]}
+            >
+              <Input className={styles.inputStyle} />
+            </Form.Item>
+            <Form.Item
+              name="phone"
+              label={<span className={styles.labelStyle}>Phone</span>}
+              labelCol={{ span: 24 }}
+              rules={[{ required: true }]}
+            >
+              <Input className={styles.inputStyle} />
+            </Form.Item>
+            <Form.Item
+              name="gender"
+              label={<span className={styles.labelStyle}>Gender</span>}
+              labelCol={{ span: 24 }}
+              rules={[{ required: true }]}
+            ></Form.Item>
+          </Col>
+          <hr className={styles.border3}></hr>
+
           <Row>
             <Col span={12} md={12} sm={24} xs={24}>
               <Checkbox.Group style={{ width: '100%' }} onChange={onChange}>
@@ -199,5 +221,5 @@ const BookingRoom = () => {
       </div>
     </>
   );
-}
+};
 export default BookingRoom;
