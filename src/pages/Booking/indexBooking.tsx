@@ -1,9 +1,11 @@
 import React from "react"
 import styles from "./Booking.module.css";
 import { Flex, Typography, Form, Select, Input, Row, Col, GetProp, Checkbox, Button } from 'antd';
-import styled from 'styled-components';
+
 
 import { ArrowLeftOutlined, ArrowRightOutlined, BorderBottomOutlined, CarOutlined, DesktopOutlined, UserOutlined } from '@ant-design/icons';
+import StepByStep from "../../components/step-by-step/StepByStep";
+import Container from "../../components/container/Container";
 const { Title } = Typography;
 
 const onChange: GetProp<typeof Checkbox.Group, 'onChange'> = (checkedValues) => {
@@ -21,15 +23,11 @@ const options1 = [
 
 ];
 
-const CustomSelect = styled(Select)`
-  .ant-select-selector {
-    border: none !important;
-    background: #ffffff !important;
-  }
-`;
 const BookingRoom = () => {
     const [form] = Form.useForm();
     return (<>
+        <Container><StepByStep/></Container>
+        
         <div>
             <img src="https://cdn.britannica.com/96/115096-050-5AFDAF5D/Bellagio-Hotel-Casino-Las-Vegas.jpg" className={styles.banner}></img>
         </div>
@@ -102,11 +100,11 @@ const BookingRoom = () => {
                             <Input className={styles.inputStyle} />
                         </Form.Item>
                         <Form.Item name="gender" label={<span className={styles.labelStyle}>Gender</span>} labelCol={{ span: 24 }} rules={[{ required: true }]}>
-                            <CustomSelect className={styles.inputStyleSelect}>
+                            <Select className={styles.inputStyleSelect}>
                                 <Select.Option value="male">Male</Select.Option>
                                 <Select.Option value="female">Female</Select.Option>
                                 <Select.Option value="other">Other</Select.Option>
-                            </CustomSelect>
+                            </Select>
                         </Form.Item>
                     </Col>
                     <hr className={styles.border3}></hr>

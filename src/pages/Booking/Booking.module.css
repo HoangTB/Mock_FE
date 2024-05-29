@@ -1,6 +1,7 @@
 .banner {
     height: 600px;
     width: 100%;
+    margin-top: 30px;
 }
 
 .price {
@@ -70,7 +71,7 @@
     border: 1px solid var(--hr-color);
 
     border-radius: 2%;
-    padding: 5% 0 0 4% !important;
+    padding: 5% 5% 0 4% !important;
     height: 600px;
 }
 
@@ -81,26 +82,32 @@
 .inputStyle {
     font-size: 17px;
     margin-left: 10px;
-    width: 80%;
+
     height: 40px;
     border: none;
     border-radius: 0;
-    border-bottom-style: solid;
+    border-bottom: 1px solid var(--hr-color) !important;
 }
 
-.inputStyleSelect {
-    font-size: 17px;
-    margin-left: 10px;
-    width: 80% !important;
-    height: 40px;
+.inputStyleSelect>div {
+    font-size: 17px !important;
+    margin-left: 10px !important;
+    
+    height: 40px !important;
+    border-radius: 0 !important;
     border: none !important;
-    border-radius: 0;
-    border-bottom-style: solid !important;
+    border-bottom: 1px solid var(--hr-color) !important;
+
 }
+
+/* .inputStyleSelect .ant-select-selector {
+    border: none !important;
+    background: #ffffff !important;
+  }
 
 .inputStyleSelect.ant-select-selector {
     border: none !important;
-}
+} */
 
 .inputStyle:focus {
     box-shadow: none;
