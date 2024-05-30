@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IUser } from '../../types/user';
+import { ILogin, IUser } from '../../types/user';
 
 const domain = process.env.REACT_APP_API_URL;
 
@@ -16,9 +16,9 @@ export const register = async (user: IUser) => {
   }
 };
 
-export const login = async (email: string, password: string) => {
+export const login = async (data: ILogin) => {
   try {
-    const response = await axios.post(`${domain}/auth/login`, { email, password });
+    const response = await axios.post(`${domain}/auth/login`, data );
     console.log(response.data);
     return response.data;
   } catch (error) {

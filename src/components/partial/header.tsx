@@ -1,12 +1,28 @@
 import { GlobalOutlined, UnorderedListOutlined } from '@ant-design/icons';
-import { Button, Drawer, DrawerProps, RadioChangeEvent, Select } from 'antd';
+import { Button, Drawer, DrawerProps, Dropdown, MenuProps, RadioChangeEvent, Select } from 'antd';
 import React, { useState } from 'react';
 import styles from './header.module.css';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { AppDispatch, RootState } from '../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearToken } from '../../redux/authSlide';
+
 function Header() {
   const [open, setOpen] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
   const [placement, setPlacement] = useState<DrawerProps['placement']>('right');
+  const dispatch: AppDispatch = useDispatch();
+  const { token, user } = useSelector((state: RootState) => state.auth);
+  const navigate = useNavigate();
+
+  console.log(user);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('roleList');
+    dispatch(clearToken());
+    navigate('/login');
+  };
 
   const showDrawer = () => {
     setOpen(true);
@@ -32,6 +48,20 @@ function Header() {
       branchSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
+
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: <Link to="/edit-profile">Profile</Link>,
+    },
+    {
+      key: '2',
+      label: (
+        // logout
+        <p onClick={handleLogout}>Logout</p>
+      ),
+    },
+  ];
 
   return (
     <div className={styles.headerRow}>
@@ -75,15 +105,21 @@ function Header() {
             ]}
           />
         </div>
-        {/* login */}
-        <div className={styles.headerRightLogin}>
-          <Link to="/login">Login</Link>
-        </div>
-        {/* user */}
-        <div className={styles.headerRightUser}>
-          <img src="https://pbs.twimg.com/profile_images/1744393322418802688/-ZF7VwbA_400x400.jpg" alt="..." />{' '}
-          <p>LamNT80</p>
-        </div>
+        {token ? (
+          <Dropdown menu={{ items }} placement="bottom">
+            <div className={styles.headerRightUser}>
+              <img
+                src={user?.avatar || 'https://cellphones.com.vn/sforum/wp-content/uploads/2023/10/avatar-trang-2.jpg'}
+                alt="User Avatar"
+              />
+              <p>{user?.username}</p>
+            </div>
+          </Dropdown>
+        ) : (
+          <div className={styles.headerRightLogin}>
+            <Link to="/login">Login</Link>
+          </div>
+        )}
 
         {/* list menu header */}
         <Button onClick={showDrawer} className={styles.btnList}>
