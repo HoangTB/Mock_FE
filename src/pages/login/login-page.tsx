@@ -15,32 +15,51 @@ interface LoginFormValues {
 const LoginPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [form] = Form.useForm();
 
   const onFinish = async (values: LoginFormValues) => {
     setLoading(true);
-    setError('');
-      setLoading(true);
-      try {
-        const token = await login(values as ILogin)
-        if(token) {
-          localStorage.setItem('token', token.accessToken);
-          localStorage.setItem('roleList', JSON.stringify(token.roleList));
 
+    try {
+      const token = await login(values as ILogin);
+      if (token) {
+        localStorage.setItem('token', token.accessToken);
+        localStorage.setItem('roleList', JSON.stringify(token.roleList));
+
+        if (JSON.stringify(token.roleList).includes("ROLE_ADMIN")) {
+          navigate("/admin");
+        } else {
+          navigate("/");
         }
-
-        if(JSON.stringify(token.roleList).includes("ROLE_ADMIN")){
-          navigate("/admin")
-        }else{
-          navigate("/")
-        }
-      } catch (error) {
-        setError('Login failed. Please check your email and password.');
-        // localStorage.setItem('roleList', JSON.stringify(roleList));
-      } finally {
-        setLoading(false);
-
       }
+    } catch (error: any) {
+      const errorMessage = error.message;
+
+      if (errorMessage === 'Email not found') {
+        form.setFields([
+          {
+            name: 'email',
+            errors: [errorMessage],
+          },
+        ]);
+      } else if (errorMessage === 'Invalid password') {
+        form.setFields([
+          {
+            name: 'password',
+            errors: [errorMessage],
+          },
+        ]);
+      } else {
+        form.setFields([
+          {
+            name: 'email',
+            errors: [errorMessage],
+          },
+        ]);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -51,15 +70,13 @@ const LoginPage = () => {
     <div className={styles['layout']}>
       <div className={styles['form-content']}>
         <p className={styles.title}>Login</p>
-        <br></br>
-        {error && <div className={styles.error}>{error}</div>}
+        <br />
         <Form
+          form={form}
           name="login"
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
-          initialValues={{
-            remember: true,
-          }}
+          initialValues={{ remember: true }}
           layout="vertical"
         >
           <Form.Item
@@ -84,7 +101,7 @@ const LoginPage = () => {
           </Form.Item>
           <Form.Item className={styles.customBtn}>
             <CustomButton type="primary" htmlType="submit">
-              Log in
+              {loading ? 'Logging in...' : 'Log in'}
             </CustomButton>
           </Form.Item>
         </Form>
@@ -95,5 +112,6 @@ const LoginPage = () => {
     </div>
   );
 };
+
 
 export default LoginPage;

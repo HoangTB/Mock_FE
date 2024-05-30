@@ -18,10 +18,19 @@ export const register = async (user: IUser) => {
 
 export const login = async (data: ILogin) => {
   try {
-    const response = await axios.post(`${domain}/auth/login`, data );
-    console.log(response.data);
-    return response.data;
+    const response = await axios.post(`${domain}/auth/login`, data);
+    return response.data; 
   } catch (error) {
-    console.log(error);
+    if ((error as any).response && (error as any).response.data) {
+      if ((error as any).response.data.message === 'Invalid password') {
+        throw new Error('Invalid password');
+      }
+
+      if ((error as any).response.data.message === 'Email not found') {
+        throw new Error('Email not found');
+      }
+    } else {
+      throw new Error('An unknown error occurred.');
+    }
   }
 };
