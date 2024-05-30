@@ -145,7 +145,7 @@ function RegisterPage() {
           </Form.Item>
 
           <Form.Item className={styles.customBtn}>
-            <CustomButton type="primary" htmlType="submit">
+            <CustomButton type="primary" htmlType="submit" loading={loading}>
               {loading ? 'Registering...' : 'Register'}
             </CustomButton>
           </Form.Item>

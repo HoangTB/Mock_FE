@@ -89,8 +89,8 @@ const LoginPage = () => {
             <a href="./forgot">Forgot your password</a>
           </Form.Item>
           <Form.Item className={styles.customBtn}>
-            <CustomButton type="primary" htmlType="submit">
-              Log in
+            <CustomButton type="primary" htmlType="submit" loading={loading}>
+              {loading ? 'Logging in...' : 'Log in'}
             </CustomButton>
           </Form.Item>
         </Form>
