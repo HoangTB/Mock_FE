@@ -75,8 +75,17 @@
   border-radius: 2%;
 }
 
+.roomBorder3{
+  margin-top: 20px;
+}
+
 .labelStyle {
   font-size: 17px;
+}
+
+.labelStyle1{
+  font-size: 17px;
+  margin-top: 10px;
 }
 
 .inputStyle {
@@ -101,9 +110,24 @@
 
 .btnCheckout {
   width: 200px;
+  padding: 10px;
+  font-size: 16px;
   background-color: var(--primary-color);
   color: white;
   border: 1px solid var(--primary-color);
+  border-radius: 10px;
+}
+
+.btnCheckout:hover {
+  cursor: pointer;
+  background-color: rgb(21, 190, 190);
+}
+
+.dateBook{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items:flex-start;
 }
 
 @media (max-width: 754px) {

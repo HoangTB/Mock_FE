@@ -1,6 +1,5 @@
 import { Router } from '@remix-run/router';
 import { createBrowserRouter, RouteObject } from 'react-router-dom';
-import PageNotFound from '../components/errors';
 import DefaultLayout from '../layouts/default-layout';
 import SidebarLayout from '../layouts/sidebar-layout';
 import RoomList from '../pages/room-list/room-list';
@@ -26,6 +25,7 @@ import HomePage from '../pages/home';
 import RegisterPage from '../pages/register';
 import withAdminAuth from '../utils/hoc/auth-admin';
 import withUserAuth from '../utils/hoc/auth-user';
+import PageNotFound from '../components/errors';
 
 const routes: RouteObject[] = [
   {
