@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Row, Col, DatePicker, Select, Typography, Button } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
+import moment from 'moment';
 
 const { Title } = Typography;
 
@@ -9,6 +10,12 @@ const handleChange = (value: string) => {
 };
 
 const RoomSearch: React.FC = () => {
+  const [startDate, setStartDate] = useState<Date>(new Date());
+
+  const disabledDate = (current: any) => {
+    return current && current <= moment().endOf('day');
+  };
+
   return (
     <div style={{ marginTop: 20, border: '1px solid #ccc', padding: 20, borderRadius: 10 }}>
       <Row gutter={[16, 16]} style={{ alignItems: 'flex-end' }}>
@@ -17,7 +24,7 @@ const RoomSearch: React.FC = () => {
             <Title level={5} style={{ padding: 0, margin: 0 }}>
               From
             </Title>
-            <DatePicker style={{ width: '100%' }} />
+            <DatePicker style={{ width: '100%' }} disabledDate={disabledDate} />
           </div>
         </Col>
         <Col xs={24} sm={12} md={5}>
@@ -25,7 +32,7 @@ const RoomSearch: React.FC = () => {
             <Title level={5} style={{ padding: 0, margin: 0 }}>
               To
             </Title>
-            <DatePicker style={{ width: '100%' }} />
+            <DatePicker style={{ width: '100%' }} showTime={{ showHour: true }} />
           </div>
         </Col>
         <Col xs={24} sm={12} md={5}>

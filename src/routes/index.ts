@@ -21,9 +21,9 @@ import Contact from '../pages/contact';
 import AboutUs from '../pages/about-us';
 import LoginPage from '../pages/login/login-page';
 import Completed from '../pages/payment-completed';
-import HomePage from '../pages/home';
-import RegisterPage from '../pages/register';
+import RegisterPage from '../pages/Register';
 import PageNotFound from '../components/errors';
+import HomePage from '../pages/Home';
 
 const routes: RouteObject[] = [
   {
