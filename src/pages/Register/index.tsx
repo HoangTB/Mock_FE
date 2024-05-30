@@ -1,21 +1,56 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './register.module.css';
-import { Button, Checkbox, Form, FormProps, Input } from 'antd';
+import { Form, FormProps, Input, Checkbox, message, notification } from 'antd';
 import CustomButton from '../../components/buttons/submit-button/custom-button';
-
-const onFinish: FormProps['onFinish'] = (values) => {
-  console.log('Success:', values);
-};
-
-const onFinishFailed: FormProps['onFinishFailed'] = (errorInfo) => {
-  console.log('Failed:', errorInfo);
-};
+import { register } from '../../api/user/user-api';
+import { IUser } from '../../types/user';
+type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
 function RegisterPage() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [form] = Form.useForm();
+  const [api, contextHolder] = notification.useNotification();
+
+  const onFinish: FormProps['onFinish'] = async (values) => {
+    const { RePassword, ...filteredValues } = values;
+    setLoading(true);
+
+    try {
+      const token = await register(filteredValues as IUser);
+      if (token) {
+        localStorage.setItem('token', token);
+        openNotificationWithIcon('success');
+      }
+
+      window.location.href = '/';
+    } catch (error: any) {
+      form.setFields([
+        {
+          name: 'email',
+          errors: [error.message],
+        },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onFinishFailed: FormProps['onFinishFailed'] = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
+
+  const openNotificationWithIcon = (type: NotificationType) => {
+    api[type]({
+      message: 'Register successfully',
+      description: 'You have successfully registered and login!',
+    });
+  };
+
   return (
-    <div className={styles[`register-page`]}>
-      <div className={styles[`form-content`]}>
-        <div className={styles[`form-header`]}>
+    <div className={styles['register-page']}>
+      <div className={styles['form-content']}>
+        <div className={styles['form-header']}>
           <p className={styles.title}>Create an account</p>
           <p className={styles.subtitle}>
             <a href="./login">log in instead</a>
@@ -23,6 +58,7 @@ function RegisterPage() {
         </div>
 
         <Form
+          form={form}
           name="register"
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
@@ -30,15 +66,15 @@ function RegisterPage() {
             remember: true,
           }}
           layout="vertical"
-          className={styles[`register-form`]}
+          className={styles['register-form']}
         >
           <Form.Item
             label="Full name"
-            name="fullname"
+            name="name"
             colon={false}
             rules={[{ required: true, message: 'Please input your full name!!' }]}
           >
-            <Input className={styles[`input-form`]} />
+            <Input className={styles['input-form']} />
           </Form.Item>
 
           <Form.Item
@@ -52,7 +88,7 @@ function RegisterPage() {
               },
             ]}
           >
-            <Input className={styles[`input-form`]} />
+            <Input className={styles['input-form']} />
           </Form.Item>
 
           <Form.Item
@@ -60,7 +96,7 @@ function RegisterPage() {
             name="phone"
             rules={[{ required: true, message: 'Please input your phone number!' }]}
           >
-            <Input className={styles[`input-form`]} />
+            <Input className={styles['input-form']} />
           </Form.Item>
 
           <Form.Item
@@ -68,7 +104,7 @@ function RegisterPage() {
             name="idNumber"
             rules={[{ required: true, message: 'Please input your id number!' }]}
           >
-            <Input className={styles[`input-form`]} />
+            <Input className={styles['input-form']} />
           </Form.Item>
 
           <Form.Item
@@ -76,7 +112,7 @@ function RegisterPage() {
             name="password"
             rules={[{ required: true, message: 'Please input your password!' }]}
           >
-            <Input.Password className={styles[`input-form`]} />
+            <Input.Password className={styles['input-form']} />
           </Form.Item>
 
           <Form.Item
@@ -99,7 +135,7 @@ function RegisterPage() {
               }),
             ]}
           >
-            <Input.Password className={styles[`input-form`]} />
+            <Input.Password className={styles['input-form']} />
           </Form.Item>
 
           <Form.Item valuePropName="checked">
@@ -110,9 +146,11 @@ function RegisterPage() {
 
           <Form.Item className={styles.customBtn}>
             <CustomButton type="primary" htmlType="submit">
-              Register
+              {loading ? 'Registering...' : 'Register'}
             </CustomButton>
           </Form.Item>
+
+          {error && <div className={styles.error}>{error}</div>}
         </Form>
       </div>
     </div>

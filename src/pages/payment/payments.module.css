@@ -1,0 +1,192 @@
+.form {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  margin: 50px 0;
+}
+
+.formLeft,
+.formRight {
+  border: 1px solid var(--hr-color);
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.formLeft {
+  flex: 0.6;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.formRight {
+  flex: 0.4;
+}
+
+.formLeftTop {
+  border: 1px solid var(--hr-color);
+  border-radius: 5px;
+  padding: 15px;
+}
+
+.formLeftTop > h4,
+.formRight > h4,
+.formRightService > h4 {
+  border-bottom: 1px solid var(--hr-color);
+  font-size: 20px;
+  font-weight: bold;
+  padding-bottom: 15px;
+}
+
+.formLeftTop > ul > div:nth-child(1) {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  padding-top: 15px;
+}
+
+.formLeftTop > ul > div:nth-child(2) {
+  display: flex;
+  flex-direction: row;
+  gap: 60px;
+  padding-top: 15px;
+}
+
+.formLeftBottom {
+  border: 1px solid var(--hr-color);
+  border-radius: 5px;
+  padding: 15px;
+}
+
+.formLeftBottom > h4,
+.formRightOrder > h4 {
+  font-size: 20px;
+  font-weight: bold;
+  padding-bottom: 15px;
+}
+
+.formRadio {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formRadio > .radio {
+  border: 1px solid var(--hr-color);
+  border-radius: 5px;
+  padding: 10px;
+  margin: 0;
+}
+.formRadio > .radio:hover {
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.formRadio > .checked {
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.formRadio > .btnPay {
+  padding: 14px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  background-color: var(--primary-color);
+}
+
+.formRadio > .checkbox {
+  justify-content: center;
+}
+
+.formRightRom {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 50px;
+  border: 1px solid var(--hr-color);
+  border-radius: 5px;
+  padding: 15px;
+  margin: 20px 0;
+}
+
+.formRightRom > img {
+  width: 150px;
+  height: 150px;
+  object-fit: fill;
+  border-radius: 5px;
+}
+
+.formRightRom > div {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.formRightRom > div > h4 {
+  font-size: 17px;
+  padding-bottom: 15px;
+}
+
+.formRightService {
+  border: 1px solid var(--hr-color);
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.formRightService > table {
+  padding: 15px;
+}
+
+.formRightService > table > thead > tr > th,
+.formRightService > table > tbody > tr > td {
+  width: 100%;
+  padding: 10px;
+  text-align: left;
+}
+
+.formRightService > table > tbody > tr > td > input {
+  border: none;
+  outline: none;
+  width: 80px;
+}
+
+.formRightOrder {
+  border: 1px solid var(--hr-color);
+  border-radius: 5px;
+  padding: 15px;
+}
+
+.formRightOrder > div {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  font-size: 16px;
+}
+
+.formRightOrder > div:nth-child(3) {
+  border-bottom: 1px solid var(--hr-color);
+  margin-bottom: 10px;
+}
+
+.totalPrice {
+  font-weight: bold;
+}
+
+@media (max-width: 1054px) {
+  .form {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 428px) {
+  .formLeftTop > ul > div:nth-child(1),
+  .formLeftTop > ul > div:nth-child(2) {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
