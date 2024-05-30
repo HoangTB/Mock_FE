@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink as RouterLink, matchPath, useLocation } from 'react-router-dom';
 import { Menu, Collapse } from 'antd';
-import './SideBar.css';
+import './styles.css';
 
 const { Panel } = Collapse;
 

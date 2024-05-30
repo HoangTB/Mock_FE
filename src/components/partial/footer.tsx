@@ -5,7 +5,7 @@ import {
   TwitterOutlined,
   YoutubeOutlined,
 } from '@ant-design/icons';
-import styles from './Footer.module.css';
+import styles from './footer.module.css';
 import React from 'react';
 function Footer() {
   return (

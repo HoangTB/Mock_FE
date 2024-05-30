@@ -1,7 +1,7 @@
 import { GlobalOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import { Button, Drawer, DrawerProps, RadioChangeEvent, Select } from 'antd';
 import React, { useState } from 'react';
-import styles from './Header.module.css';
+import styles from './header.module.css';
 import { Link, useLocation } from 'react-router-dom';
 function Header() {
   const [open, setOpen] = useState(false);
@@ -61,19 +61,19 @@ function Header() {
           <GlobalOutlined />
           <Select
             className={styles.select}
-    labelInValue
-    defaultValue={{ value: 'English', label: 'English' }}
-    options={[
-      {
-        value: 'English',
-        label: 'English',
-      },
-      {
-        value: 'Japanese',
-        label: 'Japanese',
-      },
-    ]}
-  />
+            labelInValue
+            defaultValue={{ value: 'English', label: 'English' }}
+            options={[
+              {
+                value: 'English',
+                label: 'English',
+              },
+              {
+                value: 'Japanese',
+                label: 'Japanese',
+              },
+            ]}
+          />
         </div>
         {/* login */}
         <div className={styles.headerRightLogin}>
