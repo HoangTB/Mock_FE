@@ -2,10 +2,13 @@ import { Form, Input } from 'antd';
 import styles from './login-form.module.css';
 import React, { useState } from 'react';
 import CustomButton from '../../components/buttons/submit-button/custom-button';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ILogin } from '../../types/user';
 import { login } from '../../api/user/user-api';
+import { useDispatch } from 'react-redux';
+import { setToken } from '../../redux/authSlide';
+import { JwtPayloads } from '../../types/jwt-payload';
+import { jwtDecode } from 'jwt-decode';
 
 interface LoginFormValues {
   email: string;
@@ -16,6 +19,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const dispatch = useDispatch();
 
   const onFinish = async (values: LoginFormValues) => {
     setLoading(true);
@@ -26,6 +30,10 @@ const LoginPage = () => {
       if (token) {
         localStorage.setItem('token', token.accessToken);
         localStorage.setItem('roleList', JSON.stringify(token.roleList));
+
+        const decodedToken: JwtPayloads = jwtDecode(token.accessToken);
+        const user = { username: decodedToken.username, avatar: decodedToken.avatar };
+        dispatch(setToken({ token: token.accessToken, user }));
       }
 
       if (JSON.stringify(token.roleList).includes('ROLE_ADMIN')) {
