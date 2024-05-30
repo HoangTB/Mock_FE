@@ -2,10 +2,13 @@ import { Form, Input } from 'antd';
 import styles from './login-form.module.css';
 import React, { useState } from 'react';
 import CustomButton from '../../components/buttons/submit-button/custom-button';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ILogin } from '../../types/user';
 import { login } from '../../api/user/user-api';
+import { useDispatch } from 'react-redux';
+import { setToken } from '../../redux/authSlide';
+import { JwtPayloads } from '../../types/jwt-payload';
+import { jwtDecode } from 'jwt-decode';
 
 interface LoginFormValues {
   email: string;
@@ -16,31 +19,34 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const dispatch = useDispatch();
 
   const onFinish = async (values: LoginFormValues) => {
     setLoading(true);
     setError('');
-      setLoading(true);
-      try {
-        const token = await login(values as ILogin)
-        if(token) {
-          localStorage.setItem('token', token.accessToken);
-          localStorage.setItem('roleList', JSON.stringify(token.roleList));
+    setLoading(true);
+    try {
+      const token = await login(values as ILogin);
+      if (token) {
+        localStorage.setItem('token', token.accessToken);
+        localStorage.setItem('roleList', JSON.stringify(token.roleList));
 
-        }
-
-        if(JSON.stringify(token.roleList).includes("ROLE_ADMIN")){
-          navigate("/admin")
-        }else{
-          navigate("/")
-        }
-      } catch (error) {
-        setError('Login failed. Please check your email and password.');
-        // localStorage.setItem('roleList', JSON.stringify(roleList));
-      } finally {
-        setLoading(false);
-
+        const decodedToken: JwtPayloads = jwtDecode(token.accessToken);
+        const user = { username: decodedToken.username, avatar: decodedToken.avatar };
+        dispatch(setToken({ token: token.accessToken, user }));
       }
+
+      if (JSON.stringify(token.roleList).includes('ROLE_ADMIN')) {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
+    } catch (error) {
+      setError('Login failed. Please check your email and password.');
+      // localStorage.setItem('roleList', JSON.stringify(roleList));
+    } finally {
+      setLoading(false);
+    }
   };
 
   const onFinishFailed = (errorInfo: any) => {
