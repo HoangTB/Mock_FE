@@ -135,7 +135,7 @@ function Header() {
           </Dropdown>
         ) : (
           <div className={styles.headerRightLogin}>
-            <Link to="/login">Login</Link>
+            <Link to="/login">{t('login')}</Link>
           </div>
         )}
 

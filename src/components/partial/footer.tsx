@@ -7,7 +7,17 @@ import {
 } from '@ant-design/icons';
 import styles from './footer.module.css';
 import React from 'react';
+import '../../i18n/i18n'
+import { useTranslation } from 'react-i18next'
+
+
 function Footer() {
+  const { t } = useTranslation();
+  const { i18n } = useTranslation();
+
+  const changeLanguage = (lng: 'en' | 'jp') => {
+    i18n.changeLanguage(lng)
+  }
   return (
     <footer className={styles.footer}>
       <div className={styles.footerTop}>
@@ -16,9 +26,9 @@ function Footer() {
         </div>
         <div>
           <ul>
-            <li>Address: Da Nang, Viet Nam</li>
-            <li>Phone: 090090909</li>
-            <li>@Copyright Team 2</li>
+            <li>{t('address')}</li>
+            <li>{t('phone')}</li>
+            <li>{t('copyright')}</li>
           </ul>
         </div>
       </div>
