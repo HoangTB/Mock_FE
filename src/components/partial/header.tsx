@@ -116,19 +116,13 @@ function Header() {
           <Select
             className={styles.select}
             labelInValue
-            defaultValue={{ value: 'English', label: 'English' }}
-            options={[
-              {
-                value: 'English',
-                label: 'English',
-              },
-              {
-                value: 'Japanese',
-                label: 'Japanese',
-              },
-            ]}
+
+            onChange={(item) => changeLanguage(item.value)}
+            defaultValue={options[0]}
+            options={options}
           />
         </div>
+
         {token ? (
           <Dropdown menu={{ items }} placement="bottom">
             <div className={styles.headerRightUser}>
