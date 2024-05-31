@@ -18,7 +18,7 @@ export const register = async (user: IUser) => {
 
 export const login = async (data: ILogin) => {
   try {
-    const response = await axios.post(`${domain}/auth/login`, data );
+    const response = await axios.post(`${domain}/auth/login`, data);
     console.log(response.data);
     return response.data;
   } catch (error) {

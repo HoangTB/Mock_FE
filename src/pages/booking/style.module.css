@@ -75,7 +75,7 @@
   border-radius: 2%;
 }
 
-.roomBorder3{
+.roomBorder3 {
   margin-top: 20px;
 }
 
@@ -83,7 +83,7 @@
   font-size: 17px;
 }
 
-.labelStyle1{
+.labelStyle1 {
   font-size: 17px;
   margin-top: 10px;
 }
@@ -123,11 +123,11 @@
   background-color: rgb(21, 190, 190);
 }
 
-.dateBook{
+.dateBook {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items:flex-start;
+  align-items: flex-start;
 }
 
 @media (max-width: 754px) {
