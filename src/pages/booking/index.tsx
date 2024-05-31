@@ -203,9 +203,22 @@ const BookingRoom = () => {
                       <Select options={hourOptions} onChange={handleHourChange} className={styles.inputStyleSelect} />
 
                     </Form.Item>
+                    <Form.Item
+                      name="NumberOfPeople"
+                      label={<span className={styles.labelStyle}>Number of people</span>}
+                      labelCol={{ span: 24 }}
+                      rules={[{ required: true, message: 'Please input number of people!!' }]}
+                    >
+                      <Select className={styles.inputStyleSelect}>
+                        <Select.Option value="1">1</Select.Option>
+                        <Select.Option value="2">2</Select.Option>
+                        <Select.Option value="3">3</Select.Option>
+                        <Select.Option value="4">4</Select.Option>
+                      </Select>
+
+                    </Form.Item>
                   </Col>
                 </Flex>
-
               </Col>
               <hr className={styles.border2}></hr>
             </Row>
