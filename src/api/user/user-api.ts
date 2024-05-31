@@ -24,7 +24,17 @@ export const login = async (data: ILogin) => {
     console.log(response.data);
     return response.data;
   } catch (error) {
-    console.log(error);
+    if ((error as any).response && (error as any).response.data) {
+      if ((error as any).response.data.message === 'Invalid password') {
+        throw new Error('Invalid password');
+      }
+
+      if ((error as any).response.data.message === 'Email not found') {
+        throw new Error('Email not found');
+      }
+    } else {
+      throw new Error('An unknown error occurred.');
+    }
   }
 };
 

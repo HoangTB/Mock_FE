@@ -18,12 +18,10 @@ interface LoginFormValues {
 const LoginPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
   const dispatch = useDispatch();
+  const [form] = Form.useForm();
 
   const onFinish = async (values: LoginFormValues) => {
-    setLoading(true);
-    setError('');
     setLoading(true);
     try {
       const token = await login(values as ILogin);
@@ -41,13 +39,29 @@ const LoginPage = () => {
       } else {
         navigate('/');
       }
-    } catch (error) {
-      setError('Login failed. Please check your email and password.');
-      // localStorage.setItem('roleList', JSON.stringify(roleList));
+    } catch (error: any) {
+      const errorMessage = error.message;
+
+      if (errorMessage === 'Email not found') {
+        form.setFields([
+          {
+            name: 'email',
+            errors: [errorMessage],
+          },
+        ]);
+      } else if (errorMessage === 'Invalid password') {
+        form.setFields([
+          {
+            name: 'password',
+            errors: [errorMessage],
+          },
+        ]);
+      }
     } finally {
       setLoading(false);
     }
   };
+
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
@@ -58,8 +72,8 @@ const LoginPage = () => {
       <div className={styles['form-content']}>
         <p className={styles.title}>Login</p>
         <br></br>
-        {error && <div className={styles.error}>{error}</div>}
         <Form
+          form={form}
           name="login"
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
