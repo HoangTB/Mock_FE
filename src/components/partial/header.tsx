@@ -7,6 +7,23 @@ import { AppDispatch, RootState } from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearToken } from '../../redux/authSlide';
 
+import '../../i18n/i18n'
+import { useTranslation } from 'react-i18next'
+
+const options: {
+  value: "en" | "jp",
+  label: string
+}[] = [
+    {
+      value: 'en',
+      label: 'English',
+    },
+    {
+      value: 'jp',
+      label: 'Japanese',
+    },
+  ]
+
 function Header() {
   const [open, setOpen] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
@@ -41,6 +58,13 @@ function Header() {
   };
   const location = useLocation();
 
+  const { t } = useTranslation();
+  const { i18n } = useTranslation();
+
+  const changeLanguage = (lng: 'en' | 'jp') => {
+    i18n.changeLanguage(lng)
+  }
+
   const handleLinkClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     event.preventDefault();
     const branchSection = document.getElementById('branch');
@@ -74,16 +98,16 @@ function Header() {
       </div>
       <nav className={styles.headerLinks}>
         <Link to="/" className={location.pathname === '/' ? styles.active : ''}>
-          Home
+          {t('home')}
         </Link>
         <a href="#branch" className={location.pathname === '/branch' ? styles.active : ''} onClick={handleLinkClick}>
-          Branch
+        {t('branch')}
         </a>
         <Link to="/contact" className={location.pathname === '/contact' ? styles.active : ''}>
-          Contact
+        {t('contact')}
         </Link>
         <Link to="/about-us" className={location.pathname === '/about-us' ? styles.active : ''}>
-          About Us
+        {t('about us')}
         </Link>
       </nav>
       <div className={styles.headerRight}>
