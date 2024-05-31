@@ -2,8 +2,16 @@ import React from 'react';
 import { HomeOutlined, InfoCircleOutlined, CheckOutlined, SmileOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Steps } from 'antd';
 import styles from './style.module.css';
+import '../../i18n/i18n'
+import { useTranslation } from 'react-i18next'
 
 const StepByStep = () => {
+  const { t } = useTranslation('step');
+  const { i18n } = useTranslation();
+
+  const changeLanguage = (lng: 'en' | 'jp') => {
+    i18n.changeLanguage(lng)
+  }
   return (
     <Steps
       responsive
@@ -12,27 +20,27 @@ const StepByStep = () => {
       }}
       items={[
         {
-          title: 'Select hotel',
+          title: t('selectHotel'),
           status: 'wait',
           icon: <HomeOutlined className={styles.icon} />,
         },
         {
-          title: 'Select room',
+          title: t('selectRoom'),
           status: 'wait',
           icon: <LoadingOutlined className={styles.icon} />,
         },
         {
-          title: 'Select information',
+          title: t('selectInformation'),
           status: 'wait',
           icon: <InfoCircleOutlined className={styles.icon} />,
         },
         {
-          title: 'Booking room',
+          title: t('bookRoom'),
           status: 'finish',
           icon: <CheckOutlined className={styles.icon} />,
         },
         {
-          title: 'Completed',
+          title: t('completed'),
           status: 'wait',
           icon: <SmileOutlined className={styles.icon} />,
         },

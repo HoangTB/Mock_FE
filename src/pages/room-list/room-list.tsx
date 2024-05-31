@@ -8,6 +8,8 @@ import GuestReviews from './guest-reviews';
 import styles from './styles.module.css';
 import Filters from './filter';
 import Room from './rooms';
+import '../../i18n/i18n'
+import { useTranslation } from 'react-i18next'
 
 const { Title } = Typography;
 
@@ -93,6 +95,12 @@ const roomList: IRoom[] = [
 ];
 
 const RoomList = () => {
+  const { t } = useTranslation('roomList');
+  const { i18n } = useTranslation();
+
+  const changeLanguage = (lng: 'en' | 'jp') => {
+    i18n.changeLanguage(lng)
+  }
   return (
     <div>
       <div
@@ -103,7 +111,7 @@ const RoomList = () => {
         <div className={styles.banner}></div>
         <div className={styles.content}>
           <Title level={2} className={styles.title}>
-            Welcome to Hotel BK
+            {t('welcome')}
           </Title>
           <Title
             level={4}
@@ -113,7 +121,7 @@ const RoomList = () => {
               color: '#fff',
             }}
           >
-            Where every stay is unique
+            {t('where every')}
           </Title>
           <Button
             type="primary"
@@ -123,7 +131,7 @@ const RoomList = () => {
               textAlign: 'center',
             }}
           >
-            Book Now
+            {t('book now')}
           </Button>
         </div>
       </div>
@@ -135,19 +143,19 @@ const RoomList = () => {
         <Title level={3}>Hotel BK - Ha Noi</Title>
 
         <div>
-          <Title level={4}>Benefit</Title>
+          <Title level={4}>{t('benefit')}</Title>
           <Flex gap="middle">
             <div className={styles.flex}>
               <CarOutlined className={styles.icon} />
-              <p>Car parking</p>
+              <p>{t('car parking')}</p>
             </div>
             <div className={styles.flex}>
               <DesktopOutlined className={styles.icon} />
-              <p>Tivi</p>
+              <p>{t('tivi')}</p>
             </div>
             <div className={styles.flex}>
               <UserOutlined className={styles.icon} />
-              <p>Service 24/24</p>
+              <p>{t('service')}</p>
             </div>
           </Flex>
         </div>
@@ -168,7 +176,7 @@ const RoomList = () => {
               margin: 0,
             }}
           >
-            View all room
+            {t('view all room')}
           </Title>
         </div>
 
@@ -186,7 +194,7 @@ const RoomList = () => {
             }}
           >
             <Button type="dashed" size="middle">
-              Load more
+              {t('load more')}
             </Button>
           </div>
         </Row>
