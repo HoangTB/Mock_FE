@@ -77,7 +77,7 @@ const routes: RouteObject[] = [
         Component: ForgotPassword,
       },
       {
-        path: '/reset',
+        path: '/reset/:id',
         Component: ResetPassword,
       },
       {
