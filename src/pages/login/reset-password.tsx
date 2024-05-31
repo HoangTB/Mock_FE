@@ -32,7 +32,7 @@ const ResetPassword = () => {
       console.log(error);
     } finally {
       setLoading(false);
-      // navigate('/login');
+      navigate('/login');
     }
   };
 
