@@ -42,8 +42,8 @@ function SlideImage() {
       <Carousel autoplay dots={false}>
         {data.map((item, index) => {
           return (
-            <div className={style.carousel}>
-              <div key={index} className={style['image-container']}>
+            <div key={index} className={style.carousel}>
+              <div className={style['image-container']}>
                 <img src={item.link} alt="ok" style={contentStyle} className={style.contentStyle} />
                 <div className={style['gradient-overlay']} />
               </div>

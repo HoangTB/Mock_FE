@@ -111,14 +111,15 @@
 .headerRightUser {
   display: flex;
   flex-direction: row;
-  gap: 20px;
   align-items: center;
-  background-color: #ff5100;
+  background-color: var(--primary-color);
   color: rgb(255, 255, 255);
   font-weight: bold;
-  padding: 4px 15px;
+  padding: 5px 10px;
   border-radius: 20px;
-  display: none;
+  cursor: pointer;
+  gap: 7px;
+  font-size: 12px;
 }
 
 .headerRightUser > p {
@@ -127,8 +128,10 @@
 
 .headerRightUser > img {
   width: 30px;
+  height: 30px;
   border-radius: 50%;
   border: 1px solid white;
+  object-fit: cover;
 }
 
 .btnList {

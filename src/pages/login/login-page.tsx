@@ -2,8 +2,13 @@ import { Form, Input } from 'antd';
 import styles from './login-form.module.css';
 import React, { useState } from 'react';
 import CustomButton from '../../components/buttons/submit-button/custom-button';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { ILogin } from '../../types/user';
+import { login } from '../../api/user/user-api';
+import { useDispatch } from 'react-redux';
+import { setToken } from '../../redux/authSlide';
+import { JwtPayloads } from '../../types/jwt-payload';
+import { jwtDecode } from 'jwt-decode';
 
 interface LoginFormValues {
   email: string;
@@ -13,30 +18,50 @@ interface LoginFormValues {
 const LoginPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const dispatch = useDispatch();
+  const [form] = Form.useForm();
 
   const onFinish = async (values: LoginFormValues) => {
     setLoading(true);
-    setError('');
     try {
-      const response = await axios.post('http://localhost:8081/api/auth/login', {
-        email: values.email,
-        password: values.password,
-      });
+      const token = await login(values as ILogin);
+      if (token) {
+        localStorage.setItem('token', token.accessToken);
+        localStorage.setItem('roleList', JSON.stringify(token.roleList));
 
-      // Assuming the response contains the token
-      const { accessToken, roleList } = response.data;
-      // Store the token in localStorage or a context/state management solution
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('roleList', JSON.stringify(roleList));
+        const decodedToken: JwtPayloads = jwtDecode(token.accessToken);
+        const user = { username: decodedToken.username, avatar: decodedToken.avatar };
+        dispatch(setToken({ token: token.accessToken, user }));
+      }
 
-      // Redirect to a protected route, e.g., dashboard
-      navigate('/dashboard');
-    } catch (error) {
-      setError('Login failed. Please check your email and password.');
+      if (JSON.stringify(token.roleList).includes('ROLE_ADMIN')) {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
+    } catch (error: any) {
+      const errorMessage = error.message;
+
+      if (errorMessage === 'Email not found') {
+        form.setFields([
+          {
+            name: 'email',
+            errors: [errorMessage],
+          },
+        ]);
+      } else if (errorMessage === 'Invalid password') {
+        form.setFields([
+          {
+            name: 'password',
+            errors: [errorMessage],
+          },
+        ]);
+      }
+    } finally {
       setLoading(false);
     }
   };
+
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
@@ -47,8 +72,8 @@ const LoginPage = () => {
       <div className={styles['form-content']}>
         <p className={styles.title}>Login</p>
         <br></br>
-        {error && <div className={styles.error}>{error}</div>}
         <Form
+          form={form}
           name="login"
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
@@ -78,8 +103,8 @@ const LoginPage = () => {
             <a href="./forgot">Forgot your password</a>
           </Form.Item>
           <Form.Item className={styles.customBtn}>
-            <CustomButton type="primary" htmlType="submit">
-              Log in
+            <CustomButton type="primary" htmlType="submit" loading={loading}>
+              {loading ? 'Logging in...' : 'Log in'}
             </CustomButton>
           </Form.Item>
         </Form>
