@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next'
 
 
 function Footer() {
-  const { t } = useTranslation();
+  const { t } = useTranslation('footer');
   const { i18n } = useTranslation();
 
   const changeLanguage = (lng: 'en' | 'jp') => {

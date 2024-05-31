@@ -14,7 +14,7 @@ const contentStyle: React.CSSProperties = {
 };
 
 function SlideImage() {
-  const { t } = useTranslation();
+  const { t } = useTranslation('carousel');
   const { i18n } = useTranslation();
 
   const changeLanguage = (lng: 'en' | 'jp') => {
@@ -30,22 +30,22 @@ function SlideImage() {
     {
       link: 'https://peninsulahotel.vn/uploads/gallery/slider-peninsula-hotel-danang-1686535690.webp',
       image: 2,
-      title: 'Enjoy top-notch amenities including a spa, swimming pool, gym, and a 5-star restaurant.',
+      title: t('carousel-image2'),
     },
     {
       link: 'https://images.bubbleup.com/width1920/quality35/mville2017/1-brand/1-margaritaville.com/gallery-media/220803-compasshotel-medford-pool-73868-1677873697-78625-1694019828.jpg',
       image: 3,
-      title: 'Conveniently located in the city center, close to major attractions and entertainment',
+      title: t('carousel-image3'),
     },
     {
       link: 'https://digital.ihg.com/is/image/ihg/ihgor-member-rate-web-offers-1440x720',
       image: 4,
-      title: 'Discover diverse and unique culinary delights prepared by top chefs.',
+      title: t('carousel-image4'),
     },
     {
       link: 'https://www.riazorhotel.com/wp-content/uploads/2023/10/Suite-hotel-Riazor2807-scaled.webp',
       image: 5,
-      title: 'Book now to enjoy exclusive deals and comprehensive service packages.',
+      title: t('carousel-image5'),
     },
   ];
   return (

@@ -58,7 +58,7 @@ function Header() {
   };
   const location = useLocation();
 
-  const { t } = useTranslation();
+  const { t } = useTranslation('header');
   const { i18n } = useTranslation();
 
   const changeLanguage = (lng: 'en' | 'jp') => {
