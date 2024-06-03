@@ -17,6 +17,8 @@ import ROMALIST_EN from '../localles/en/room-list.json';
 import ROMALIST_JP from '../localles/jp/room-list.json';
 import STEP_EN from '../localles/en/step.json';
 import STEP_JP from '../localles/jp/step.json';
+import REGISTER_EN from '../localles/en/register.json';
+import REGISTER_JP from '../localles/jp/register.json';
 
 export const localles = {
     en: 'English',
@@ -32,7 +34,8 @@ const resources = {
         aboutUs: ABOUTUS_EN,
         contact: CONTACT_EN,
         roomList: ROMALIST_EN,
-        step: STEP_EN
+        step: STEP_EN,
+        register: REGISTER_EN
     },
 
     jp: {
@@ -43,7 +46,8 @@ const resources = {
         aboutUs: ABOUTUS_JP,
         contact: CONTACT_JP,
         roomList: ROMALIST_JP,
-        step: STEP_JP
+        step: STEP_JP,
+        register: REGISTER_JP
     }
 }
 
@@ -52,7 +56,7 @@ const defaultNS = 'aboutUs'
 i18n.use(initReactI18next).init({
     resources,
     lng: 'en',
-    ns: ['header', 'footer', 'carousel', 'listCity','aboutUs','contact','roomList','step'],
+    ns: ['header', 'footer', 'carousel', 'listCity','aboutUs','contact','roomList','step','register'],
     fallbackLng: 'jp',
     defaultNS,
     interpolation: {
