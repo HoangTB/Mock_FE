@@ -20,6 +20,7 @@ export interface IRoomDetail {
   descriptionOfRoom: string;
   priceOfRoom: number;
   available: boolean;
+  imageUrl: string;
 }
 
 export interface IRoomBooking extends IRoom {

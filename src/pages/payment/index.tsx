@@ -17,10 +17,10 @@ const UserInfoForm = () => {
   const [isCheckboxError, setIsCheckboxError] = useState(false);
   const [selectedKey, setSelectedKey] = useState('');
 
-    const handleMenuClick = (e: MenuInfo) => {
+  const handleMenuClick = (e: MenuInfo) => {
     setSelectedKey(e.key);
-    };
-  
+  };
+
   const items: MenuProps['items'] = [
     {
       key: 'NCB',
@@ -79,7 +79,7 @@ const UserInfoForm = () => {
       users: users,
       booking: booking,
       amount: booking.roomPrice + booking.servicePrice,
-      bankCode: selectedKey ? selectedKey : "NCB",
+      bankCode: selectedKey ? selectedKey : 'NCB',
       locate: 'vn',
     };
     if (value === 1) {
@@ -185,7 +185,7 @@ const UserInfoForm = () => {
                     <td>
                       <td>1</td>
                     </td>
-                    <td>{(booking.servicePrice).toLocaleString('de-DE')} VND</td>
+                    <td>{booking.servicePrice.toLocaleString('de-DE')} VND</td>
                   </tr>
                 </tbody>
               </table>
@@ -196,19 +196,21 @@ const UserInfoForm = () => {
                 <p>
                   <b>Room</b>
                 </p>
-                <p>{(booking.roomPrice).toLocaleString('de-DE')} VND</p>
+                <p>{booking.roomPrice.toLocaleString('de-DE')} VND</p>
               </div>
               <div>
                 <p>
                   <b>Service</b>
                 </p>
-                <p>{(booking.servicePrice).toLocaleString('de-DE')} VND</p>
+                <p>{booking.servicePrice.toLocaleString('de-DE')} VND</p>
               </div>
               <div>
                 <p>
                   <b>Total</b>
                 </p>
-                <p className={styles.totalPrice}>{(booking.roomPrice + booking.servicePrice).toLocaleString('de-DE')} VND</p>
+                <p className={styles.totalPrice}>
+                  {(booking.roomPrice + booking.servicePrice).toLocaleString('de-DE')} VND
+                </p>
               </div>
             </div>
           </div>

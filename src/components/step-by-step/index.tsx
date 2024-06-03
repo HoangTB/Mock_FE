@@ -26,27 +26,47 @@ const StepByStep = () => {
         {
           title: 'Select hotel',
           status: getStatus('/'),
-          icon: <Link to="/"><HomeOutlined className={styles.icon} /></Link>,
+          icon: (
+            <Link to="/">
+              <HomeOutlined className={styles.icon} />
+            </Link>
+          ),
         },
         {
           title: 'Select room',
           status: getStatus('/rooms/1'),
-          icon: <Link to="/rooms/1"><LoadingOutlined className={styles.icon} /></Link>,
+          icon: (
+            <Link to="/rooms/1">
+              <LoadingOutlined className={styles.icon} />
+            </Link>
+          ),
         },
         {
           title: 'Select information',
           status: getStatus('/booking'),
-          icon: <Link to="/booking"><InfoCircleOutlined className={styles.icon} /></Link>,
+          icon: (
+            <Link to="/booking">
+              <InfoCircleOutlined className={styles.icon} />
+            </Link>
+          ),
         },
         {
           title: 'Booking room',
           status: getStatus('/booking/1'),
-          icon: <Link to="/booking/1"><CheckOutlined className={styles.icon} /></Link>,
+          icon: (
+            <Link to="/booking/1">
+              <CheckOutlined className={styles.icon} />
+            </Link>
+          ),
         },
         {
           title: 'Completed',
           status: getStatus('/booking/completed'),
-          icon: <Link to="/booking/completed"><SmileOutlined className={styles.icon} /></Link>,
+          icon: (
+            <Link to="/booking/completed">
+              <SmileOutlined className={styles.icon} />
+            </Link>
+          ),
         },
       ]}
     />
