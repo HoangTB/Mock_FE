@@ -257,7 +257,7 @@ const BookingRoom = () => {
                   </Col>
                 </Row>
 
-                <Row>
+                <Row style={{ marginTop: '20px' }}>
                   <Col span={12} md={12} sm={24} xs={24}>
                     <h1 className={styles.titleService}>Select service: </h1>
                     <Form.Item name="services">

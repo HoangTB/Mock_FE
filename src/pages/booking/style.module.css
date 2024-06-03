@@ -71,6 +71,9 @@
 
 .roomBorder3 {
   margin-top: 20px;
+  border: 1px solid var(--hr-color);
+  border-radius: 10px;
+  padding: 40px !important;
 }
 
 .labelStyle {
