@@ -20,7 +20,7 @@ const options: {
     },
     {
       value: 'jp',
-      label: 'Japanese',
+      label: '日本語',
     },
   ]
 
