@@ -8,6 +8,20 @@ export interface IRoom {
   status: 'empty' | 'full';
 }
 
+export interface IRoomDetail {
+  roomID: string;
+  nameHotel: string;
+  address: string;
+  images: string[];
+  typeRoom: string;
+  numberOfBeds?: number;
+  roomNumber?: number;
+  maxNumberPeopleOfRoom?: number;
+  descriptionOfRoom: string;
+  priceOfRoom: number;
+  available: boolean;
+}
+
 export interface IRoomBooking extends IRoom {
   bookingDate: string;
   fromDate: string;

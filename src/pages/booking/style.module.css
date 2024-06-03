@@ -130,6 +130,11 @@
   align-items:flex-start;
 }
 
+.titleService{
+  font-size: 17px;
+  margin-bottom: 10px;
+}
+
 @media (max-width: 754px) {
   .rowLeft {
     gap: 30px;

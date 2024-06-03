@@ -85,7 +85,7 @@ const routes: RouteObject[] = [
         Component: Completed,
       },
       {
-        path: '/booking',
+        path: '/booking/room/:idRoom',
         Component: BookingRoom,
       },
       {
