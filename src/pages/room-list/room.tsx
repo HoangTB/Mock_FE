@@ -3,11 +3,13 @@ import { Button, Typography } from 'antd';
 import React from 'react';
 import { IRoom } from '../../types/room';
 import { HomeOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
 const { Title } = Typography;
 
 const Room = ({ room }: { room: IRoom }) => {
   const {
+    idRoom,
     images,
     roomNumber,
     typeRoom,
@@ -17,6 +19,7 @@ const Room = ({ room }: { room: IRoom }) => {
     available,
     maxNumberPeopleOfRoom,
   } = room;
+  const navigate = useNavigate();
   return (
     <Col span={8} xs={24} sm={12} md={8} lg={8} xl={8}>
       <div style={{ padding: 15, boxShadow: 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px', borderRadius: 5 }}>
@@ -69,6 +72,7 @@ const Room = ({ room }: { room: IRoom }) => {
               style={{
                 background: 'var(--primary-color)',
               }}
+              onClick={() => navigate(`/booking/room/${idRoom}`)}
             >
               <HomeOutlined />
               Book now

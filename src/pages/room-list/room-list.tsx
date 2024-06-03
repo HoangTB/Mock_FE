@@ -7,15 +7,18 @@ import { IRoom } from '../../types/room';
 import GuestReviews from './guest-reviews';
 import styles from './styles.module.css';
 import Filters from './filter';
-import Room from './rooms';
+import Room from './room';
 import { roomApi } from '../../api/room/room-api';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ratingApi } from '../../api/rating/rating-api';
+import { IRating } from '../../types/rating';
 
 const { Title } = Typography;
 
 const RoomList = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [roomList, setRoomList] = useState<IRoom[]>([]);
+  const [ratingList, setRatingList] = useState<IRating[]>([]);
   const { idHotel } = useParams();
   const navigate = useNavigate();
 
@@ -23,8 +26,10 @@ const RoomList = () => {
     (async () => {
       if (idHotel) {
         const data = await roomApi.getRoomList(idHotel, '');
-        setIsLoading(true);
+        const ratings = await ratingApi.getRatingByIdHotel(idHotel);
+        setRatingList(ratings);
         setRoomList(data);
+        setIsLoading(true);
       }
     })();
   }, []);
@@ -150,7 +155,7 @@ const RoomList = () => {
           </div> */}
         </Row>
 
-        <GuestReviews />
+        {isLoading && <GuestReviews ratings={ratingList} />}
       </Container>
     </div>
   );

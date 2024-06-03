@@ -1,5 +1,5 @@
 export interface IRoom {
-  roomID: string;
+  idRoom: string;
   images: string[];
   typeRoom: string;
   numberOfBeds?: number;

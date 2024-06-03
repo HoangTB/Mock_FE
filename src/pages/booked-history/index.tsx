@@ -9,7 +9,7 @@ const { Title } = Typography;
 const BookedHistory = () => {
   const bookingList: IRoomBooking[] = [
     {
-      roomID: '1',
+      idRoom: '1',
       images: [
         'https://cdn.autonomous.ai/production/ecm/230907/10-Home-Reading-Room-Ideas-to-Curl-up-With-a-Book-in-20231.webp',
       ],
@@ -26,7 +26,7 @@ const BookedHistory = () => {
       bookingStatus: 'booking',
     },
     {
-      roomID: '4',
+      idRoom: '4',
       images: [
         'https://cdn.autonomous.ai/production/ecm/230907/10-Home-Reading-Room-Ideas-to-Curl-up-With-a-Book-in-20231.webp',
       ],
@@ -43,7 +43,7 @@ const BookedHistory = () => {
       bookingStatus: 'booking',
     },
     {
-      roomID: '2',
+      idRoom: '2',
       images: [
         'https://cdn.autonomous.ai/production/ecm/230907/10-Home-Reading-Room-Ideas-to-Curl-up-With-a-Book-in-20231.webp',
       ],
@@ -60,7 +60,7 @@ const BookedHistory = () => {
       bookingStatus: 'cancel',
     },
     {
-      roomID: '2',
+      idRoom: '2',
       images: [
         'https://cdn.autonomous.ai/production/ecm/230907/10-Home-Reading-Room-Ideas-to-Curl-up-With-a-Book-in-20231.webp',
       ],
@@ -84,7 +84,7 @@ const BookedHistory = () => {
         {bookingList
           .filter((item) => item.bookingStatus === status)
           .map((booking) => (
-            <BookingItem key={booking.roomID} booking={booking} />
+            <BookingItem key={booking.idRoom} booking={booking} />
           ))}
       </>
     );
