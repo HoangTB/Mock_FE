@@ -1,6 +1,6 @@
 import { GlobalOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import { Button, Drawer, DrawerProps, Dropdown, MenuProps, RadioChangeEvent, Select } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './header.module.css';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AppDispatch, RootState } from '../../redux/store';
@@ -13,14 +13,21 @@ function Header() {
   const [placement, setPlacement] = useState<DrawerProps['placement']>('right');
   const dispatch: AppDispatch = useDispatch();
   const { token, user } = useSelector((state: RootState) => state.auth);
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
-  console.log(user);
+  useEffect(() => {
+    const roleListString = localStorage.getItem('roleList');
+    const roleList = roleListString ? JSON.parse(roleListString) : [];
+    const hasAdminRole = roleList.some((role: { authority: string }) => role.authority === 'ROLE_ADMIN');
+    setIsAdmin(hasAdminRole);
+  }, [token]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('roleList');
     dispatch(clearToken());
+    setIsAdmin(false);
     navigate('/login');
   };
 
@@ -54,6 +61,14 @@ function Header() {
       key: '1',
       label: <Link to="/edit-profile">Profile</Link>,
     },
+    ...(isAdmin
+      ? [
+          {
+            key: '3',
+            label: <Link to="/admin">Admin</Link>,
+          },
+        ]
+      : []),
     {
       key: '2',
       label: (

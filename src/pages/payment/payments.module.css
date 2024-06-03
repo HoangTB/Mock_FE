@@ -144,15 +144,9 @@
 
 .formRightService > table > thead > tr > th,
 .formRightService > table > tbody > tr > td {
-  width: 100%;
   padding: 10px;
   text-align: left;
-}
-
-.formRightService > table > tbody > tr > td > input {
-  border: none;
-  outline: none;
-  width: 80px;
+  width: 900px
 }
 
 .formRightOrder {
@@ -176,6 +170,26 @@
 .totalPrice {
   font-weight: bold;
 }
+
+.errorCheckbox {
+  color: rgb(255, 255, 255);
+  background-color: red;
+}
+
+.logoBank {
+  width: 80px;
+  height: 80px;
+  object-fit: fill;
+  background-color: black !important;
+}
+
+.menuBank {
+  left: 240px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
 
 @media (max-width: 1054px) {
   .form {
