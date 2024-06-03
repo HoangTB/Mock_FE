@@ -1,11 +1,13 @@
 export interface IRoom {
   roomID: string;
   images: string[];
-  nameRoom: string;
   typeRoom: string;
-  description: string;
-  price: number;
-  status: 'empty' | 'full';
+  numberOfBeds?: number;
+  roomNumber?: number;
+  maxNumberPeopleOfRoom?: number;
+  descriptionOfRoom: string;
+  priceOfRoom: number;
+  available: boolean;
 }
 
 export interface IRoomBooking extends IRoom {

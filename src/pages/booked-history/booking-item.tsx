@@ -16,7 +16,7 @@ const BookingItem = ({ booking }: { booking: IRoomBooking }) => {
         <Col span={20} lg={20} md={24} sm={24} xs={24}>
           <Row>
             <Col span={10} lg={10} md={12} sm={12} xs={24}>
-              <Title level={4}>{booking.nameRoom}</Title>
+              <Title level={4}>{booking.roomNumber}</Title>
               <Text>
                 <p className={styles.title}>Booking Date: </p>
                 {new Date(booking.bookingDate).toLocaleString()}
@@ -46,11 +46,11 @@ const BookingItem = ({ booking }: { booking: IRoomBooking }) => {
               <Title level={5}>Summary</Title>
               <Text>
                 <p className={styles.title}>Price room: </p>
-                {booking.price}$
+                {booking.priceOfRoom}$
               </Text>
               <br />
               <Text>
-                <p className={styles.title}>Price service: </p> {booking.total - booking.price}$
+                <p className={styles.title}>Price service: </p> {booking.total - booking.priceOfRoom}$
               </Text>
               <br />
               <Text>

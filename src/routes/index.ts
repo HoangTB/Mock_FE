@@ -21,9 +21,11 @@ import Contact from '../pages/contact';
 import AboutUs from '../pages/about-us';
 import LoginPage from '../pages/login/login-page';
 import Completed from '../pages/payment-completed';
-import RegisterPage from '../pages/Register';
+import HomePage from '../pages/home';
+import RegisterPage from '../pages/register';
+import withAdminAuth from '../utils/hoc/auth-admin';
+import withUserAuth from '../utils/hoc/auth-user';
 import PageNotFound from '../components/errors';
-import HomePage from '../pages/Home';
 
 const routes: RouteObject[] = [
   {
@@ -40,7 +42,7 @@ const routes: RouteObject[] = [
         Component: HomePage,
       },
       {
-        path: '/rooms/:id',
+        path: '/rooms/:idHotel',
         Component: RoomList,
       },
       {
@@ -53,13 +55,13 @@ const routes: RouteObject[] = [
         children: [
           {
             path: '/edit-profile',
-            Component: EditProfile,
+            Component: withUserAuth(EditProfile),
           },
           {
             path: '/booked-history',
-            Component: BookedHistory,
+            Component: withUserAuth(BookedHistory),
           },
-          { path: '/voted-history', Component: VoteHistory },
+          { path: '/voted-history', Component: withUserAuth(VoteHistory) },
         ],
       },
       {
@@ -98,27 +100,27 @@ const routes: RouteObject[] = [
   },
   {
     path: '/admin',
-    Component: AdminLayout,
+    Component: withAdminAuth(AdminLayout),
     children: [
       {
         path: 'branch',
-        Component: BranchManagement,
+        Component: withAdminAuth(BranchManagement),
       },
       {
         path: 'room',
-        Component: RoomManagement,
+        Component: withAdminAuth(RoomManagement),
       },
       {
         path: 'service',
-        Component: ServiceManagement,
+        Component: withAdminAuth(ServiceManagement),
       },
       {
         path: 'booking',
-        Component: BookingManagement,
+        Component: withAdminAuth(BookingManagement),
       },
       {
         path: 'payment',
-        Component: PaymentRevenueManagement,
+        Component: withAdminAuth(PaymentRevenueManagement),
       },
     ],
   },

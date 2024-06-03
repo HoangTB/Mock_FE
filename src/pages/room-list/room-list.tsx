@@ -1,6 +1,6 @@
 import { CarOutlined, DesktopOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Flex, Row, Typography } from 'antd';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Container from '../../components/container';
 import StepByStep from '../../components/step-by-step';
 import { IRoom } from '../../types/room';
@@ -8,91 +8,36 @@ import GuestReviews from './guest-reviews';
 import styles from './styles.module.css';
 import Filters from './filter';
 import Room from './rooms';
+import { roomApi } from '../../api/room/room-api';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const { Title } = Typography;
 
-const roomList: IRoom[] = [
-  {
-    roomID: 'room1',
-    images: [
-      'https://static.wixstatic.com/media/ce70af_e1480b25dd7f4009a7341151ac180d43~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_e1480b25dd7f4009a7341151ac180d43~mv2.jpg',
-      'https://static.wixstatic.com/media/ce70af_07962d29b57648269a0333502d0a992c~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_07962d29b57648269a0333502d0a992c~mv2.jpg',
-      'https://static.wixstatic.com/media/ce70af_e3ae2313d5ad4ccca5e449bdf0518da0~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_e3ae2313d5ad4ccca5e449bdf0518da0~mv2.jpg',
-    ],
-    description: 'A cozy room with a beautiful view.',
-    nameRoom: 'Deluxe Room',
-    typeRoom: 'Double',
-    price: 20,
-    status: 'empty',
-  },
-  {
-    roomID: 'room2',
-    images: [
-      'https://static.wixstatic.com/media/ce70af_e1480b25dd7f4009a7341151ac180d43~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_e1480b25dd7f4009a7341151ac180d43~mv2.jpg',
-      'https://static.wixstatic.com/media/ce70af_07962d29b57648269a0333502d0a992c~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_07962d29b57648269a0333502d0a992c~mv2.jpg',
-      'https://static.wixstatic.com/media/ce70af_e3ae2313d5ad4ccca5e449bdf0518da0~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_e3ae2313d5ad4ccca5e449bdf0518da0~mv2.jpg',
-    ],
-    description: 'Spacious suite with modern amenities.',
-    nameRoom: 'Executive Suite',
-    typeRoom: 'Single',
-    price: 20,
-    status: 'empty',
-  },
-  {
-    roomID: 'room3',
-    images: [
-      'https://static.wixstatic.com/media/ce70af_e1480b25dd7f4009a7341151ac180d43~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_e1480b25dd7f4009a7341151ac180d43~mv2.jpg',
-      'https://static.wixstatic.com/media/ce70af_07962d29b57648269a0333502d0a992c~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_07962d29b57648269a0333502d0a992c~mv2.jpg',
-      'https://static.wixstatic.com/media/ce70af_e3ae2313d5ad4ccca5e449bdf0518da0~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_e3ae2313d5ad4ccca5e449bdf0518da0~mv2.jpg',
-    ],
-    description: 'Spacious suite with modern amenities.',
-    nameRoom: 'Executive Suite',
-    typeRoom: 'Single',
-    price: 20,
-    status: 'full',
-  },
-  {
-    roomID: 'room4',
-    images: [
-      'https://static.wixstatic.com/media/ce70af_e1480b25dd7f4009a7341151ac180d43~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_e1480b25dd7f4009a7341151ac180d43~mv2.jpg',
-      'https://static.wixstatic.com/media/ce70af_07962d29b57648269a0333502d0a992c~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_07962d29b57648269a0333502d0a992c~mv2.jpg',
-      'https://static.wixstatic.com/media/ce70af_e3ae2313d5ad4ccca5e449bdf0518da0~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_e3ae2313d5ad4ccca5e449bdf0518da0~mv2.jpg',
-    ],
-    description: 'A cozy room with a beautiful view.',
-    nameRoom: 'Deluxe Room',
-    typeRoom: 'Double',
-    price: 20,
-    status: 'empty',
-  },
-  {
-    roomID: 'room5',
-    images: [
-      'https://static.wixstatic.com/media/ce70af_e1480b25dd7f4009a7341151ac180d43~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_e1480b25dd7f4009a7341151ac180d43~mv2.jpg',
-      'https://static.wixstatic.com/media/ce70af_07962d29b57648269a0333502d0a992c~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_07962d29b57648269a0333502d0a992c~mv2.jpg',
-      'https://static.wixstatic.com/media/ce70af_e3ae2313d5ad4ccca5e449bdf0518da0~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_e3ae2313d5ad4ccca5e449bdf0518da0~mv2.jpg',
-    ],
-    description: 'Spacious suite with modern amenities.',
-    nameRoom: 'Executive Suite',
-    typeRoom: 'Single',
-    price: 20,
-    status: 'empty',
-  },
-  {
-    roomID: 'room6',
-    images: [
-      'https://static.wixstatic.com/media/ce70af_e1480b25dd7f4009a7341151ac180d43~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_e1480b25dd7f4009a7341151ac180d43~mv2.jpg',
-      'https://static.wixstatic.com/media/ce70af_07962d29b57648269a0333502d0a992c~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_07962d29b57648269a0333502d0a992c~mv2.jpg',
-      'https://static.wixstatic.com/media/ce70af_e3ae2313d5ad4ccca5e449bdf0518da0~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_e3ae2313d5ad4ccca5e449bdf0518da0~mv2.jpg',
-    ],
-    description: 'Spacious suite with modern amenities.',
-    nameRoom: 'Executive Suite',
-    typeRoom: 'Single',
-    price: 20,
-    status: 'full',
-  },
-];
-
 const RoomList = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [roomList, setRoomList] = useState<IRoom[]>([]);
+  const { idHotel } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    (async () => {
+      if (idHotel) {
+        const data = await roomApi.getRoomList(idHotel, '');
+        setIsLoading(true);
+        setRoomList(data);
+      }
+    })();
+  }, []);
+  const handleSearch = async (queryParams: any) => {
+    if (idHotel) {
+      const query = new URLSearchParams(queryParams);
+      const data = await roomApi.getRoomList(idHotel, queryParams);
+      navigate({ search: query.toString() });
+      setIsLoading(true);
+      setRoomList(data);
+    }
+  };
+
   return (
     <div>
       <div
@@ -128,7 +73,7 @@ const RoomList = () => {
         </div>
       </div>
       <Container>
-        <Filters />
+        <Filters onSearch={handleSearch} />
 
         <StepByStep />
 
@@ -173,11 +118,25 @@ const RoomList = () => {
         </div>
 
         <Row gutter={[10, 10]}>
-          {roomList.map((room, index) => (
-            <Room room={room} key={index} />
-          ))}
-
-          <div
+          {isLoading && (
+            <>
+              {roomList.length > 0 ? (
+                roomList.map((room, index) => <Room room={room} key={index} />)
+              ) : (
+                <Title
+                  level={4}
+                  style={{
+                    textAlign: 'center',
+                    color: 'red',
+                    width: '100%',
+                  }}
+                >
+                  No hotel
+                </Title>
+              )}
+            </>
+          )}
+          {/* <div
             style={{
               display: 'flex',
               justifyContent: 'center',
@@ -188,7 +147,7 @@ const RoomList = () => {
             <Button type="dashed" size="middle">
               Load more
             </Button>
-          </div>
+          </div> */}
         </Row>
 
         <GuestReviews />
