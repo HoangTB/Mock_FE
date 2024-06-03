@@ -59,14 +59,14 @@ const GuestReviews = ({ ratings }: { ratings: IRating[] }) => {
                         }}
                         avatar={
                           <Avatar
-                            src="https://2sao.vietnamnetjsc.vn/images/2021/04/26/21/17/trai-dep-1.jpg"
+                            src={item.avatar && 'https://2sao.vietnamnetjsc.vn/images/2021/04/26/21/17/trai-dep-1.jpg'}
                             style={{
                               width: 100,
                               height: 100,
                             }}
                           />
                         }
-                        title="Bui Van Sy"
+                        title={item.username}
                       />
                       <Flex vertical align="center">
                         <p>Date: {dayjs(item.timeCreated).format('DD/MM/YYYY')}</p>
@@ -91,7 +91,7 @@ const GuestReviews = ({ ratings }: { ratings: IRating[] }) => {
                     }}
                     avatar={
                       <Avatar
-                        src="https://2sao.vietnamnetjsc.vn/images/2021/04/26/21/17/trai-dep-1.jpg"
+                        src={item.avatar ?? 'https://2sao.vietnamnetjsc.vn/images/2021/04/26/21/17/trai-dep-1.jpg'}
                         style={{
                           width: 100,
                           height: 100,
@@ -100,7 +100,7 @@ const GuestReviews = ({ ratings }: { ratings: IRating[] }) => {
                     }
                     title="Bui Van Sy"
                   />
-                  <Flex vertical align="center">
+                  <Flex vertical align="center" gap={8}>
                     <p>Date: {dayjs(item.timeCreated).format('DD/MM/YYYY')}</p>
                     <Rate disabled defaultValue={4} />
                     <p style={{ marginTop: '10px', textAlign: 'center' }}>{item.contentRating}</p>

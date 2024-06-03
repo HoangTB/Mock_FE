@@ -15,20 +15,12 @@ const RoomSearch: React.FC<FilterProps> = ({ onSearch }) => {
   const [form] = Form.useForm();
 
   const handleFromDateChange = (date: Dayjs | null) => {
-    if (date && date.isAfter(toDate)) {
-      message.error('From date must be before To date');
-    } else {
-      form.setFieldsValue({ fromDate: date });
-    }
+    form.setFieldsValue({ fromDate: date });
   };
 
   const handleToDateChange = (date: Dayjs | null) => {
-    if (date && date.isBefore(fromDate)) {
-      message.error('To date must be after From date');
-    } else {
-      setToDate(date || dayjs().add(2, 'hour'));
-      form.setFieldsValue({ toDate: date });
-    }
+    setToDate(date || dayjs().add(2, 'hour'));
+    form.setFieldsValue({ toDate: date });
   };
 
   const disabledFromDate = (current: Dayjs) => {
@@ -40,28 +32,19 @@ const RoomSearch: React.FC<FilterProps> = ({ onSearch }) => {
     return (current && current < dayjs().startOf('day')) || (fromDate && current.isBefore(fromDate));
   };
 
-  const handleGetCurrentDate = () => {
-    const currentDateISO = dayjs().toISOString();
-    console.log(currentDateISO);
-  };
-
   const filters = {
     fromDate: dayjs(),
-    toDate: dayjs().add(2, 'hour'),
-    status: true,
+    toDate: dayjs().add(3, 'hour'),
     typeRoom: 'ALL',
   };
 
   const handleOnSearch = () => {
-    console.log('hello');
-
     form
       .validateFields()
       .then((values) => {
         const query = {
           fromDate: values.fromDate ? values.fromDate.format('YYYY-MM-DDTHH:mm:ss') : undefined,
           toDate: values.toDate ? values.toDate.format('YYYY-MM-DDTHH:mm:ss') : undefined,
-          status: values.status,
           typeRoom: values.typeRoom,
         };
         onSearch(query);
@@ -75,7 +58,7 @@ const RoomSearch: React.FC<FilterProps> = ({ onSearch }) => {
     <div style={{ marginTop: 20, border: '1px solid #ccc', padding: 20, borderRadius: 10 }}>
       <Form initialValues={filters} form={form}>
         <Row gutter={[16, 16]} style={{ alignItems: 'center' }}>
-          <Col xs={24} sm={12} md={5}>
+          <Col xs={24} sm={12} md={6}>
             <div>
               <Title level={5} style={{ padding: 0, margin: 0 }}>
                 From
@@ -90,7 +73,7 @@ const RoomSearch: React.FC<FilterProps> = ({ onSearch }) => {
               </Form.Item>
             </div>
           </Col>
-          <Col xs={24} sm={12} md={5}>
+          <Col xs={24} sm={12} md={6}>
             <div>
               <Title level={5} style={{ padding: 0, margin: 0 }}>
                 To
@@ -100,17 +83,8 @@ const RoomSearch: React.FC<FilterProps> = ({ onSearch }) => {
               </Form.Item>
             </div>
           </Col>
-          <Col xs={24} sm={12} md={5}>
-            <div>
-              <Title level={5} style={{ padding: 0, margin: 0 }}>
-                Status room
-              </Title>
-              <Form.Item name="status">
-                <Select defaultValue={true} style={{ width: '100%' }} options={[{ value: true, label: 'empty' }]} />
-              </Form.Item>
-            </div>
-          </Col>
-          <Col xs={24} sm={12} md={5}>
+
+          <Col xs={24} sm={12} md={6}>
             <div>
               <Title level={5} style={{ padding: 0, margin: 0 }}>
                 Room type
@@ -131,7 +105,7 @@ const RoomSearch: React.FC<FilterProps> = ({ onSearch }) => {
           <Col
             xs={24}
             sm={24}
-            md={4}
+            md={6}
             style={{
               marginTop: 10,
             }}

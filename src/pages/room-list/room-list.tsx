@@ -12,12 +12,28 @@ import { roomApi } from '../../api/room/room-api';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ratingApi } from '../../api/rating/rating-api';
 import { IRating } from '../../types/rating';
+import { IHotel } from '../../types/hotel';
 
 const { Title } = Typography;
 
 const RoomList = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [roomList, setRoomList] = useState<IRoom[]>([]);
+  const [roomList, setRoomList] = useState<{
+    rooms: IRoom[];
+    hotel: IHotel;
+  }>({
+    hotel: {
+      addressHotel: '',
+      city: '',
+      idHotel: "",
+      imageUrl: '',
+      nameHotel: '',
+      phoneNumberHotel: '',
+      ratings: [],
+      rooms: [],
+    },
+    rooms: [],
+  });
   const [ratingList, setRatingList] = useState<IRating[]>([]);
   const { idHotel } = useParams();
   const navigate = useNavigate();
@@ -82,7 +98,7 @@ const RoomList = () => {
 
         <StepByStep />
 
-        <Title level={3}>Hotel BK - Ha Noi</Title>
+        <Title level={3}>{roomList.hotel.nameHotel}</Title>
 
         <div>
           <Title level={4}>Benefit</Title>
@@ -125,8 +141,8 @@ const RoomList = () => {
         <Row gutter={[10, 10]}>
           {isLoading && (
             <>
-              {roomList.length > 0 ? (
-                roomList.map((room, index) => <Room room={room} key={index} />)
+              {roomList.rooms.length > 0 ? (
+                roomList.rooms.map((room, index) => <Room room={room} key={index} />)
               ) : (
                 <Title
                   level={4}
