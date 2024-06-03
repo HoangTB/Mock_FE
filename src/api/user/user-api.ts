@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { ILogin, IUser } from '../../types/user';
+import { IResetPass } from '../../types/reset-pass';
+import { IChangePass } from '../../types/change-pass';
 
 const domain = process.env.REACT_APP_API_URL;
 
@@ -18,8 +20,36 @@ export const register = async (user: IUser) => {
 
 export const login = async (data: ILogin) => {
   try {
-    const response = await axios.post(`${domain}/auth/login`, data );
+    const response = await axios.post(`${domain}/auth/login`, data);
     console.log(response.data);
+    return response.data;
+  } catch (error) {
+    if ((error as any).response && (error as any).response.data) {
+      if ((error as any).response.data.message === 'Invalid password') {
+        throw new Error('Invalid password');
+      }
+
+      if ((error as any).response.data.message === 'Email not found') {
+        throw new Error('Email not found');
+      }
+    } else {
+      throw new Error('An unknown error occurred.');
+    }
+  }
+};
+
+export const reset = async (data: IResetPass) => {
+  try {
+    const response = await axios.post(`${domain}/auth/forgot`, data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const changePassword = async (data: IChangePass) => {
+  try {
+    const response = await axios.post(`${domain}/auth/change-password`, data);
     return response.data;
   } catch (error) {
     console.log(error);

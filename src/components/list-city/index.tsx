@@ -2,7 +2,7 @@ import React from 'react';
 import style from './style.module.css';
 
 interface ICity {
-  name: string;
+  city: string;
   image: string;
 }
 
@@ -18,8 +18,8 @@ const ListCity: React.FC<CityListProps> = ({ cities }) => {
       <div className={style.cityList}>
         {cities.map((city, index) => (
           <div key={index} className={style.cityCard}>
-            <img src={city.image} alt={city.name} className={style.cityImage} />
-            <p className={style.cityName}>{city.name}</p>
+            <img src={city.image} alt={city.city} className={style.cityImage} />
+            <p className={style.cityName}>{city.city}</p>
           </div>
         ))}
       </div>
