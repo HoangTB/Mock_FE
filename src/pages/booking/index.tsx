@@ -24,12 +24,9 @@ import StepByStep from '../../components/step-by-step';
 import { roomApi } from '../../api/room/room-api';
 import { useParams } from 'react-router-dom';
 import { IRoomDetail } from '../../types/room';
+import CustomButton from '../../components/buttons/submit-button/custom-button';
 
 const { Title } = Typography;
-
-const onChange = (checkedValues: any) => {
-  console.log('checked = ', checkedValues);
-};
 
 const hourOptions: any[] = [];
 
@@ -43,7 +40,7 @@ for (let i = 1; i < 13; i++) {
 const BookingRoom = () => {
   const [form] = Form.useForm();
   const { idRoom } = useParams();
-
+  let [sum, setSum] = useState(0);
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedHour, setSelectedHour] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -73,16 +70,23 @@ const BookingRoom = () => {
       if (idRoom) {
         const { room, services } = await roomApi.getRoomById(idRoom);
         setData({ room, services });
+        setSum(room.priceOfRoom);
         setIsLoading(true);
       }
     })();
   }, [idRoom]);
 
+  const onChange = (checkedValues: any) => {
+    checkedValues.forEach((item: any) => {
+      let total = (sum += Number.parseInt(item.priceOfService));
+      setSum(total + data.room.priceOfRoom);
+    });
+  };
+
   const calculateNewDate = (checkInDate: string, duration: string) => {
     if (checkInDate && duration) {
       const selectedDateObj = new Date(checkInDate);
       selectedDateObj.setHours(selectedDateObj.getHours() + parseInt(duration));
-
       const year = selectedDateObj.getFullYear();
       const month = String(selectedDateObj.getMonth() + 1).padStart(2, '0');
       const date = String(selectedDateObj.getDate()).padStart(2, '0');
@@ -96,7 +100,7 @@ const BookingRoom = () => {
 
   const onChangeDate: DatePickerProps['onChange'] = (_, dateStr: any) => {
     setSelectedDate(dateStr);
-    form.setFieldsValue({ datePicker: dateStr, checkOutDate: calculateNewDate(dateStr, selectedHour) });
+    form.setFieldsValue({ checkInDate: dateStr, checkOutDate: calculateNewDate(dateStr, selectedHour) });
   };
 
   const handleHourChange: SelectProps['onChange'] = (value) => {
@@ -132,7 +136,6 @@ const BookingRoom = () => {
               <h1 style={{ fontSize: 30, lineHeight: 2 }}>{data.room.nameHotel}</h1>
               <p>{data.room.address}</p>
               <hr className={styles.border}></hr>
-              <hr className={styles.border2}></hr>
               <Form form={form} name="basic" initialValues={{ remember: true }} onFinish={onFinish} autoComplete="off">
                 <Row className={styles.rowLeft}>
                   <Col span={13} md={11} sm={24} xs={24} className={styles.roomBorder1}>
@@ -206,7 +209,7 @@ const BookingRoom = () => {
                         <Form.Item
                           label={<span className={styles.labelStyle}>Check-in date: </span>}
                           labelCol={{ span: 24 }}
-                          name="datePicker"
+                          name="checkInDate"
                           rules={[{ required: true, message: 'Please input date!' }]}
                         >
                           <ConfigProvider>
@@ -214,6 +217,8 @@ const BookingRoom = () => {
                               showTime={{ format: 'HH' }}
                               onChange={onChangeDate}
                               disabledDate={disabledDate}
+                              className={styles.inputStyle}
+                              style={{ width: '100%' }}
                             />
                           </ConfigProvider>
                         </Form.Item>
@@ -250,8 +255,8 @@ const BookingRoom = () => {
                       </Col>
                     </Flex>
                   </Col>
-                  <hr className={styles.border2}></hr>
                 </Row>
+
                 <Row>
                   <Col span={12} md={12} sm={24} xs={24}>
                     <h1 className={styles.titleService}>Select service: </h1>
@@ -260,19 +265,23 @@ const BookingRoom = () => {
                         <Row gutter={5} style={{ width: '100%' }}>
                           {data.services.map((item) => (
                             <Col key={item.idService} span={8} md={8} sm={24} xs={24}>
-                              <Checkbox value={item.idService}>{item.nameService}</Checkbox>
+                              <Checkbox value={item}>{item.nameService}</Checkbox>
                             </Col>
                           ))}
                         </Row>
                       </Checkbox.Group>
                     </Form.Item>
                   </Col>
+                </Row>
+                <hr className={styles.border}></hr>
+
+                <Row style={{ justifyContent: 'center' }}>
                   <Col span={12} md={12} sm={24} xs={24} className={styles.btnSubmit} style={{ textAlign: 'center' }}>
-                    <h1 className={styles.totalPrice}>Total: 100$</h1>
+                    <h1 className={styles.totalPrice}>Total: {sum}$</h1>
                     <Form.Item>
-                      <Button htmlType="submit" className={styles.btnCheckout}>
+                      <CustomButton type="primary" htmlType="submit" loading={!isLoading}>
                         Checkout
-                      </Button>
+                      </CustomButton>
                     </Form.Item>
                   </Col>
                 </Row>

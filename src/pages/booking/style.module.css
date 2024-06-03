@@ -102,6 +102,11 @@
   font-size: 35px;
 }
 
+:global(.ant-input-disabled) {
+  background-color: transparent !important;
+  color: black !important;
+}
+
 .btnCheckout {
   width: 200px;
   padding: 10px;
