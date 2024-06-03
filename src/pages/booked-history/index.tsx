@@ -4,16 +4,17 @@ import styles from './styles.module.css';
 import { IRoomBooking } from '../../types/booked-histoty';
 import BookingItem from './booking-item';
 import { getAllBookedHistory } from '../../api/booked-history/booked-history-api';
+import decodeToken from '../../utils/hoc/de-token';
 
 const { Title } = Typography;
 
 const BookedHistory = () => {
   const [data, setData] = useState<IRoomBooking[]>([]);
   const [loading, setLoading] = useState(false);
-
+  const [activeTab, setActiveTab] = useState('2');
   const bookingList = data;
 
-  const getAll = async () => {
+  const getAllBookedHistoryByIdUser = async () => {
     setLoading(true);
     try {
       const response = await getAllBookedHistory();
@@ -25,18 +26,38 @@ const BookedHistory = () => {
     }
   };
 
+  const handleCancelBooking = () => {
+    setActiveTab('3');
+    getAllBookedHistoryByIdUser();
+  };
+
+  const handleDeleteBooking = () => {
+    getAllBookedHistoryByIdUser();
+  };
+
   useEffect(() => {
-    getAll();
+    getAllBookedHistoryByIdUser();
   }, []);
 
   const renderBookingList = (status: 'Pending' | 'Approved' | 'Cancelled') => {
     return (
       <>
-        {bookingList
-          .filter((item) => item.statusOfBooking === status)
-          .map((booking) => (
-            <BookingItem key={booking.roomNumber} booking={booking} />
-          ))}
+        {loading ? (
+          <>Loading...</>
+        ) : (
+          <>
+            {bookingList
+              ?.filter((item) => item.statusOfBooking === status)
+              .map((booking) => (
+                <BookingItem
+                  key={booking.idBooking}
+                  booking={booking}
+                  onCancel={handleCancelBooking}
+                  onDelete={handleDeleteBooking}
+                />
+              ))}
+          </>
+        )}
       </>
     );
   };
@@ -74,7 +95,7 @@ const BookedHistory = () => {
           </Title>
         </Col>
         <div className={styles.tabs}>
-          <Tabs defaultActiveKey="1" renderTabBar={renderTabBar} items={items} size="large" />
+          <Tabs activeKey={activeTab} onChange={setActiveTab} renderTabBar={renderTabBar} items={items} size="large" />
         </div>
       </Row>
     </div>

@@ -10,4 +10,5 @@ export interface IRoomBooking {
   linkOfPhoto: String;
   dateBooking: String;
   idBooking: number;
+  idUser: number;
 }

@@ -1,25 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Row, Col, Button, Typography, Tag, Flex, Modal } from 'antd';
 import { Image } from 'antd';
 import { IRoomBooking } from '../../types/booked-histoty';
 import styles from './styles.module.css';
 import { deleteBooking, updateStatusOfBooking } from '../../api/booked-history/booked-history-api';
+import decodeToken from '../../utils/hoc/de-token';
 
 const { Title, Text } = Typography;
 
-const BookingItem = ({ booking }: { booking: IRoomBooking }) => {
+const BookingItem = ({
+  booking,
+  onCancel,
+  onDelete,
+}: {
+  booking: IRoomBooking;
+  onCancel: () => void;
+  onDelete: () => void;
+}) => {
   const [loading, setLoading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [confirmCancel, setConfirmCancel] = useState(false);
 
-  const cancel = async (roomNumber: number, statusOfBooking: string) => {
+  const cancel = async (idBooking: number, statusOfBooking: string) => {
     setLoading(true);
-    await updateStatusOfBooking(roomNumber, statusOfBooking);
     try {
+      await updateStatusOfBooking(idBooking, statusOfBooking);
+      onCancel();
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleConfirmCancel = () => {
+    cancel(booking.idBooking, 'Cancelled');
+    setConfirmCancel(false);
   };
 
   const handleDeleteBooking = async (idBooking: number) => {
@@ -30,6 +46,7 @@ const BookingItem = ({ booking }: { booking: IRoomBooking }) => {
       console.log(error);
     } finally {
       setLoading(false);
+      onDelete();
     }
   };
 
@@ -45,7 +62,7 @@ const BookingItem = ({ booking }: { booking: IRoomBooking }) => {
           <Image
             width={100}
             height={100}
-            src={booking.linkOfPhoto.toLocaleString()}
+            src={booking?.linkOfPhoto?.toLocaleString()}
             alt="Room Image"
             style={{ borderRadius: 10 }}
           />
@@ -56,17 +73,17 @@ const BookingItem = ({ booking }: { booking: IRoomBooking }) => {
               <Title level={4}>Room {booking.roomNumber}</Title>
               <Text>
                 <p className={styles.title}>Date booking: </p>
-                {new Date(booking.dateBooking.toString()).toLocaleString()}
+                {new Date(booking.dateBooking.toString())?.toLocaleString()}
               </Text>
               <br />
               <Text>
                 <p className={styles.title}>From Date: </p>
-                {new Date(booking.startDateBooking).toLocaleString()}
+                {new Date(booking.startDateBooking)?.toLocaleString()}
               </Text>
               <br />
               <Text>
                 <p className={styles.title}>To Date: </p>
-                {new Date(booking.endDateBooking).toLocaleString()}
+                {new Date(booking.endDateBooking)?.toLocaleString()}
               </Text>
               <br />
             </Col>
@@ -129,50 +146,64 @@ const BookingItem = ({ booking }: { booking: IRoomBooking }) => {
                   {booking.statusOfBooking === 'Approved' && <Tag color="#2db7f5">Approved</Tag>}
                   {booking.statusOfBooking === 'Cancelled' && <Tag color="#cd201f">Cancelled</Tag>}
                 </Text>
-                {booking.statusOfBooking === 'Pending' && (
-                  <Button
-                    type="primary"
-                    danger
-                    onClick={() => cancel(booking.roomNumber, booking.statusOfBooking)}
-                    loading={loading}
-                  >
-                    CANCEL
-                  </Button>
-                )}
-                {booking.statusOfBooking === 'Approved' && (
-                  <Button
-                    type="primary"
-                    danger
-                    style={{
-                      background: '#f50',
-                    }}
-                  >
-                    Feedback
-                  </Button>
-                )}
-                {booking.statusOfBooking === 'Cancelled' && (
-                  <>
-                    <Button type="primary">Re-booking</Button>
-                    <Button type="primary" danger onClick={() => setShowConfirmation(true)}>
-                      Delete
-                    </Button>
-                    <Modal
-                      title="Confirm"
-                      open={showConfirmation}
-                      onCancel={() => setShowConfirmation(false)}
-                      footer={[
-                        <Button key="cancel" onClick={() => setShowConfirmation(false)}>
-                          Cancel
-                        </Button>,
-                        <Button key="confirm" type="primary" danger onClick={handleConfirmDelete}>
-                          Confirm
-                        </Button>,
-                      ]}
+                <Flex gap={10}>
+                  {booking.statusOfBooking === 'Pending' && (
+                    <>
+                      <Button type="primary" danger onClick={() => setConfirmCancel(true)} loading={loading}>
+                        CANCEL
+                      </Button>
+                      <Modal
+                        title="Confirm"
+                        open={confirmCancel}
+                        onCancel={() => setConfirmCancel(false)}
+                        footer={[
+                          <Button key="back" onClick={() => setConfirmCancel(false)}>
+                            No
+                          </Button>,
+                          <Button key="submit" type="primary" danger onClick={handleConfirmCancel} loading={loading}>
+                            Yes
+                          </Button>,
+                        ]}
+                      >
+                        Are you sure you want to cancel this booking?
+                      </Modal>
+                    </>
+                  )}
+                  {booking.statusOfBooking === 'Approved' && (
+                    <Button
+                      type="primary"
+                      danger
+                      style={{
+                        background: '#f50',
+                      }}
                     >
-                      Are you sure you want to delete this booking?
-                    </Modal>
-                  </>
-                )}
+                      Feedback
+                    </Button>
+                  )}
+                  {booking.statusOfBooking === 'Cancelled' && (
+                    <>
+                      <Button type="primary">Re-booking</Button>
+                      <Button type="primary" danger onClick={() => setShowConfirmation(true)}>
+                        Delete
+                      </Button>
+                      <Modal
+                        title="Confirm"
+                        open={showConfirmation}
+                        onCancel={() => setShowConfirmation(false)}
+                        footer={[
+                          <Button key="cancel" onClick={() => setShowConfirmation(false)}>
+                            Cancel
+                          </Button>,
+                          <Button key="confirm" type="primary" danger onClick={handleConfirmDelete}>
+                            Confirm
+                          </Button>,
+                        ]}
+                      >
+                        Are you sure you want to delete this booking?
+                      </Modal>
+                    </>
+                  )}
+                </Flex>
               </Flex>
             </Col>
           </Row>
