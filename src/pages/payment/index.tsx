@@ -6,9 +6,10 @@ import StepByStep from '../../components/step-by-step';
 import styles from './payments.module.css';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { VnpayAPI } from '../../api/payment';
-import { VnpayRequest } from '../../api/payment/request/vnpay.request';
-import { VnpayResponse } from '../../api/payment/response/vnpay.response';
+import { VnpayRequest, bookingRequest, usersRequest } from '../../api/payment/request/vnpay.request';
+import { MomoResponse, VnpayResponse, ZaloResponse } from '../../api/payment/response/vnpay.response';
 import Dropdown from 'antd/es/dropdown/dropdown';
+import { SoundTwoTone } from '@ant-design/icons';
 const { Paragraph } = Typography;
 
 const UserInfoForm = () => {
@@ -17,10 +18,10 @@ const UserInfoForm = () => {
   const [isCheckboxError, setIsCheckboxError] = useState(false);
   const [selectedKey, setSelectedKey] = useState('');
 
-    const handleMenuClick = (e: MenuInfo) => {
+  const handleMenuClick = (e: MenuInfo) => {
     setSelectedKey(e.key);
-    };
-  
+  };
+
   const items: MenuProps['items'] = [
     {
       key: 'NCB',
@@ -44,7 +45,7 @@ const UserInfoForm = () => {
     },
   ];
 
-  const users = {
+  const users: usersRequest = {
     fullName: 'Truong Bao Hoang',
     gender: 'Male',
     email: 'tbhoang95@gmail.com',
@@ -52,7 +53,9 @@ const UserInfoForm = () => {
     cccd: '123456',
   };
 
-  const booking = {
+  const booking: bookingRequest = {
+    idRoom: 1,
+    idServices: [1, 2, 3],
     roomPrice: 400000,
     servicePrice: 100000,
   };
@@ -78,16 +81,28 @@ const UserInfoForm = () => {
     const params: VnpayRequest = {
       users: users,
       booking: booking,
-      amount: booking.roomPrice + booking.servicePrice,
-      bankCode: selectedKey ? selectedKey : "NCB",
-      locate: 'vn',
+      amount: booking.roomPrice + booking.servicePrice ? booking.roomPrice + booking.servicePrice : 0,
+      bankCode: selectedKey ? selectedKey : 'NCB',
     };
     if (value === 1) {
       const response: VnpayResponse = await VnpayAPI.vnpayPost(params);
+
       if (response && response.url) {
-        const fullUrl: string = response.url;
+        const fullUrl: string = response.url ? response.url : '';
         window.location.href = fullUrl;
       }
+    }
+
+    if (value === 2) {
+      const response: MomoResponse = await VnpayAPI.momoPost(params);
+      const Url: string = response.payUrl ? response.payUrl : '';
+      window.location.href = Url;
+    }
+
+     if (value === 3) {
+       const response: ZaloResponse = await VnpayAPI.zaloPost(params);
+      const Url: string = response.order_url ? response.order_url : '';
+      window.location.href = Url;
     }
   };
 
@@ -137,14 +152,12 @@ const UserInfoForm = () => {
                   </Dropdown>
                 </Radio>
                 <Radio className={`${styles.radio} ${value === 2 ? styles.checked : ''}`} value={2}>
-                  Zalo pay
-                </Radio>
-                <Radio className={`${styles.radio} ${value === 3 ? styles.checked : ''}`} value={3}>
                   Momo
                 </Radio>
-                <Radio className={`${styles.radio} ${value === 4 ? styles.checked : ''}`} value={4}>
-                  Payment later
+                <Radio className={`${styles.radio} ${value === 3 ? styles.checked : ''}`} value={3}>
+                  Zalo Pay
                 </Radio>
+
                 <Checkbox
                   className={`${styles.checkbox} ${isCheckboxError ? styles.errorCheckbox : ''}`}
                   onChange={handleCheckboxChange}
@@ -185,7 +198,7 @@ const UserInfoForm = () => {
                     <td>
                       <td>1</td>
                     </td>
-                    <td>{(booking.servicePrice).toLocaleString('de-DE')} VND</td>
+                    <td>{booking.servicePrice.toLocaleString('de-DE')} VND</td>
                   </tr>
                 </tbody>
               </table>
@@ -196,19 +209,21 @@ const UserInfoForm = () => {
                 <p>
                   <b>Room</b>
                 </p>
-                <p>{(booking.roomPrice).toLocaleString('de-DE')} VND</p>
+                <p>{booking.roomPrice.toLocaleString('de-DE')} VND</p>
               </div>
               <div>
                 <p>
                   <b>Service</b>
                 </p>
-                <p>{(booking.servicePrice).toLocaleString('de-DE')} VND</p>
+                <p>{booking.servicePrice.toLocaleString('de-DE')} VND</p>
               </div>
               <div>
                 <p>
                   <b>Total</b>
                 </p>
-                <p className={styles.totalPrice}>{(booking.roomPrice + booking.servicePrice).toLocaleString('de-DE')} VND</p>
+                <p className={styles.totalPrice}>
+                  {(booking.roomPrice + booking.servicePrice).toLocaleString('de-DE')} VND
+                </p>
               </div>
             </div>
           </div>

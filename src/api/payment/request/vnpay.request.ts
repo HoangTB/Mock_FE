@@ -3,7 +3,6 @@ export interface VnpayRequest {
   booking?: bookingRequest;
   amount?: number;
   bankCode?: string;
-  locate?: string;
 }
 
 export interface usersRequest {
@@ -15,8 +14,10 @@ export interface usersRequest {
 }
 
 export interface bookingRequest {
-  roomPrice?: number;
-  servicePrice?: number;
+  idRoom: number;
+  idServices: number[];
+  roomPrice: number;
+  servicePrice: number;
 }
 
 // export interface paymentRequest {
