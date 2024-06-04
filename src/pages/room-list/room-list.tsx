@@ -25,7 +25,7 @@ const RoomList = () => {
     hotel: {
       addressHotel: '',
       city: '',
-      idHotel: "",
+      idHotel: '',
       imageUrl: '',
       nameHotel: '',
       phoneNumberHotel: '',
@@ -66,10 +66,18 @@ const RoomList = () => {
           position: 'relative',
         }}
       >
-        <div className={styles.banner}></div>
+        <div
+          className={styles.banner}
+          style={{
+            backgroundImage: `url(${roomList.hotel.imageUrl})`,
+            backgroundPosition: 'center',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'inherit',
+          }}
+        ></div>
         <div className={styles.content}>
           <Title level={2} className={styles.title}>
-            Welcome to Hotel BK
+            Welcome to {roomList.hotel.nameHotel}
           </Title>
           <Title
             level={4}
@@ -144,16 +152,14 @@ const RoomList = () => {
               {roomList.rooms.length > 0 ? (
                 roomList.rooms.map((room, index) => <Room room={room} key={index} />)
               ) : (
-                <Title
-                  level={4}
+                <img
+                  src="https://i.pinimg.com/originals/49/e5/8d/49e58d5922019b8ec4642a2e2b9291c2.png"
+                  alt=""
+                  width={500}
                   style={{
-                    textAlign: 'center',
-                    color: 'red',
-                    width: '100%',
+                    margin: 'auto',
                   }}
-                >
-                  No hotel
-                </Title>
+                />
               )}
             </>
           )}

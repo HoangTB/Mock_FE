@@ -79,7 +79,12 @@ const RoomSearch: React.FC<FilterProps> = ({ onSearch }) => {
                 To
               </Title>
               <Form.Item name="toDate">
-                <DatePicker style={{ width: '100%' }} showTime={{ showHour: true }} disabledDate={disabledToDate} />
+                <DatePicker
+                  style={{ width: '100%' }}
+                  showTime={{ showHour: true }}
+                  allowClear={false}
+                  disabledDate={disabledToDate}
+                />
               </Form.Item>
             </div>
           </Col>
