@@ -31,3 +31,22 @@ export interface IRoomBooking extends IRoom {
   total: number;
   bookingStatus: 'booking' | 'approve' | 'cancel';
 }
+
+export interface IService {
+  nameService: string;
+  idService: number;
+}
+
+export interface IBookingRoom {
+  room: IRoomDetail;
+  // services: IService[];
+  user?: IUserInfo;
+}
+
+export interface IUserInfo {
+  userName: string;
+  identificationCard: string;
+  phoneNumber: string;
+  gender: boolean;
+  email: string;
+}

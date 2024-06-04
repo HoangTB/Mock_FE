@@ -43,7 +43,7 @@ const routes: RouteObject[] = [
         Component: HomePage,
       },
       {
-        path: '/rooms/:id',
+        path: '/branch/:id',
         Component: RoomList,
       },
       {
@@ -86,7 +86,7 @@ const routes: RouteObject[] = [
         Component: Completed,
       },
       {
-        path: '/booking/room/:idRoom',
+        path: '/branch/room/:idRoom',
         Component: BookingRoom,
       },
       {

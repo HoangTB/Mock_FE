@@ -12,7 +12,7 @@
   padding: 10px 20px;
 }
 .price {
-  font-size: 30px;
+  font-size: 25px;
 }
 .title {
   font-size: 25px;
@@ -107,7 +107,14 @@
 
 :global(.ant-input-disabled) {
   background-color: transparent !important;
-  color: black !important;
+  /* color: black !important; */
+  font-family: 'Montserrat';
+}
+
+:global(.ant-select-selector) {
+  background: transparent !important;
+  /* color: black !important; */
+  font-family: 'Montserrat';
 }
 
 .btnCheckout {
