@@ -72,7 +72,7 @@ const Room = ({ room }: { room: IRoom }) => {
               style={{
                 background: 'var(--primary-color)',
               }}
-              onClick={() => navigate(`/booking/room/${idRoom}`)}
+              onClick={() => navigate(`/branch/room/${idRoom}`)}
             >
               <HomeOutlined />
               Book now
