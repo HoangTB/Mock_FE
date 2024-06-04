@@ -43,7 +43,7 @@ const routes: RouteObject[] = [
         Component: HomePage,
       },
       {
-        path: '/branch/:id',
+        path: '/branch/:idHotel',
         Component: RoomList,
       },
       {
