@@ -20,7 +20,7 @@ const StepByStep = () => {
     <Steps
       responsive
       style={{
-        marginTop: 30,
+        margin: '30px 0',
       }}
       items={[
         {
