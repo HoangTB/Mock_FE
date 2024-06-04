@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Row, Tabs, TabsProps, Typography } from 'antd';
+import { Col, Row, Tabs, Typography, Empty } from 'antd';
 import styles from './styles.module.css';
 import { IRoomBooking } from '../../types/booked-histoty';
 import BookingItem from './booking-item';
 import { getAllBookedHistory } from '../../api/booked-history/booked-history-api';
-import decodeToken from '../../utils/hoc/de-token';
 
 const { Title } = Typography;
 
@@ -40,22 +39,25 @@ const BookedHistory = () => {
   }, []);
 
   const renderBookingList = (status: 'Pending' | 'Approved' | 'Cancelled') => {
+    const filteredBookings = bookingList?.filter((item) => item?.statusOfBooking === status);
     return (
       <>
         {loading ? (
           <>Loading...</>
         ) : (
           <>
-            {bookingList
-              ?.filter((item) => item.statusOfBooking === status)
-              .map((booking) => (
+            {filteredBookings?.length > 0 ? (
+              filteredBookings?.map((booking) => (
                 <BookingItem
                   key={booking.idBooking}
                   booking={booking}
                   onCancel={handleCancelBooking}
                   onDelete={handleDeleteBooking}
                 />
-              ))}
+              ))
+            ) : (
+              <Empty description="No Data Found" />
+            )}
           </>
         )}
       </>
@@ -79,23 +81,17 @@ const BookedHistory = () => {
       children: renderBookingList('Cancelled'),
     },
   ];
-  const renderTabBar: TabsProps['renderTabBar'] = (props, DefaultTabBar) => <DefaultTabBar {...props} />;
 
   return (
-    <div>
+    <div className={styles.container}>
       <Row>
         <Col span={24}>
-          <Title
-            level={3}
-            style={{
-              textAlign: 'center',
-            }}
-          >
+          <Title level={3} style={{ textAlign: 'center' }}>
             Booked History
           </Title>
         </Col>
         <div className={styles.tabs}>
-          <Tabs activeKey={activeTab} onChange={setActiveTab} renderTabBar={renderTabBar} items={items} size="large" />
+          <Tabs activeKey={activeTab} onChange={setActiveTab} items={items} size="large" />
         </div>
       </Row>
     </div>

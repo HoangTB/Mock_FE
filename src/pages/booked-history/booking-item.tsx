@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Card, Row, Col, Button, Typography, Tag, Flex, Modal } from 'antd';
+import React, { useState } from 'react';
+import { Card, Row, Col, Button, Typography, Tag, Flex, Modal, Form, Input } from 'antd';
 import { Image } from 'antd';
 import { IRoomBooking } from '../../types/booked-histoty';
 import styles from './styles.module.css';
 import { deleteBooking, updateStatusOfBooking } from '../../api/booked-history/booked-history-api';
-import decodeToken from '../../utils/hoc/de-token';
+import moment from 'moment';
 
 const { Title, Text } = Typography;
 
@@ -20,6 +20,8 @@ const BookingItem = ({
   const [loading, setLoading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [confirmCancel, setConfirmCancel] = useState(false);
+  const [feedbackModalVisible, setFeedbackModalVisible] = useState(false);
+  const [form] = Form.useForm();
 
   const cancel = async (idBooking: number, statusOfBooking: string) => {
     setLoading(true);
@@ -55,6 +57,19 @@ const BookingItem = ({
     setShowConfirmation(false);
   };
 
+  const handleFeedbackSubmit = async () => {
+    console.log('Feedback submitted:');
+    setFeedbackModalVisible(false);
+    form.resetFields();
+  };
+
+  const isCancelable = () => {
+    const currentTime = moment();
+    const bookingTime = moment(booking.startDateBooking.toString());
+    const diffInHours = bookingTime.diff(currentTime, 'hours');
+    return diffInHours > 24;
+  };
+
   return (
     <Card bordered={false} className={styles.card}>
       <Row gutter={16}>
@@ -73,17 +88,17 @@ const BookingItem = ({
               <Title level={4}>Room {booking.roomNumber}</Title>
               <Text>
                 <p className={styles.title}>Date booking: </p>
-                {new Date(booking.dateBooking.toString())?.toLocaleString()}
+                {moment(booking?.dateBooking.toString()).format('YYYY-MM-DD HH:mm:ss')}
               </Text>
               <br />
               <Text>
                 <p className={styles.title}>From Date: </p>
-                {new Date(booking.startDateBooking)?.toLocaleString()}
+                {moment(booking?.startDateBooking.toString()).format('YYYY-MM-DD HH:mm:ss')}
               </Text>
               <br />
               <Text>
                 <p className={styles.title}>To Date: </p>
-                {new Date(booking.endDateBooking)?.toLocaleString()}
+                {moment(booking?.endDateBooking.toString()).format('YYYY-MM-DD HH:mm:ss')}
               </Text>
               <br />
             </Col>
@@ -149,7 +164,13 @@ const BookingItem = ({
                 <Flex gap={10}>
                   {booking.statusOfBooking === 'Pending' && (
                     <>
-                      <Button type="primary" danger onClick={() => setConfirmCancel(true)} loading={loading}>
+                      <Button
+                        type="primary"
+                        danger
+                        onClick={() => setConfirmCancel(true)}
+                        loading={loading}
+                        disabled={!isCancelable()}
+                      >
                         CANCEL
                       </Button>
                       <Modal
@@ -170,15 +191,48 @@ const BookingItem = ({
                     </>
                   )}
                   {booking.statusOfBooking === 'Approved' && (
-                    <Button
-                      type="primary"
-                      danger
-                      style={{
-                        background: '#f50',
-                      }}
-                    >
-                      Feedback
-                    </Button>
+                    <>
+                      <Button
+                        type="primary"
+                        danger
+                        style={{
+                          background: '#f50',
+                        }}
+                        onClick={() => setFeedbackModalVisible(true)}
+                      >
+                        Feedback
+                      </Button>
+                      <Modal
+                        title="Feedback"
+                        open={feedbackModalVisible}
+                        onCancel={() => setFeedbackModalVisible(false)}
+                        footer={[
+                          <Button key="back" onClick={() => setFeedbackModalVisible(false)}>
+                            No
+                          </Button>,
+                          <Button key="submit" type="primary" danger loading={loading}>
+                            Yes
+                          </Button>,
+                        ]}
+                      >
+                        <Form form={form} layout="vertical" onFinish={handleFeedbackSubmit}>
+                          <Form.Item
+                            name="title"
+                            label="Title"
+                            rules={[{ required: true, message: 'Please input the title!' }]}
+                          >
+                            <Input placeholder="Enter title" />
+                          </Form.Item>
+                          <Form.Item
+                            name="content"
+                            label="Content"
+                            rules={[{ required: true, message: 'Please input the content!' }]}
+                          >
+                            <Input.TextArea rows={4} placeholder="Enter content" />
+                          </Form.Item>
+                        </Form>
+                      </Modal>
+                    </>
                   )}
                   {booking.statusOfBooking === 'Cancelled' && (
                     <>
