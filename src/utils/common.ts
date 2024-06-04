@@ -1,6 +1,6 @@
-import { IGuestReview } from '../types/review';
+import { IRating } from '../types/rating';
 
-export const chunkArray = (array: IGuestReview[], size: number) => {
+export const chunkArray = (array: IRating[], size: number) => {
   const result = [];
   for (let i = 0; i < array.length; i += size) {
     result.push(array.slice(i, i + size));

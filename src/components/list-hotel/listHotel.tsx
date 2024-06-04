@@ -20,7 +20,7 @@ const ListHotel = ({ data }: ListHotelProps) => {
   }, {});
 
   const navigateTo = (id: string) => () => {
-    navigate(`/rooms/${id}`);
+    navigate(`/branch/${id}`);
   };
 
   return (
