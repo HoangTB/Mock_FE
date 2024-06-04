@@ -33,6 +33,7 @@ for (let i = 1; i < 13; i++) {
 }
 
 const BookingRoom = () => {
+  const noData = "https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg";
   const [form] = Form.useForm();
   const navigate = useNavigate();
   let [isDisable, setIsDisable] = useState(false);
@@ -87,11 +88,9 @@ const BookingRoom = () => {
   };
 
   const onFinish: FormProps['onFinish'] = (values) => {
-    // add sum to values but sum not in values
     values.sum = sum;
     localStorage.setItem('booking', JSON.stringify(values));
-    navigate(`/booking/${data.room.roomID}`);
-
+    navigate(`/booking/${data.room.idRoom}`);
     setIsDisable(false);
   };
 
@@ -125,7 +124,7 @@ const BookingRoom = () => {
                   <Col span={13} md={11} sm={24} xs={24} className={styles.roomBorder1}>
                     <Carousel autoplay arrows>
                       {data.room.images.map((image) => (
-                        <img key={image} className={styles.imageroom} alt="example" src={image} />
+                        <img key={image} className={styles.imageroom} alt="example" src={image ? image : noData} />
                       ))}
                     </Carousel>
 

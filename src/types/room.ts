@@ -11,7 +11,7 @@ export interface IRoom {
 }
 
 export interface IRoomDetail {
-  roomID: string;
+  idRoom: string;
   nameHotel: string;
   address: string;
   images: string[];

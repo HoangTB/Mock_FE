@@ -1,6 +1,6 @@
-import { Checkbox, Menu, MenuProps, Radio, RadioChangeEvent, Typography, message } from 'antd';
+import { Checkbox, Menu, MenuProps, Radio, RadioChangeEvent, Typography, message, Form } from 'antd';
 import type { MenuInfo } from 'rc-menu/lib/interface';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Container from '../../components/container';
 import StepByStep from '../../components/step-by-step';
 import styles from './payments.module.css';
@@ -9,6 +9,9 @@ import { VnpayAPI } from '../../api/payment';
 import { VnpayRequest, bookingRequest, usersRequest } from '../../api/payment/request/vnpay.request';
 import { MomoResponse, VnpayResponse, ZaloResponse } from '../../api/payment/response/vnpay.response';
 import Dropdown from 'antd/es/dropdown/dropdown';
+import { useParams } from 'react-router-dom';
+import { roomApi } from '../../api/room/room-api';
+import { IBookingRoom, IRoomDetail, IUserInfo } from '../../types/room';
 import { SoundTwoTone } from '@ant-design/icons';
 const { Paragraph } = Typography;
 
@@ -17,6 +20,40 @@ const UserInfoForm = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [isCheckboxError, setIsCheckboxError] = useState(false);
   const [selectedKey, setSelectedKey] = useState('');
+  const { idRoom } = useParams();
+  let [sum, setSum] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  let [isDisable, setIsDisable] = useState(false);
+    const [form] = Form.useForm();
+ const [data, setData] = useState<IBookingRoom>({
+    room: {} as IRoomDetail,
+    // services: [] as IService[],
+    user: {} as IUserInfo,
+ });
+console.log(data);
+  
+  useEffect(() => {
+    (async () => {
+      if (idRoom) {
+        const { room, user } = await roomApi.getRoomById(idRoom);
+        setData({ room, user });
+        setSum(room.priceOfRoom);
+        setIsLoading(true);
+        if (user) {
+          setIsDisable(true);
+          form.setFieldsValue({
+            fullName: user.userName,
+            cccd: user.identificationCard,
+            email: user.email,
+            phone: user.phoneNumber,
+            gender: user.gender ? 'male' : 'female',
+          });
+        }
+      }
+    })();
+  }, [idRoom]);
+  console.log(data);
+  
 
   const handleMenuClick = (e: MenuInfo) => {
     setSelectedKey(e.key);
@@ -44,13 +81,13 @@ const UserInfoForm = () => {
       label: <img src="/images/mastercard.jpg" alt="..." className={styles.logoBank} />,
     },
   ];
-
+  
   const users: usersRequest = {
-    fullName: 'Truong Bao Hoang',
-    gender: 'Male',
-    email: 'tbhoang95@gmail.com',
-    phone: '0905485884',
-    cccd: '123456',
+    fullName: data.user?.userName,
+    gender:data.user?.gender ? "Male" : "Female",
+    email:data.user?.email,
+    phone: data.user?.phoneNumber,
+    cccd: data.user?.identificationCard,
   };
 
   const booking: bookingRequest = {
