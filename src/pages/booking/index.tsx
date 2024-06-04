@@ -1,13 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import styles from './style.module.css';
-import { Flex, Typography, Form, Select, Input, Row, Col, GetProp, Checkbox, Button, DatePicker, ConfigProvider, DatePickerProps, SelectProps } from 'antd';
+import {
+  Flex,
+  Typography,
+  Form,
+  Select,
+  Input,
+  Row,
+  Col,
+  GetProp,
+  Checkbox,
+  Button,
+  DatePicker,
+  ConfigProvider,
+  DatePickerProps,
+  SelectProps,
+} from 'antd';
 
 import { CarOutlined, DesktopOutlined, UserOutlined } from '@ant-design/icons';
 import Container from '../../components/container';
 import StepByStep from '../../components/step-by-step';
 const { Title } = Typography;
-
-
 
 const onChange: GetProp<typeof Checkbox.Group, 'onChange'> = (checkedValues) => {
   console.log('checked = ', checkedValues);
@@ -27,7 +40,7 @@ const hourOptions: any[] | undefined = [];
 for (let i = 1; i < 13; i++) {
   hourOptions.push({
     value: i,
-    label: i + " giờ",
+    label: i + ' giờ',
   });
 }
 
@@ -38,7 +51,6 @@ const BookingRoom = () => {
   const [selectedHour, setSelectedHour] = useState('');
 
   const calculateNewDate = () => {
-
     if (selectedDate && selectedHour) {
       const currentDate = new Date();
       const selectedDateObj = new Date(selectedDate);
@@ -175,7 +187,6 @@ const BookingRoom = () => {
                 </Form.Item>
               </Col>
               <Col span={24} md={24} sm={24} xs={24} className={styles.roomBorder3}>
-
                 <Flex className={styles.dateBook}>
                   <Col span={11}>
                     <Form.Item
@@ -185,10 +196,7 @@ const BookingRoom = () => {
                       rules={[{ required: true, message: 'Please input date!' }]}
                     >
                       <ConfigProvider>
-
-                        <DatePicker showTime={{ format: 'HH' }} onChange={onChangeDate} disabledDate={disabledDate}
-                        />
-
+                        <DatePicker showTime={{ format: 'HH' }} onChange={onChangeDate} disabledDate={disabledDate} />
                       </ConfigProvider>
                       <p className={styles.labelStyle1}>Trả phòng: {calculateNewDate()}</p>
                     </Form.Item>
@@ -201,11 +209,9 @@ const BookingRoom = () => {
                       rules={[{ required: true, message: 'Please input hour!!' }]}
                     >
                       <Select options={hourOptions} onChange={handleHourChange} className={styles.inputStyleSelect} />
-
                     </Form.Item>
                   </Col>
                 </Flex>
-
               </Col>
               <hr className={styles.border2}></hr>
             </Row>
@@ -225,7 +231,9 @@ const BookingRoom = () => {
               <Col span={12} md={12} sm={24} xs={24} className={styles.btnSubmit} style={{ textAlign: 'center' }}>
                 <h1 className={styles.totalPrice}>Total: 100$</h1>
                 <Form.Item>
-                  <button type='submit' className={styles.btnCheckout}>Checkout</button>
+                  <button type="submit" className={styles.btnCheckout}>
+                    Checkout
+                  </button>
                 </Form.Item>
               </Col>
             </Row>
