@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Card, Row, Col, Button, Typography, Tag, Flex, Modal, Form, Input, message } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Card, Row, Col, Button, Typography, Tag, Flex, Modal, Form, Input, InputNumber, message } from 'antd';
 import { Image } from 'antd';
 import styles from './styles.module.css';
 import { deleteBooking, updateStatusOfBooking } from '../../api/booked-history/booked-history-api';
@@ -26,11 +26,15 @@ const BookingItem = ({
   const [feedbackData, setFeedbackData] = useState({
     titleRating: '',
     contentRating: '',
-    starRating: 0,
+    starRating: 1,
     idHotel: booking.idHotel,
     timeCreated: moment().format('YYYY-MM-DDTHH:mm'),
   });
-  const [isDirty, setIsDirty] = useState(false); // State to track if any input is dirty
+  const [isDirty, setIsDirty] = useState(false);
+
+  useEffect(() => {
+    setIsDirty(true);
+  }, [feedbackData]);
 
   const cancel = async (idBooking: number, statusOfBooking: string) => {
     setLoading(true);
@@ -93,11 +97,6 @@ const BookingItem = ({
     return diffInHours > 24;
   };
 
-  // Handler for input changes to set the dirty state
-  const handleInputChange = () => {
-    setIsDirty(true);
-  };
-
   return (
     <Card bordered={false} className={styles.card}>
       <Row gutter={16}>
@@ -140,11 +139,11 @@ const BookingItem = ({
               <Title level={5}>Summary</Title>
               <Text>
                 <p className={styles.title}>Price room: </p>
-                {booking.priceOfRoom}$
+                {booking.priceOfRoom}VND
               </Text>
               <br />
               <Text>
-                <p className={styles.title}>Price service: </p> {booking.priceOfService}$
+                <p className={styles.title}>Price service: </p> {booking.priceOfService}VND
               </Text>
               <br />
               <Text>
@@ -158,7 +157,7 @@ const BookingItem = ({
                 {booking.priceOfRoom +
                   booking.priceOfService -
                   ((booking.priceOfRoom + booking.priceOfService) * 10) / 100}
-                $
+                VND
               </Text>
             </Col>
             <Col span={4} lg={4} md={12} sm={12} xs={24}>
@@ -243,7 +242,13 @@ const BookingItem = ({
                             type="primary"
                             onClick={handleFeedbackSubmit}
                             loading={loading}
-                            disabled={!isDirty}
+                            disabled={
+                              !isDirty ||
+                              !feedbackData.titleRating ||
+                              !feedbackData.contentRating ||
+                              feedbackData.starRating < 1 ||
+                              feedbackData.starRating > 5
+                            }
                           >
                             Submit
                           </Button>,
@@ -260,7 +265,7 @@ const BookingItem = ({
                               value={feedbackData.titleRating}
                               onChange={(e) => {
                                 setFeedbackData({ ...feedbackData, titleRating: e.target.value });
-                                handleInputChange();
+                                setIsDirty(true);
                               }}
                             />
                           </Form.Item>
@@ -275,24 +280,28 @@ const BookingItem = ({
                               value={feedbackData.contentRating}
                               onChange={(e) => {
                                 setFeedbackData({ ...feedbackData, contentRating: e.target.value });
-                                handleInputChange();
+                                setIsDirty(true);
                               }}
                             />
                           </Form.Item>
-
                           <Form.Item
                             name="starRating"
                             label="Star Rating"
-                            rules={[{ required: true, message: 'Please input the start rating!' }]}
+                            rules={[
+                              { required: true, message: 'Please input the star rating!' },
+                              { type: 'number', min: 1, max: 5, message: 'Star rating must be between 1 and 5' },
+                            ]}
                           >
-                            <Input
+                            <InputNumber
                               placeholder="Star rating"
-                              value={feedbackData.starRating}
-                              onChange={(e) => {
-                                setFeedbackData({ ...feedbackData, starRating: Number(e.target.value) });
-                                handleInputChange();
+                              value={feedbackData.starRating || undefined}
+                              onChange={(value) => {
+                                setFeedbackData({ ...feedbackData, starRating: value as number });
+                                setIsDirty(true);
                               }}
-                            />
+                              min={1}
+                              max={5}
+                            />   
                           </Form.Item>
                         </Form>
                       </Modal>
