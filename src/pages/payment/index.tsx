@@ -1,4 +1,16 @@
-import { Checkbox, Menu, MenuProps, Radio, RadioChangeEvent, Typography, message, Form } from 'antd';
+import {
+  Checkbox,
+  Menu,
+  MenuProps,
+  Radio,
+  RadioChangeEvent,
+  Typography,
+  message,
+  Form,
+  Carousel,
+  Col,
+  Row,
+} from 'antd';
 import type { MenuInfo } from 'rc-menu/lib/interface';
 import React, { useEffect, useState } from 'react';
 import Container from '../../components/container';
@@ -6,59 +18,97 @@ import StepByStep from '../../components/step-by-step';
 import styles from './payments.module.css';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { VnpayAPI } from '../../api/payment';
-import { VnpayRequest, bookingRequest, usersRequest } from '../../api/payment/request/vnpay.request';
-import { MomoResponse, VnpayResponse, ZaloResponse } from '../../api/payment/response/vnpay.response';
+import { BookingRequest, QuantityItem, UsersRequest, VnpayRequest } from '../../api/payment/request/vnpay.request';
+import {
+  BookingDataLocalResponse,
+  MomoResponse,
+  VnpayResponse,
+  ZaloResponse,
+} from '../../api/payment/response/vnpay.response';
 import Dropdown from 'antd/es/dropdown/dropdown';
 import { useParams } from 'react-router-dom';
 import { roomApi } from '../../api/room/room-api';
-import { IBookingRoom, IRoomDetail, IUserInfo } from '../../types/room';
-import { SoundTwoTone } from '@ant-design/icons';
+import { IBookingRoom, IRoomDetail, IService, IUserInfo } from '../../types/room';
 const { Paragraph } = Typography;
 
 const UserInfoForm = () => {
+  const noData = 'https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg';
   const [value, setValue] = useState(1);
   const [isChecked, setIsChecked] = useState(false);
   const [isCheckboxError, setIsCheckboxError] = useState(false);
   const [selectedKey, setSelectedKey] = useState('');
   const { idRoom } = useParams();
-  let [sum, setSum] = useState(0);
+  const [servicePrice, setServicePrice] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  let [isDisable, setIsDisable] = useState(false);
-    const [form] = Form.useForm();
- const [data, setData] = useState<IBookingRoom>({
+  const [quantityItem, setQuantityItem] = useState<QuantityItem[]>([]);
+  const [dataBooking, setDataBooking] = useState<BookingDataLocalResponse>();
+  const [data, setData] = useState<IBookingRoom>({
     room: {} as IRoomDetail,
-    // services: [] as IService[],
+    services: [] as IService[],
     user: {} as IUserInfo,
- });
-console.log(data);
-  
+  });
+
   useEffect(() => {
+    const storedBooking = localStorage.getItem('booking');
+    const bookingLocal: BookingDataLocalResponse = storedBooking ? JSON.parse(storedBooking) : {};
+    setDataBooking(bookingLocal);
     (async () => {
       if (idRoom) {
-        const { room, user } = await roomApi.getRoomById(idRoom);
-        setData({ room, user });
-        setSum(room.priceOfRoom);
+        const { room, services, user } = await roomApi.getRoomById(idRoom);
+        setData({ room, services, user });
         setIsLoading(true);
-        if (user) {
-          setIsDisable(true);
-          form.setFieldsValue({
-            fullName: user.userName,
-            cccd: user.identificationCard,
-            email: user.email,
-            phone: user.phoneNumber,
-            gender: user.gender ? 'male' : 'female',
-          });
-        }
       }
     })();
   }, [idRoom]);
-  console.log(data);
-  
 
+  const handleChangeService = (e: React.ChangeEvent<HTMLInputElement>, item: any) => {
+    const { value } = e.target;
+    const newQuantity = parseInt(value) || 0;
+
+    if (newQuantity === 0) {
+      setQuantityItem((prevQuantities) => prevQuantities.filter((q) => q.idService !== item.idService));
+    } else {
+      const index = quantityItem.findIndex((q) => q.idService === item.idService);
+      if (index !== -1) {
+        setQuantityItem((prevQuantities) => {
+          const newQuantities = [...prevQuantities];
+          newQuantities[index] = { ...newQuantities[index], quantity: newQuantity };
+          return newQuantities;
+        });
+      } else {
+        setQuantityItem((prevQuantities) => [...prevQuantities, { idService: item.idService, quantity: newQuantity }]);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const sumService = quantityItem.reduce((sum, { idService, quantity }) => {
+      const service = data.services.find((item) => item.idService === idService);
+      return sum + (service ? service.priceOfService * quantity : 0);
+    }, 0);
+    setServicePrice(sumService);
+  }, [quantityItem, data.services]);
+
+  useEffect(() => {
+    const savedQuantities = localStorage.getItem('serviceQuantities');
+    if (savedQuantities) {
+      setQuantityItem(JSON.parse(savedQuantities));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('serviceQuantities', JSON.stringify(quantityItem));
+  }, [quantityItem]);
+
+  // Change Bank
+  const onChange = (e: RadioChangeEvent) => {
+    setValue(e.target.value);
+  };
+
+  // Select Bank
   const handleMenuClick = (e: MenuInfo) => {
     setSelectedKey(e.key);
   };
-
   const items: MenuProps['items'] = [
     {
       key: 'NCB',
@@ -81,46 +131,46 @@ console.log(data);
       label: <img src="/images/mastercard.jpg" alt="..." className={styles.logoBank} />,
     },
   ];
-  
-  const users: usersRequest = {
-    fullName: data.user?.userName,
-    gender:data.user?.gender ? "Male" : "Female",
-    email:data.user?.email,
-    phone: data.user?.phoneNumber,
-    cccd: data.user?.identificationCard,
-  };
+  const menu = <Menu onClick={handleMenuClick} items={items} className={styles.menuBank} />;
 
-  const booking: bookingRequest = {
-    idRoom: 1,
-    idServices: [1, 2, 3],
-    roomPrice: 400000,
-    servicePrice: 100000,
-  };
-
-  const onChange = (e: RadioChangeEvent) => {
-    setValue(e.target.value);
-  };
-
+  // Checkbox
   const handleCheckboxChange = (e: CheckboxChangeEvent) => {
     setIsChecked(e.target.checked);
     setIsCheckboxError(false);
   };
 
+  // Pay
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (!isChecked) {
       message.error('Please click on the checkbox if you agree to the terms and conditions');
       setIsCheckboxError(true);
       return;
     }
-    // Handle the form submission
+    const users: UsersRequest = {
+      username: dataBooking?.fullName || '',
+      gender: dataBooking?.gender === 'male' ? true : false,
+      email: dataBooking?.email || '',
+      phoneNumber: dataBooking?.phone || '',
+      identificationCard: dataBooking?.cccd || '',
+    };
+    const booking: BookingRequest = {
+      idRoom: Number(idRoom),
+      startDateBooking: dataBooking?.checkInDate || '',
+      endDateBooking: dataBooking?.checkOutDate || '',
+      numberOfPeoples: Number(dataBooking?.numberOfPeople),
+    };
+
     const params: VnpayRequest = {
       users: users,
+      services: quantityItem,
       booking: booking,
-      amount: booking.roomPrice + booking.servicePrice ? booking.roomPrice + booking.servicePrice : 0,
+      servicePrice: servicePrice,
+      roomPrice: data.room.priceOfRoom,
+      amount: data.room.priceOfRoom + servicePrice,
       bankCode: selectedKey ? selectedKey : 'NCB',
     };
+
     if (value === 1) {
       const response: VnpayResponse = await VnpayAPI.vnpayPost(params);
 
@@ -132,140 +182,178 @@ console.log(data);
 
     if (value === 2) {
       const response: MomoResponse = await VnpayAPI.momoPost(params);
+      console.log(response);
+
       const Url: string = response.payUrl ? response.payUrl : '';
       window.location.href = Url;
     }
 
-     if (value === 3) {
-       const response: ZaloResponse = await VnpayAPI.zaloPost(params);
+    if (value === 3) {
+      const response: ZaloResponse = await VnpayAPI.zaloPost(params);
       const Url: string = response.order_url ? response.order_url : '';
       window.location.href = Url;
     }
   };
 
-  const menu = <Menu onClick={handleMenuClick} items={items} className={styles.menuBank} />;
   return (
     <>
-      <Container>
-        <StepByStep />
-        <form className={styles.form} onSubmit={handleSubmit}>
-          <div className={styles.formLeft}>
-            <div className={styles.formLeftTop}>
-              <h4>User Info</h4>
-              <ul>
+      {isLoading && (
+        <Container>
+          <StepByStep />
+          <form className={styles.form} onSubmit={handleSubmit}>
+            <div className={styles.formLeft}>
+              <div className={styles.formLeftTop}>
+                <h4>User Info</h4>
+                <ul>
+                  <div>
+                    <li>
+                      <b>FullName:</b> {dataBooking?.fullName}
+                    </li>
+                    <li>
+                      <b>Gender:</b> {dataBooking?.gender}
+                    </li>
+                    <li>
+                      <b>Email:</b> {dataBooking?.email}
+                    </li>
+                  </div>
+                  <div>
+                    <li>
+                      <b>Phone:</b> {dataBooking?.phone}
+                    </li>
+                    <li>
+                      <b>CCCD:</b> {dataBooking?.cccd}
+                    </li>
+                  </div>
+                </ul>
+              </div>
+
+              <div className={styles.formLeftBottom}>
+                <h4>Select payment option</h4>
+                <Paragraph>All transaction are secure and encryted</Paragraph>
+                <Radio.Group className={styles.formRadio} onChange={onChange} value={value}>
+                  <Radio
+                    className={`${styles.radio} ${styles.radioVnp} ${value === 1 ? styles.checked : ''}`}
+                    value={1}
+                    checked
+                  >
+                    <Dropdown overlay={menu} trigger={['hover']} placement="bottom">
+                      <span className={styles.dropdownText}>VNPAY</span>
+                    </Dropdown>
+                  </Radio>
+                  <Radio className={`${styles.radio} ${value === 2 ? styles.checked : ''}`} value={2}>
+                    MOMO
+                  </Radio>
+                  <Radio className={`${styles.radio} ${value === 3 ? styles.checked : ''}`} value={3}>
+                    ZALOPAY
+                  </Radio>
+
+                  <Checkbox
+                    className={`${styles.checkbox} ${isCheckboxError ? styles.errorCheckbox : ''}`}
+                    onChange={handleCheckboxChange}
+                  >
+                    By ckicking this, I argree to trave Team & Condition and privacy Policy
+                  </Checkbox>
+                  <button className={styles.btnPay} type="submit">
+                    Pay | {(dataBooking!.sum + servicePrice).toLocaleString('de-DE')} VND
+                  </button>
+                </Radio.Group>
+              </div>
+            </div>
+            <div className={styles.formRight}>
+              <h4>Your room</h4>
+              <div className={styles.formRightRom}>
+                <Carousel autoplay arrows className={styles.imageroom}>
+                  {data.room &&
+                    data.room.images.length > 0 &&
+                    data.room.images.map((image) => (
+                      <img key={image} className={styles.imageroom} alt="example" src={image ? image : noData} />
+                    ))}
+                </Carousel>
                 <div>
-                  <li>
-                    <b>FullName:</b> {users.fullName}
-                  </li>
-                  <li>
-                    <b>Gender:</b> {users.gender}
-                  </li>
-                  <li>
-                    <b>Email:</b> {users.email}
-                  </li>
+                  <h4>{data.room?.nameHotel}</h4>
+                  <p>
+                    <b>Address:</b> {data.room?.address}
+                  </p>
+                  <p>
+                    <b>Number room:</b> {data.room?.roomNumber}
+                  </p>
+                  <p>
+                    <b>Description:</b> {data.room?.descriptionOfRoom}
+                  </p>
+                  <p>
+                    <b>Check in: </b> {dataBooking?.checkInDate} (GMT+7)
+                  </p>
+                  <p>
+                    <b>Check out: </b> {dataBooking?.checkOutDate} (GMT+7)
+                  </p>
+                  <p style={{ textAlign: 'right', fontSize: '20px' }}>
+                    <b>{dataBooking?.sum.toLocaleString('de-DE')}</b> VND
+                  </p>
+                </div>
+              </div>
+              <div className={styles.formRightService}>
+                <h4>Service</h4>
+                <Row style={{ marginTop: '20px' }}>
+                  {' '}
+                  <Col xl={24} md={24} sm={24} xs={24}>
+                    <Form.Item name="services">
+                      <div>
+                        <div className={styles.formService}>
+                          {data.services.map((item) => {
+                            const quantityItemFind = quantityItem.find((q) => q.idService === item.idService);
+                            const quantity = quantityItemFind ? quantityItemFind.quantity : 0;
+
+                            return (
+                              <div className={styles.listService} key={item.idService}>
+                                <p className={styles.checkboxService}>
+                                  <b>{item.nameService}</b>
+                                </p>
+                                <input
+                                  type="number"
+                                  defaultValue={0}
+                                  min={0}
+                                  value={quantity}
+                                  onChange={(e) => handleChangeService(e, item)}
+                                  className={styles.quantityService}
+                                />
+                                <p className={styles.priceOfService}>
+                                  <b>{(item.priceOfService * quantity).toLocaleString('de-DE')}</b> VND
+                                </p>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </div>
+
+              <div className={styles.formRightOrder}>
+                <h4>Order summary</h4>
+                <div>
+                  <p>
+                    <b>Room</b>
+                  </p>
+                  <p>{dataBooking?.sum.toLocaleString('de-DE')} VND</p>
                 </div>
                 <div>
-                  <li>
-                    <b>Phone:</b> {users.phone}
-                  </li>
-                  <li>
-                    <b>CCCD:</b> {users.cccd}
-                  </li>
+                  <p>
+                    <b>Service</b>
+                  </p>
+                  <p>{servicePrice.toLocaleString('de-DE')} VND</p>
                 </div>
-              </ul>
-            </div>
-
-            <div className={styles.formLeftBottom}>
-              <h4>Select payment option</h4>
-              <Paragraph>All transaction are secure and encryted</Paragraph>
-              <Radio.Group className={styles.formRadio} onChange={onChange} value={value}>
-                <Radio
-                  className={`${styles.radio} ${styles.radioVnp} ${value === 1 ? styles.checked : ''}`}
-                  value={1}
-                  checked
-                >
-                  <Dropdown overlay={menu} trigger={['hover']} placement="bottom">
-                    <span className={styles.dropdownText}>VNPAY</span>
-                  </Dropdown>
-                </Radio>
-                <Radio className={`${styles.radio} ${value === 2 ? styles.checked : ''}`} value={2}>
-                  Momo
-                </Radio>
-                <Radio className={`${styles.radio} ${value === 3 ? styles.checked : ''}`} value={3}>
-                  Zalo Pay
-                </Radio>
-
-                <Checkbox
-                  className={`${styles.checkbox} ${isCheckboxError ? styles.errorCheckbox : ''}`}
-                  onChange={handleCheckboxChange}
-                >
-                  By ckicking this, I argree to trave Team & Condition and privacy Policy
-                </Checkbox>
-                <button className={styles.btnPay} type="submit">
-                  Pay | {booking.roomPrice + booking.servicePrice} VND
-                </button>
-              </Radio.Group>
-            </div>
-          </div>
-          <div className={styles.formRight}>
-            <h4>Your room</h4>
-            <div className={styles.formRightRom}>
-              <img src="/images/sapm.jpg" alt="..." />
-              <div>
-                <h4>Room vip</h4>
-                <p>Guong tran</p>
-                <p>Ghe tinh yeu</p>
-                <p>Cua so</p>
-                <p>{booking.roomPrice} VND</p>
+                <div>
+                  <p>
+                    <b>Total</b>
+                  </p>
+                  <p className={styles.totalPrice}>{(dataBooking!.sum + servicePrice).toLocaleString('de-DE')} VND</p>
+                </div>
               </div>
             </div>
-            <div className={styles.formRightService}>
-              <h4>Service</h4>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Name E</td>
-                    <td>
-                      <td>1</td>
-                    </td>
-                    <td>{booking.servicePrice.toLocaleString('de-DE')} VND</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div className={styles.formRightOrder}>
-              <h4>Order summary</h4>
-              <div>
-                <p>
-                  <b>Room</b>
-                </p>
-                <p>{booking.roomPrice.toLocaleString('de-DE')} VND</p>
-              </div>
-              <div>
-                <p>
-                  <b>Service</b>
-                </p>
-                <p>{booking.servicePrice.toLocaleString('de-DE')} VND</p>
-              </div>
-              <div>
-                <p>
-                  <b>Total</b>
-                </p>
-                <p className={styles.totalPrice}>
-                  {(booking.roomPrice + booking.servicePrice).toLocaleString('de-DE')} VND
-                </p>
-              </div>
-            </div>
-          </div>
-        </form>
-      </Container>
+          </form>
+        </Container>
+      )}
     </>
   );
 };

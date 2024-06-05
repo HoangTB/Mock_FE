@@ -25,3 +25,16 @@ export interface ZaloResponse {
   sub_return_message?: string;
   zp_trans_token?: string;
 }
+
+export interface BookingDataLocalResponse {
+  cccd: string;
+  checkInDate: string;
+  checkOutDate: string;
+  email: string;
+  fullName: string;
+  gender: string;
+  hours: number;
+  numberOfPeople: number;
+  phone: string;
+  sum: number;
+}

@@ -16,8 +16,7 @@
   flex: 0.6;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 20px;
+  justify-content: space-around;
 }
 
 .formRight {
@@ -49,7 +48,7 @@
 .formLeftTop > ul > div:nth-child(2) {
   display: flex;
   flex-direction: row;
-  gap: 60px;
+  gap: 40px;
   padding-top: 15px;
 }
 
@@ -91,10 +90,12 @@
 }
 
 .formRadio > .btnPay {
-  padding: 14px;
+  padding: 13px;
   border: none;
   border-radius: 5px;
   color: white;
+  font-weight: bold;
+  font-size: 17px;
   background-color: var(--primary-color);
 }
 
@@ -105,30 +106,30 @@
 .formRightRom {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
-  gap: 50px;
+  align-items: center;
+  gap: 10px;
   border: 1px solid var(--hr-color);
   border-radius: 5px;
   padding: 15px;
   margin: 20px 0;
 }
 
-.formRightRom > img {
+.imageroom {
   width: 150px;
-  height: 150px;
-  object-fit: fill;
+  height: 180px;
+  object-fit: cover;
   border-radius: 5px;
 }
 
 .formRightRom > div {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
 }
 
 .formRightRom > div > h4 {
   font-size: 17px;
-  padding-bottom: 15px;
+  padding-bottom: 5px;
 }
 
 .formRightService {
@@ -138,15 +139,41 @@
   margin-bottom: 20px;
 }
 
-.formRightService > table {
-  padding: 15px;
+.formService {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  gap: 10px;
+  width: 100%;
 }
 
-.formRightService > table > thead > tr > th,
-.formRightService > table > tbody > tr > td {
-  padding: 10px;
-  text-align: left;
-  width: 900px;
+.listService {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 20px;
+}
+
+.quantityService {
+  width: 50px;
+  border: 1px solid var(--hr-color);
+  border-radius: 5px;
+  padding: 5px;
+  outline: none;
+}
+
+.checkboxGroup {
+  width: 100% !important;
+}
+
+.checkboxService {
+  width: 250px !important;
+}
+
+.priceOfService {
+  width: 100px !important;
 }
 
 .formRightOrder {

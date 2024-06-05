@@ -29,7 +29,7 @@ export class VnpayAPI {
     }
   }
 
-    static async zaloPost(params: VnpayRequest): Promise<ZaloResponse> {
+  static async zaloPost(params: VnpayRequest): Promise<ZaloResponse> {
     const url: string = `${domain}/zalopay/post`;
     try {
       const response = await axios.post(url, params);

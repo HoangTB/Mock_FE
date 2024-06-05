@@ -6,24 +6,18 @@ import { CheckCircleOutlined } from '@ant-design/icons';
 import Title from 'antd/es/typography/Title';
 import styles from './style.module.css';
 import { useLocation } from 'react-router-dom';
-import { bookingRequest, usersRequest } from '../../api/payment/request/vnpay.request';
+import { BookingRequest, UsersRequest } from '../../api/payment/request/vnpay.request';
 const Completed = () => {
   const location = useLocation();
-  const [bookingData, setBookingData] = useState<bookingRequest>();
-  const [usersData, setUsersData] = useState<usersRequest>();
+  const [bookingData, setBookingData] = useState<BookingRequest>();
+  const [usersData, setUsersData] = useState<UsersRequest>();
   const param = new URLSearchParams(location.search);
   const orderInfo = param.get('orderInfo');
   const amount = param.get('amount');
   const booking = param.get('bk');
   const users = param.get('u');
-
-  let formattedAmount;
-
-
-  formattedAmount = (Number(amount) / 100).toLocaleString('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
+  const roomPrice = param.get('roomPrice');
+  const servicePrice = param.get('servicePrice');
 
   useEffect(() => {
     if (booking && users) {
@@ -65,21 +59,21 @@ const Completed = () => {
                   <p>
                     <b>Full Name</b>
                   </p>
-                  <p>{usersData?.fullName}</p>
+                  <p>{usersData?.username}</p>
                 </div>
 
                 <div>
                   <p>
                     <b>Phone</b>
                   </p>
-                  <p>{usersData?.phone}</p>
+                  <p>{usersData?.phoneNumber}</p>
                 </div>
 
                 <div>
                   <p>
                     <b>CCCD</b>
                   </p>
-                  <p>{usersData?.cccd}</p>
+                  <p>{usersData?.identificationCard}</p>
                 </div>
 
                 <div>
@@ -93,7 +87,7 @@ const Completed = () => {
                   <p>
                     <b>Gender</b>
                   </p>
-                  <p>{usersData?.gender}</p>
+                  <p>{usersData?.gender === true ? 'Male' : 'Female'}</p>
                 </div>
 
                 <div>
@@ -101,10 +95,7 @@ const Completed = () => {
                     <b>Room</b>
                   </p>
                   <p>
-                    {bookingData?.roomPrice?.toLocaleString('en-US', {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}{' '}
+                    {Number(roomPrice).toLocaleString('de-DE')}
                     VND
                   </p>
                 </div>
@@ -113,20 +104,14 @@ const Completed = () => {
                   <p>
                     <b>Service</b>
                   </p>
-                  <p>
-                    {bookingData?.servicePrice?.toLocaleString('en-US', {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}{' '}
-                    VND
-                  </p>
+                  <p>{Number(servicePrice).toLocaleString('de-DE')} VND</p>
                 </div>
 
                 <div>
                   <p>
                     <b>Total</b>
                   </p>
-                  <p>{formattedAmount} VND</p>
+                  <p>{Number(amount).toLocaleString('de-DE')} VND</p>
                 </div>
               </div>
             </div>

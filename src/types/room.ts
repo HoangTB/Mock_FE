@@ -37,11 +37,13 @@ export interface IRoomBooking extends IRoom {
 export interface IService {
   nameService: string;
   idService: number;
+  priceOfService: number;
+  isChecked?: boolean;
 }
 
 export interface IBookingRoom {
   room: IRoomDetail;
-  // services: IService[];
+  services: IService[];
   user?: IUserInfo;
 }
 

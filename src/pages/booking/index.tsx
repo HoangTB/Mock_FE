@@ -33,28 +33,30 @@ for (let i = 1; i < 13; i++) {
 }
 
 const BookingRoom = () => {
-  const noData = "https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg";
+  const noData = 'https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg';
   const [form] = Form.useForm();
   const navigate = useNavigate();
   let [isDisable, setIsDisable] = useState(false);
   const { idRoom } = useParams();
   let [sum, setSum] = useState(0);
+  let [total, setTotal] = useState(0);
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedHour, setSelectedHour] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<IBookingRoom>({
     room: {} as IRoomDetail,
-    // services: [] as IService[],
+    services: [] as IService[],
     user: {} as IUserInfo,
   });
 
   useEffect(() => {
     (async () => {
       if (idRoom) {
-        const { room, user } = await roomApi.getRoomById(idRoom);
-        setData({ room, user });
+        const { room, services, user } = await roomApi.getRoomById(idRoom);
+        setData({ room, services, user });
         setSum(room.priceOfRoom);
         setIsLoading(true);
+        setTotal(room.priceOfRoom);
         if (user) {
           setIsDisable(true);
           form.setFieldsValue({
@@ -84,11 +86,13 @@ const BookingRoom = () => {
 
   const handleHourChange: SelectProps['onChange'] = (value) => {
     setSelectedHour(value);
+    setTotal(value * data.room.priceOfRoom);
     form.setFieldsValue({ checkOutDate: calculateNewDate(selectedDate, value) });
   };
 
   const onFinish: FormProps['onFinish'] = (values) => {
-    values.sum = sum;
+    values.sum = values.hours * data.room.priceOfRoom;
+    setTotal(values.hours * sum);
     localStorage.setItem('booking', JSON.stringify(values));
     navigate(`/booking/${data.room.idRoom}`);
     setIsDisable(false);
@@ -260,7 +264,7 @@ const BookingRoom = () => {
 
                 <Row style={{ justifyContent: 'center' }}>
                   <Col span={12} md={12} sm={24} xs={24} className={styles.btnSubmit} style={{ textAlign: 'center' }}>
-                    <h1 className={styles.totalPrice}>Total: {sum} VND</h1>
+                    <h1 className={styles.totalPrice}>Total: {total} VND</h1>
                     <Form.Item>
                       <CustomButton type="primary" htmlType="submit" loading={!isLoading}>
                         Checkout
