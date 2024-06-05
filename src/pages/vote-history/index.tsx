@@ -218,7 +218,7 @@ const VoteHistory = () => {
                 Hotel
               </label>
               <Form.Item name="hotel" className={styles.inputLabel}>
-                <Input readOnly />
+                <Input readOnly disabled />
               </Form.Item>
             </Flex>
             <Flex gap={10} align="center">
@@ -226,7 +226,7 @@ const VoteHistory = () => {
                 Time Created
               </label>
               <Form.Item name="timeCreated" className={styles.inputLabel}>
-                <Input readOnly />
+                <Input readOnly disabled />
               </Form.Item>
             </Flex>
           </Form>

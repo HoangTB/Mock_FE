@@ -42,4 +42,3 @@ export const deleteRating = async (idRating: number) => {
     console.log(error);
   }
 };
-
