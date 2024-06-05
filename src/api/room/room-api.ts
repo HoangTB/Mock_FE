@@ -4,6 +4,7 @@ const domain = process.env.REACT_APP_API_URL;
 
 export const roomApi = {
   getRoomById: async (idRoom: string) => {
+    console.log(idRoom);
     try {
       const response = await http.get(`${domain}/room/${idRoom}`);
       return response.data;

@@ -66,7 +66,7 @@ const routes: RouteObject[] = [
         ],
       },
       {
-        path: '/booking/:id',
+        path: '/booking/:idRoom',
         Component: Payment,
       },
       {
