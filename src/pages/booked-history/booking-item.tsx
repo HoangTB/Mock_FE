@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Card, Row, Col, Button, Typography, Tag, Flex, Modal, Form, Input } from 'antd';
+import { Card, Row, Col, Button, Typography, Tag, Flex, Modal, Form, Input, message } from 'antd';
 import { Image } from 'antd';
-import { IRoomBooking } from '../../types/booked-histoty';
 import styles from './styles.module.css';
 import { deleteBooking, updateStatusOfBooking } from '../../api/booked-history/booked-history-api';
 import moment from 'moment';
+import { createFeedBack } from '../../api/feedback/feedback-api';
+import { IRoomBooking } from '../../types/booked-histoty';
 
 const { Title, Text } = Typography;
 
@@ -22,6 +23,14 @@ const BookingItem = ({
   const [confirmCancel, setConfirmCancel] = useState(false);
   const [feedbackModalVisible, setFeedbackModalVisible] = useState(false);
   const [form] = Form.useForm();
+  const [feedbackData, setFeedbackData] = useState({
+    titleRating: '',
+    contentRating: '',
+    starRating: 0,
+    idHotel: booking.idHotel,
+    timeCreated: moment().format('YYYY-MM-DDTHH:mm'),
+  });
+  const [isDirty, setIsDirty] = useState(false); // State to track if any input is dirty
 
   const cancel = async (idBooking: number, statusOfBooking: string) => {
     setLoading(true);
@@ -58,9 +67,23 @@ const BookingItem = ({
   };
 
   const handleFeedbackSubmit = async () => {
-    console.log('Feedback submitted:');
-    setFeedbackModalVisible(false);
-    form.resetFields();
+    try {
+      setLoading(true);
+      await createFeedBack(
+        feedbackData.titleRating,
+        feedbackData.contentRating,
+        feedbackData.starRating,
+        feedbackData.idHotel,
+        feedbackData.timeCreated,
+      );
+      setLoading(false);
+      setFeedbackModalVisible(false);
+      form.resetFields();
+      message.success('Feedback submitted successfully!');
+    } catch (error) {
+      setLoading(false);
+      message.error('Failed to submit feedback. Please try again later.');
+    }
   };
 
   const isCancelable = () => {
@@ -68,6 +91,11 @@ const BookingItem = ({
     const bookingTime = moment(booking.startDateBooking.toString());
     const diffInHours = bookingTime.diff(currentTime, 'hours');
     return diffInHours > 24;
+  };
+
+  // Handler for input changes to set the dirty state
+  const handleInputChange = () => {
+    setIsDirty(true);
   };
 
   return (
@@ -208,27 +236,63 @@ const BookingItem = ({
                         onCancel={() => setFeedbackModalVisible(false)}
                         footer={[
                           <Button key="back" onClick={() => setFeedbackModalVisible(false)}>
-                            No
+                            Cancel
                           </Button>,
-                          <Button key="submit" type="primary" danger loading={loading}>
-                            Yes
+                          <Button
+                            key="submit"
+                            type="primary"
+                            onClick={handleFeedbackSubmit}
+                            loading={loading}
+                            disabled={!isDirty}
+                          >
+                            Submit
                           </Button>,
                         ]}
                       >
-                        <Form form={form} layout="vertical" onFinish={handleFeedbackSubmit}>
+                        <Form form={form} layout="vertical">
                           <Form.Item
                             name="title"
                             label="Title"
                             rules={[{ required: true, message: 'Please input the title!' }]}
                           >
-                            <Input placeholder="Enter title" />
+                            <Input
+                              placeholder="Enter title"
+                              value={feedbackData.titleRating}
+                              onChange={(e) => {
+                                setFeedbackData({ ...feedbackData, titleRating: e.target.value });
+                                handleInputChange();
+                              }}
+                            />
                           </Form.Item>
                           <Form.Item
                             name="content"
                             label="Content"
                             rules={[{ required: true, message: 'Please input the content!' }]}
                           >
-                            <Input.TextArea rows={4} placeholder="Enter content" />
+                            <Input.TextArea
+                              rows={4}
+                              placeholder="Enter content"
+                              value={feedbackData.contentRating}
+                              onChange={(e) => {
+                                setFeedbackData({ ...feedbackData, contentRating: e.target.value });
+                                handleInputChange();
+                              }}
+                            />
+                          </Form.Item>
+
+                          <Form.Item
+                            name="starRating"
+                            label="Star Rating"
+                            rules={[{ required: true, message: 'Please input the start rating!' }]}
+                          >
+                            <Input
+                              placeholder="Star rating"
+                              value={feedbackData.starRating}
+                              onChange={(e) => {
+                                setFeedbackData({ ...feedbackData, starRating: Number(e.target.value) });
+                                handleInputChange();
+                              }}
+                            />
                           </Form.Item>
                         </Form>
                       </Modal>

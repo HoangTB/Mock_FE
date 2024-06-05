@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Row, Tabs, Typography, Empty } from 'antd';
+import { Col, Row, Tabs, Typography } from 'antd';
 import styles from './styles.module.css';
 import BookingItem from './booking-item';
 import { getAllBookedHistory } from '../../api/booked-history/booked-history-api';
