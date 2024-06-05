@@ -2,6 +2,8 @@ import axios from 'axios';
 import { ILogin, IUser } from '../../types/user';
 import { IResetPass } from '../../types/reset-pass';
 import { IChangePass } from '../../types/change-pass';
+import { http } from '../utils/axios_clients';
+import { message } from 'antd';
 
 const domain = process.env.REACT_APP_API_URL;
 
@@ -50,6 +52,28 @@ export const reset = async (data: IResetPass) => {
 export const changePassword = async (data: IChangePass) => {
   try {
     const response = await axios.post(`${domain}/auth/change-password`, data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getProfile = async () => {
+  try {
+    const response = await http.get(`${domain}/edit-profile`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateProfile = async (data: any) => {
+  try {
+    const response = await http.put(`${domain}/edit-profile`, data);
+    if (response.status === 200) {
+      message.success('Profile updated successfully');
+    }
+
     return response.data;
   } catch (error) {
     console.log(error);

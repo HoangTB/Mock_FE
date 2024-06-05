@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Card, Row, Col, Button, Typography, Tag, Flex, Modal } from 'antd';
+import React, { useState } from 'react';
+import { Card, Row, Col, Button, Typography, Tag, Flex, Modal, Form, Input, message } from 'antd';
 import { Image } from 'antd';
-import { IRoomBooking } from '../../types/booked-histoty';
 import styles from './styles.module.css';
 import { deleteBooking, updateStatusOfBooking } from '../../api/booked-history/booked-history-api';
-import decodeToken from '../../utils/hoc/de-token';
+import moment from 'moment';
+import { createFeedBack } from '../../api/feedback/feedback-api';
+import { IRoomBooking } from '../../types/booked-histoty';
 
 const { Title, Text } = Typography;
 
@@ -20,6 +21,16 @@ const BookingItem = ({
   const [loading, setLoading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [confirmCancel, setConfirmCancel] = useState(false);
+  const [feedbackModalVisible, setFeedbackModalVisible] = useState(false);
+  const [form] = Form.useForm();
+  const [feedbackData, setFeedbackData] = useState({
+    titleRating: '',
+    contentRating: '',
+    starRating: 0,
+    idHotel: booking.idHotel,
+    timeCreated: moment().format('YYYY-MM-DDTHH:mm'),
+  });
+  const [isDirty, setIsDirty] = useState(false); // State to track if any input is dirty
 
   const cancel = async (idBooking: number, statusOfBooking: string) => {
     setLoading(true);
@@ -55,6 +66,38 @@ const BookingItem = ({
     setShowConfirmation(false);
   };
 
+  const handleFeedbackSubmit = async () => {
+    try {
+      setLoading(true);
+      await createFeedBack(
+        feedbackData.titleRating,
+        feedbackData.contentRating,
+        feedbackData.starRating,
+        feedbackData.idHotel,
+        feedbackData.timeCreated,
+      );
+      setLoading(false);
+      setFeedbackModalVisible(false);
+      form.resetFields();
+      message.success('Feedback submitted successfully!');
+    } catch (error) {
+      setLoading(false);
+      message.error('Failed to submit feedback. Please try again later.');
+    }
+  };
+
+  const isCancelable = () => {
+    const currentTime = moment();
+    const bookingTime = moment(booking.startDateBooking.toString());
+    const diffInHours = bookingTime.diff(currentTime, 'hours');
+    return diffInHours > 24;
+  };
+
+  // Handler for input changes to set the dirty state
+  const handleInputChange = () => {
+    setIsDirty(true);
+  };
+
   return (
     <Card bordered={false} className={styles.card}>
       <Row gutter={16}>
@@ -73,17 +116,17 @@ const BookingItem = ({
               <Title level={4}>Room {booking.roomNumber}</Title>
               <Text>
                 <p className={styles.title}>Date booking: </p>
-                {new Date(booking.dateBooking.toString())?.toLocaleString()}
+                {moment(booking?.dateBooking.toString()).format('YYYY-MM-DD HH:mm:ss')}
               </Text>
               <br />
               <Text>
                 <p className={styles.title}>From Date: </p>
-                {new Date(booking.startDateBooking)?.toLocaleString()}
+                {moment(booking?.startDateBooking.toString()).format('YYYY-MM-DD HH:mm:ss')}
               </Text>
               <br />
               <Text>
                 <p className={styles.title}>To Date: </p>
-                {new Date(booking.endDateBooking)?.toLocaleString()}
+                {moment(booking?.endDateBooking.toString()).format('YYYY-MM-DD HH:mm:ss')}
               </Text>
               <br />
             </Col>
@@ -149,7 +192,13 @@ const BookingItem = ({
                 <Flex gap={10}>
                   {booking.statusOfBooking === 'Pending' && (
                     <>
-                      <Button type="primary" danger onClick={() => setConfirmCancel(true)} loading={loading}>
+                      <Button
+                        type="primary"
+                        danger
+                        onClick={() => setConfirmCancel(true)}
+                        loading={loading}
+                        disabled={!isCancelable()}
+                      >
                         CANCEL
                       </Button>
                       <Modal
@@ -170,15 +219,84 @@ const BookingItem = ({
                     </>
                   )}
                   {booking.statusOfBooking === 'Approved' && (
-                    <Button
-                      type="primary"
-                      danger
-                      style={{
-                        background: '#f50',
-                      }}
-                    >
-                      Feedback
-                    </Button>
+                    <>
+                      <Button
+                        type="primary"
+                        danger
+                        style={{
+                          background: '#f50',
+                        }}
+                        onClick={() => setFeedbackModalVisible(true)}
+                      >
+                        Feedback
+                      </Button>
+                      <Modal
+                        title="Feedback"
+                        open={feedbackModalVisible}
+                        onCancel={() => setFeedbackModalVisible(false)}
+                        footer={[
+                          <Button key="back" onClick={() => setFeedbackModalVisible(false)}>
+                            Cancel
+                          </Button>,
+                          <Button
+                            key="submit"
+                            type="primary"
+                            onClick={handleFeedbackSubmit}
+                            loading={loading}
+                            disabled={!isDirty}
+                          >
+                            Submit
+                          </Button>,
+                        ]}
+                      >
+                        <Form form={form} layout="vertical">
+                          <Form.Item
+                            name="title"
+                            label="Title"
+                            rules={[{ required: true, message: 'Please input the title!' }]}
+                          >
+                            <Input
+                              placeholder="Enter title"
+                              value={feedbackData.titleRating}
+                              onChange={(e) => {
+                                setFeedbackData({ ...feedbackData, titleRating: e.target.value });
+                                handleInputChange();
+                              }}
+                            />
+                          </Form.Item>
+                          <Form.Item
+                            name="content"
+                            label="Content"
+                            rules={[{ required: true, message: 'Please input the content!' }]}
+                          >
+                            <Input.TextArea
+                              rows={4}
+                              placeholder="Enter content"
+                              value={feedbackData.contentRating}
+                              onChange={(e) => {
+                                setFeedbackData({ ...feedbackData, contentRating: e.target.value });
+                                handleInputChange();
+                              }}
+                            />
+                          </Form.Item>
+
+                          <Form.Item
+                            name="starRating"
+                            label="Star Rating"
+                            rules={[{ required: true, message: 'Please input the start rating!' }]}
+                          >
+                            <Input
+                              placeholder="Star rating"
+                              value={feedbackData.starRating}
+                              onChange={(e) => {
+                                setFeedbackData({ ...feedbackData, starRating: Number(e.target.value) });
+                                handleInputChange();
+                              }}
+                            />
+                          </Form.Item>
+                        </Form>
+                      </Modal>
+                    </>
                   )}
                   {booking.statusOfBooking === 'Cancelled' && (
                     <>
