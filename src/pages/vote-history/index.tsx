@@ -1,16 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { Col, Dropdown, Row, Space, Table, TableProps, Modal, Form, Input, Button, message, Flex } from 'antd';
+import {
+  Col,
+  Dropdown,
+  Row,
+  Space,
+  Table,
+  TableProps,
+  Modal,
+  Form,
+  Input,
+  Button,
+  message,
+  Flex,
+  InputNumber,
+} from 'antd';
 import Title from 'antd/es/typography/Title';
-import styles from './style.module.css';
 import { Voted } from '../../types/voted';
 import { DashOutlined } from '@ant-design/icons';
 import { deleteRating, getAllVoteHistory, updateVoteHistory } from '../../api/vote-history/vote-history-api';
+import styles from './style.module.css';
 
 const VoteHistory = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentRecord, setCurrentRecord] = useState<Voted | null>(null);
   const [voteHistory, setVoteHistory] = useState<Voted[]>([]);
   const [form] = Form.useForm();
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+  const [initialValues, setInitialValues] = useState<{ [key: string]: any }>({});
 
   useEffect(() => {
     fetchVoteHistory();
@@ -27,14 +43,17 @@ const VoteHistory = () => {
 
   const showModal = (record: Voted) => {
     setCurrentRecord(record);
-    form.setFieldsValue({
+    const initialFormValues = {
       title: record.titleRating,
       content: record.contentRating,
       starRating: record.starRating,
       hotel: record.nameHotel,
       timeCreated: formatDate(record.timeCreated),
-    });
+    };
+    setInitialValues(initialFormValues);
+    form.setFieldsValue(initialFormValues);
     setIsModalVisible(true);
+    setIsSubmitDisabled(true);
   };
 
   const handleOk = async () => {
@@ -135,10 +154,7 @@ const VoteHistory = () => {
       title: 'Time Created',
       dataIndex: 'timeCreated',
       key: 'timeCreated',
-      render: (timeCreated: string) => {
-        const formattedTime = formatDate(timeCreated);
-        return formattedTime;
-      },
+      render: (timeCreated: string) => formatDate(timeCreated),
     },
     {
       title: '',
@@ -155,6 +171,13 @@ const VoteHistory = () => {
       responsive: ['md'],
     },
   ];
+
+  const onValuesChange = (changedValues: { [key: string]: any }, allValues: { [key: string]: any }) => {
+    const { title, content, starRating } = allValues;
+    const isChanged = Object.keys(changedValues).some((key) => changedValues[key] !== initialValues[key]);
+    const isEmpty = !title || !content || !starRating;
+    setIsSubmitDisabled(!isChanged || isEmpty);
+  };
 
   return (
     <>
@@ -176,19 +199,23 @@ const VoteHistory = () => {
           <Button key="back" onClick={handleCancel}>
             Cancel
           </Button>,
-          <Button key="submit" type="primary" onClick={handleOk}>
+          <Button key="submit" type="primary" onClick={handleOk} disabled={isSubmitDisabled}>
             Save
           </Button>,
         ]}
         className={styles.modal}
       >
         {currentRecord && (
-          <Form form={form} className={styles.formUpdate}>
+          <Form form={form} className={styles.formUpdate} onValuesChange={onValuesChange}>
             <Flex gap={10} align="center">
               <label htmlFor="title" className={styles.label}>
                 Title
               </label>
-              <Form.Item name="title" className={styles.inputLabel}>
+              <Form.Item
+                name="title"
+                className={styles.inputLabel}
+                rules={[{ required: true, message: 'Please input the title!' }]}
+              >
                 <Input />
               </Form.Item>
             </Flex>
@@ -196,7 +223,11 @@ const VoteHistory = () => {
               <label htmlFor="content" className={styles.label}>
                 Content
               </label>
-              <Form.Item name="content" className={styles.inputLabel}>
+              <Form.Item
+                name="content"
+                className={styles.inputLabel}
+                rules={[{ required: true, message: 'Please input the content!' }]}
+              >
                 <Input />
               </Form.Item>
             </Flex>
@@ -204,11 +235,25 @@ const VoteHistory = () => {
               <label htmlFor="starRating" className={styles.label}>
                 Star Rating
               </label>
-              <Form.Item name="starRating" className={styles.inputLabel}>
-                <Input />
+              <Form.Item
+                name="starRating"
+                className={styles.inputLabel}
+                rules={[
+                  { required: true, message: 'Please input the star rating!' },
+                  {
+                    validator: (_, value) => {
+                      if (typeof value !== 'number' || value < 1 || value > 5) {
+                        return Promise.reject('Star rating must be a number between 1 and 5');
+                      }
+                      return Promise.resolve();
+                    },
+                  },
+                ]}
+              >
+                <InputNumber min={1} max={5} style={{ width: '100%' }} />
               </Form.Item>
             </Flex>
-            <Flex gap={10} align="center" justify="center">
+            <Flex gap={10} align="center">
               <label htmlFor="hotel" className={styles.label}>
                 Hotel
               </label>
