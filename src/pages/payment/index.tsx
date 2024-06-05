@@ -166,8 +166,8 @@ const UserInfoForm = () => {
       services: quantityItem,
       booking: booking,
       servicePrice: servicePrice,
-      roomPrice: data.room.priceOfRoom,
-      amount: data.room.priceOfRoom + servicePrice,
+      roomPrice: dataBooking!.sum,
+      amount: dataBooking!.sum + servicePrice,
       bankCode: selectedKey ? selectedKey : 'NCB',
     };
 

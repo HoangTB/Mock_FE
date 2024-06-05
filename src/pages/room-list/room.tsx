@@ -68,7 +68,7 @@ const Room = ({ room }: { room: IRoom }) => {
               margin: 0,
             }}
           >
-            Price: {priceOfRoom}
+            Price: {priceOfRoom.toLocaleString('de-DE')} VND
           </Title>
           {available ? (
             <Button

@@ -19,6 +19,8 @@ const Completed = () => {
   const roomPrice = param.get('roomPrice');
   const servicePrice = param.get('servicePrice');
 
+  localStorage.removeItem('serviceQuantities');
+  localStorage.removeItem('booking');
   useEffect(() => {
     if (booking && users) {
       const decodedDataBooking = atob(booking);
