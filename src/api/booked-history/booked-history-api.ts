@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { http } from '../utils/axios_clients';
 
 const domain = process.env.REACT_APP_API_URL;
@@ -12,16 +11,6 @@ export const getAllBookedHistory = async () => {
     console.log(error);
   }
 };
-
-// export const getAllBookedHistory = async () => {
-//   try {
-//     const response = await http.get('/booking-history/list');
-//     console.log(response.data);
-//     return response.data;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
 
 export const updateStatusOfBooking = async (idBooking: number, statusOfBooking: string) => {
   try {

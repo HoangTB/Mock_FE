@@ -58,28 +58,27 @@ const EditProfile = () => {
   const onFinish = async (values: FormValues) => {
     try {
       console.log(values);
-      
+
       const response = await updateProfile(values);
 
-
-        // Fetch updated profile data
-        const updatedProfile = await getProfile();
-        if (updatedProfile) {
-          setInitialValue({
-            userName: updatedProfile.userName,
-            email: updatedProfile.email,
-            identificationCard: updatedProfile.identificationCard,
-            gender: updatedProfile.gender,
-            phoneNumber: updatedProfile.phoneNumber,
-          });
-          form.setFieldsValue({
-            userName: updatedProfile.userName,
-            email: updatedProfile.email,
-            identificationCard: updatedProfile.identificationCard,
-            gender: updatedProfile.gender,
-            phoneNumber: updatedProfile.phoneNumber,
-          });
-        }
+      // Fetch updated profile data
+      const updatedProfile = await getProfile();
+      if (updatedProfile) {
+        setInitialValue({
+          userName: updatedProfile.userName,
+          email: updatedProfile.email,
+          identificationCard: updatedProfile.identificationCard,
+          gender: updatedProfile.gender,
+          phoneNumber: updatedProfile.phoneNumber,
+        });
+        form.setFieldsValue({
+          userName: updatedProfile.userName,
+          email: updatedProfile.email,
+          identificationCard: updatedProfile.identificationCard,
+          gender: updatedProfile.gender,
+          phoneNumber: updatedProfile.phoneNumber,
+        });
+      }
     } catch (error) {
       message.error('Failed to update profile');
     }
@@ -89,7 +88,9 @@ const EditProfile = () => {
     <div>
       <Row>
         <Col span={24}>
-          <Title level={3} style={{ textAlign: 'center' }}>Edit profile</Title>
+          <Title level={3} style={{ textAlign: 'center' }}>
+            Edit profile
+          </Title>
         </Col>
       </Row>
       <Row gutter={16}>
@@ -105,12 +106,7 @@ const EditProfile = () => {
           </div>
         </Col>
         <Col xs={24} sm={24} md={16} lg={18}>
-          <Form
-            form={form}
-            layout="vertical"
-            onFinish={onFinish}
-            initialValues={initialValue || undefined}
-          >
+          <Form form={form} layout="vertical" onFinish={onFinish} initialValues={initialValue || undefined}>
             <Form.Item label="Full Name" name="userName">
               <Input />
             </Form.Item>

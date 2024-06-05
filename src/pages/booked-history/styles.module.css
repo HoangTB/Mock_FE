@@ -16,3 +16,15 @@
   margin: 0;
   display: inline;
 }
+
+.emptyContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 250px;
+  padding: 28px;
+}
+
+.container {
+  height: 100vh !important;
+}

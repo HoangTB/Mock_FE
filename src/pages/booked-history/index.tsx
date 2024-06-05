@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Row, Tabs, TabsProps, Typography } from 'antd';
+import { Col, Row, Tabs, Typography, Empty } from 'antd';
 import styles from './styles.module.css';
-import { IRoomBooking } from '../../types/booked-histoty';
 import BookingItem from './booking-item';
 import { getAllBookedHistory } from '../../api/booked-history/booked-history-api';
-import decodeToken from '../../utils/hoc/de-token';
+import { IRoomBooking } from '../../types/booked-histoty';
 
 const { Title } = Typography;
 
@@ -12,54 +11,51 @@ const BookedHistory = () => {
   const [data, setData] = useState<IRoomBooking[]>([]);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('2');
-  const bookingList = data;
 
-  const getAllBookedHistoryByIdUser = async () => {
-    setLoading(true);
-    try {
-      const response = await getAllBookedHistory();
-      setData(response);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await getAllBookedHistory();
+        setData(response);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleCancelBooking = () => {
     setActiveTab('3');
-    getAllBookedHistoryByIdUser();
+    getAllBookedHistory();
   };
 
   const handleDeleteBooking = () => {
-    getAllBookedHistoryByIdUser();
+    getAllBookedHistory();
   };
 
-  useEffect(() => {
-    getAllBookedHistoryByIdUser();
-  }, []);
-
   const renderBookingList = (status: 'Pending' | 'Approved' | 'Cancelled') => {
-    return (
-      <>
-        {loading ? (
-          <>Loading...</>
-        ) : (
-          <>
-            {bookingList
-              ?.filter((item) => item.statusOfBooking === status)
-              .map((booking) => (
-                <BookingItem
-                  key={booking.idBooking}
-                  booking={booking}
-                  onCancel={handleCancelBooking}
-                  onDelete={handleDeleteBooking}
-                />
-              ))}
-          </>
-        )}
-      </>
-    );
+    const filteredBookings = data.filter((item) => item.statusOfBooking === status);
+
+    if (loading) {
+      return <div>Loading...</div>;
+    }
+
+    if (filteredBookings.length === 0) {
+      return <>No data not found</>;
+    }
+
+    return filteredBookings.map((booking) => (
+      <BookingItem
+        key={booking.idBooking}
+        booking={booking}
+        onCancel={handleCancelBooking}
+        onDelete={handleDeleteBooking}
+      />
+    ));
   };
 
   const items = [
@@ -79,23 +75,17 @@ const BookedHistory = () => {
       children: renderBookingList('Cancelled'),
     },
   ];
-  const renderTabBar: TabsProps['renderTabBar'] = (props, DefaultTabBar) => <DefaultTabBar {...props} />;
 
   return (
-    <div>
+    <div className={styles.container}>
       <Row>
         <Col span={24}>
-          <Title
-            level={3}
-            style={{
-              textAlign: 'center',
-            }}
-          >
+          <Title level={3} style={{ textAlign: 'center' }}>
             Booked History
           </Title>
         </Col>
         <div className={styles.tabs}>
-          <Tabs activeKey={activeTab} onChange={setActiveTab} renderTabBar={renderTabBar} items={items} size="large" />
+          <Tabs activeKey={activeTab} onChange={setActiveTab} items={items} size="large" />
         </div>
       </Row>
     </div>
