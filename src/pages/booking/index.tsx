@@ -141,7 +141,7 @@ const BookingRoom = () => {
                           <li key="3">Description: {data.room.descriptionOfRoom}</li>
                         </ul>
                       </div>
-                      <b className={styles.price}>{data.room.priceOfRoom} VND</b>
+                      <b className={styles.price}>{data.room.priceOfRoom.toLocaleString('de-DE')} VND</b>
                     </Flex>
                   </Col>
                   <Col span={11} md={12} sm={24} xs={24} className={styles.roomBorder2}>
@@ -264,7 +264,7 @@ const BookingRoom = () => {
 
                 <Row style={{ justifyContent: 'center' }}>
                   <Col span={12} md={12} sm={24} xs={24} className={styles.btnSubmit} style={{ textAlign: 'center' }}>
-                    <h1 className={styles.totalPrice}>Total: {total} VND</h1>
+                    <h1 className={styles.totalPrice}>Total: {total.toLocaleString('de-DE')} VND</h1>
                     <Form.Item>
                       <CustomButton type="primary" htmlType="submit" loading={!isLoading}>
                         Checkout
