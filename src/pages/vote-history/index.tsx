@@ -112,11 +112,6 @@ const VoteHistory = () => {
 
   const columns: TableProps<Voted>['columns'] = [
     {
-      title: '#',
-      dataIndex: 'idRating',
-      key: 'idRating',
-    },
-    {
       title: 'Title',
       dataIndex: 'titleRating',
       key: 'titleRating',

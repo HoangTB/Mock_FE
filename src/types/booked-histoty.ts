@@ -11,4 +11,5 @@ export interface IRoomBooking {
   dateBooking: String;
   idBooking: number;
   idUser: number;
+  idHotel: number;
 }
