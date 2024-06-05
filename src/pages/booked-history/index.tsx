@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Row, Tabs, Typography, Empty } from 'antd';
 import styles from './styles.module.css';
-import { IRoomBooking } from '../../types/booked-histoty';
 import BookingItem from './booking-item';
 import { getAllBookedHistory } from '../../api/booked-history/booked-history-api';
+import { IRoomBooking } from '../../types/booked-histoty';
 
 const { Title } = Typography;
 
@@ -11,57 +11,51 @@ const BookedHistory = () => {
   const [data, setData] = useState<IRoomBooking[]>([]);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('2');
-  const bookingList = data;
 
-  const getAllBookedHistoryByIdUser = async () => {
-    setLoading(true);
-    try {
-      const response = await getAllBookedHistory();
-      setData(response);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await getAllBookedHistory();
+        setData(response);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleCancelBooking = () => {
     setActiveTab('3');
-    getAllBookedHistoryByIdUser();
+    getAllBookedHistory();
   };
 
   const handleDeleteBooking = () => {
-    getAllBookedHistoryByIdUser();
+    getAllBookedHistory();
   };
 
-  useEffect(() => {
-    getAllBookedHistoryByIdUser();
-  }, []);
-
   const renderBookingList = (status: 'Pending' | 'Approved' | 'Cancelled') => {
-    const filteredBookings = bookingList?.filter((item) => item?.statusOfBooking === status);
-    return (
-      <>
-        {loading ? (
-          <>Loading...</>
-        ) : (
-          <>
-            {filteredBookings?.length > 0 ? (
-              filteredBookings?.map((booking) => (
-                <BookingItem
-                  key={booking.idBooking}
-                  booking={booking}
-                  onCancel={handleCancelBooking}
-                  onDelete={handleDeleteBooking}
-                />
-              ))
-            ) : (
-              <Empty description="No Data Found" />
-            )}
-          </>
-        )}
-      </>
-    );
+    const filteredBookings = data.filter((item) => item.statusOfBooking === status);
+
+    if (loading) {
+      return <div>Loading...</div>;
+    }
+
+    if (filteredBookings.length === 0) {
+      return <>No data not found</>;
+    }
+
+    return filteredBookings.map((booking) => (
+      <BookingItem
+        key={booking.idBooking}
+        booking={booking}
+        onCancel={handleCancelBooking}
+        onDelete={handleDeleteBooking}
+      />
+    ));
   };
 
   const items = [

@@ -19,7 +19,7 @@ http.interceptors.request.use(
       config.headers['Authorization'] = `Bearer ${token}`;
     }
 
-    console.log('Request config:', config);
+    // console.log('Request config:', config);
 
     return config;
   },

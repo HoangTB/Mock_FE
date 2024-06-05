@@ -20,6 +20,7 @@
     "@types/react-redux": "^7.1.33",
     "antd": "^5.17.3",
     "axios": "^1.7.1",
+    "dayjs": "^1.11.11",
     "iconify": "^1.4.0",
     "jwt-decode": "^4.0.0",
     "moment": "^2.30.1",
