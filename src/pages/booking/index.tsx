@@ -14,6 +14,7 @@ import {
   SelectProps,
   FormProps,
   Carousel,
+  message,
 } from 'antd';
 import Container from '../../components/container';
 import StepByStep from '../../components/step-by-step';
@@ -39,6 +40,7 @@ const BookingRoom = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   let [isDisable, setIsDisable] = useState(false);
+  const [disableCheckout, setDisableCheckout] = useState(false);
   const { idRoom } = useParams();
   let [sum, setSum] = useState(0);
   let [total, setTotal] = useState(0);
@@ -90,8 +92,10 @@ const BookingRoom = () => {
     let formatCheckoutDate = moment(checkoutDate).format('YYYY-MM-DDTHH:mm:ss');
     try {
       await roomApi.checkRoomAvailable(formatChecinDate, formatCheckoutDate, data.room.idRoom);
+      setDisableCheckout(false);
     } catch (error: any) {
-      alert(error.message);
+      message.error(error.message);
+      setDisableCheckout(true);
     }
   };
 
@@ -268,7 +272,7 @@ const BookingRoom = () => {
                   <Col span={12} md={12} sm={24} xs={24} className={styles.btnSubmit} style={{ textAlign: 'center' }}>
                     <h1 className={styles.totalPrice}>Total: {total.toLocaleString('de-DE')} VND</h1>
                     <Form.Item>
-                      <CustomButton type="primary" htmlType="submit" loading={!isLoading}>
+                      <CustomButton type="primary" htmlType="submit" loading={!isLoading} disabled={disableCheckout}>
                         Checkout
                       </CustomButton>
                     </Form.Item>
