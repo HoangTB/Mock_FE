@@ -9,11 +9,12 @@ interface CustomButtonProps {
   type: 'primary' | 'default' | 'link' | 'text' | undefined;
   htmlType: 'button' | 'submit' | 'reset';
   children: React.ReactNode;
+  disabled?: boolean;
 }
 
-const CustomButton: React.FC<CustomButtonProps> = ({ type, htmlType, loading, children }) => {
+const CustomButton: React.FC<CustomButtonProps> = ({ type, htmlType, loading, children, disabled = false }) => {
   return (
-    <Button type={type} htmlType={htmlType} className={style[`custom-button`]} loading={loading}>
+    <Button type={type} htmlType={htmlType} className={style[`custom-button`]} loading={loading} disabled={disabled}>
       {children}
     </Button>
   );
