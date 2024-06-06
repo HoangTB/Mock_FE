@@ -65,6 +65,9 @@ const UserInfoForm = () => {
     const { value } = e.target;
     const newQuantity = parseInt(value) || 0;
 
+  if (isNaN(newQuantity) || newQuantity < 0 || newQuantity > 10) {
+      return; 
+    }
     if (newQuantity === 0) {
       setQuantityItem((prevQuantities) => prevQuantities.filter((q) => q.idService !== item.idService));
     } else {
@@ -96,9 +99,9 @@ const UserInfoForm = () => {
     }
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem('serviceQuantities', JSON.stringify(quantityItem));
-  }, [quantityItem]);
+  // useEffect(() => {
+   
+  // }, [quantityItem]);
 
   // Change Bank
   const onChange = (e: RadioChangeEvent) => {
@@ -141,6 +144,7 @@ const UserInfoForm = () => {
   // Pay
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+     localStorage.setItem('serviceQuantities', JSON.stringify(quantityItem));
     if (!isChecked) {
       message.error('Please click on the checkbox if you agree to the terms and conditions');
       return;
@@ -310,6 +314,7 @@ const UserInfoForm = () => {
                                   type="number"
                                   defaultValue={0}
                                   min={0}
+                                  max={10}
                                   value={quantity}
                                   onChange={(e) => handleChangeService(e, item)}
                                   className={styles.quantityService}

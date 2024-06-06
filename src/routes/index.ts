@@ -27,6 +27,7 @@ import withAdminAuth from '../utils/hoc/auth-admin';
 import WithUserAuth from '../utils/hoc/auth-user';
 import PageNotFound from '../components/errors';
 import WithLoginAuth from '../utils/hoc/auth-login';
+import WithBookingCheck from '../utils/auth-payment';
 
 const routes: RouteObject[] = [
   {
@@ -67,7 +68,7 @@ const routes: RouteObject[] = [
       },
       {
         path: '/booking/:idRoom',
-        Component: Payment,
+        Component: WithBookingCheck(Payment) ,
       },
       {
         path: '/login',
@@ -83,7 +84,7 @@ const routes: RouteObject[] = [
       },
       {
         path: '/booking/completed',
-        Component: Completed,
+        Component: WithBookingCheck(Completed),
       },
       {
         path: '/branch/room/:idRoom',
