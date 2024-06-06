@@ -38,4 +38,20 @@ export const roomApi = {
       }
     }
   },
+
+  checkRoomAvailable: async (startDateBooking: string, endDateBooking: string, idRoom: string) => {
+    try {
+      const response = await axios.post(`${domain}/booking/check-room`, {
+        startDateBooking,
+        endDateBooking,
+        idRoom,
+      });
+      return response;
+    } catch (error: any) {
+      if (error.response && error.response.status === 409) {
+        throw new Error(error.response.data.message || 'Room booking not available');
+      }
+      throw new Error('An error occurred while checking the email.');
+    }
+  },
 };
