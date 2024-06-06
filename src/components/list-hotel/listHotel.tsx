@@ -27,18 +27,18 @@ const ListHotel = ({ data }: ListHotelProps) => {
     <div className={style.container} id="branch">
       {Object.keys(locations).map((city) => (
         <div key={city} className={style.citySection}>
-          <h2>{city}</h2>
+          <h2 id={city}>{city}</h2>
           <div className={style.branchList}>
             {locations[city].map((branch: any, index: number) => (
               <div key={index} className={style.branch} onClick={navigateTo(branch.idHotel)}>
                 <img src={branch.imageUrl} alt={`Branch ${index}`} className={style.image} />
-                <p>{branch.nameHotel}</p>
+                <p className={style.nameHotel}>{branch.nameHotel}</p>
 
-                <p>
+                <p className={style.contentAddress}>
                   <PhoneFilled />
                   {branch.phoneNumberHotel}
                 </p>
-                <p>
+                <p className={style.contentAddress}>
                   <EnvironmentOutlined />
                   {branch.addressHotel}
                 </p>

@@ -3,7 +3,8 @@
 }
 
 .container h2 {
-  font-size: 35px;
+  font-size: 30px;
+  text-transform: uppercase;
 }
 
 .citySection {
@@ -12,6 +13,7 @@
 
 .branchList {
   display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
 }
 
@@ -39,6 +41,19 @@
   margin: 20px;
   font-size: 16px;
   font-weight: 700;
+}
+
+.contentAddress {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  justify-content: center;
+  color: gray;
+  font-size: 15px !important;
+}
+
+.nameHotel {
+  font-size: 20px !important;
 }
 
 /* Responsive Styles */
