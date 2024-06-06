@@ -5,7 +5,7 @@ const domain = process.env.REACT_APP_API_URL;
 export const getAllVoteHistory = async () => {
   try {
     const response = await http.get(`${domain}/vote-history/list`);
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -36,7 +36,7 @@ export const updateVoteHistory = async (
 export const deleteRating = async (idRating: number) => {
   try {
     const response = await http.delete(`${domain}/vote-history/delete/${idRating}`);
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.log(error);

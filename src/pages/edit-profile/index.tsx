@@ -57,7 +57,7 @@ const EditProfile = () => {
 
   const onFinish = async (values: FormValues) => {
     try {
-      console.log(values);
+      // console.log(values);
 
       const response = await updateProfile(values);
 

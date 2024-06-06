@@ -1,18 +1,18 @@
 import { CarOutlined, DesktopOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Flex, Row, Typography } from 'antd';
+import { Flex, Row, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
-import Container from '../../components/container';
-import StepByStep from '../../components/step-by-step';
-import { IRoom } from '../../types/room';
-import GuestReviews from './guest-reviews';
-import styles from './styles.module.css';
-import Filters from './filter';
-import Room from './room';
-import { roomApi } from '../../api/room/room-api';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ratingApi } from '../../api/rating/rating-api';
-import { IRating } from '../../types/rating';
+import { roomApi } from '../../api/room/room-api';
+import Container from '../../components/container';
+import StepByStep from '../../components/step-by-step';
 import { IHotel } from '../../types/hotel';
+import { IRating } from '../../types/rating';
+import { IRoom } from '../../types/room';
+import Filters from './filter';
+import GuestReviews from './guest-reviews';
+import Room from './room';
+import styles from './styles.module.css';
 
 const { Title } = Typography;
 
@@ -74,31 +74,16 @@ const RoomList = () => {
             backgroundSize: 'cover',
             backgroundRepeat: 'inherit',
           }}
-        ></div>
+        >
+          <div className={styles['gradient-overlay']} />
+        </div>
         <div className={styles.content}>
           <Title level={2} className={styles.title}>
             Welcome to {roomList.hotel.nameHotel}
           </Title>
-          <Title
-            level={4}
-            style={{
-              padding: 0,
-              margin: 0,
-              color: '#fff',
-            }}
-          >
+          <Title level={4} className={styles.title}>
             Where every stay is unique
           </Title>
-          <Button
-            type="primary"
-            size="large"
-            style={{
-              marginTop: 2,
-              textAlign: 'center',
-            }}
-          >
-            Book Now
-          </Button>
         </div>
       </div>
       <Container>
@@ -126,16 +111,7 @@ const RoomList = () => {
           </Flex>
         </div>
 
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            gap: 10,
-            alignItems: 'center',
-            marginBottom: 40,
-            marginTop: 40,
-          }}
-        >
+        <div className={styles.boxTitle}>
           <Title
             level={3}
             style={{
@@ -163,18 +139,6 @@ const RoomList = () => {
               )}
             </>
           )}
-          {/* <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              width: '100%',
-              marginTop: 20,
-            }}
-          >
-            <Button type="dashed" size="middle">
-              Load more
-            </Button>
-          </div> */}
         </Row>
 
         {isLoading && <GuestReviews ratings={ratingList} />}

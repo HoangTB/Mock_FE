@@ -1,14 +1,15 @@
+import { IRoomService } from './service-history';
+
 export interface IRoomBooking {
   startDateBooking: string;
   endDateBooking: string;
-  paymentMethod: string;
-  nameService: String;
-  priceOfService: number;
+  paymentMethod: string | null;
+  services: IRoomService[];
   statusOfBooking: 'Pending' | 'Approved' | 'Cancelled';
   priceOfRoom: number;
   roomNumber: number;
-  linkOfPhoto: String;
-  dateBooking: String;
+  linkOfPhoto: string;
+  dateBooking: string;
   idBooking: number;
   idUser: number;
   idHotel: number;

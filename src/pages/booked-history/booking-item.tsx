@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { Card, Row, Col, Button, Typography, Tag, Flex, Modal, Form, Input, message } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Card, Row, Col, Button, Typography, Tag, Flex, Modal, Form, Input, InputNumber, message } from 'antd';
 import { Image } from 'antd';
 import styles from './styles.module.css';
 import { deleteBooking, updateStatusOfBooking } from '../../api/booked-history/booked-history-api';
 import moment from 'moment';
 import { createFeedBack } from '../../api/feedback/feedback-api';
 import { IRoomBooking } from '../../types/booked-histoty';
+import { IRoomService } from '../../types/service-history';
 
 const { Title, Text } = Typography;
 
@@ -13,10 +14,12 @@ const BookingItem = ({
   booking,
   onCancel,
   onDelete,
+  setTab,
 }: {
   booking: IRoomBooking;
   onCancel: () => void;
   onDelete: () => void;
+  setTab: (tab: string) => void;
 }) => {
   const [loading, setLoading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -26,19 +29,26 @@ const BookingItem = ({
   const [feedbackData, setFeedbackData] = useState({
     titleRating: '',
     contentRating: '',
-    starRating: 0,
+    starRating: 1,
     idHotel: booking.idHotel,
     timeCreated: moment().format('YYYY-MM-DDTHH:mm'),
   });
-  const [isDirty, setIsDirty] = useState(false); // State to track if any input is dirty
+  const [isDirty, setIsDirty] = useState(false);
+
+  useEffect(() => {
+    setIsDirty(true);
+  }, [feedbackData]);
 
   const cancel = async (idBooking: number, statusOfBooking: string) => {
     setLoading(true);
     try {
       await updateStatusOfBooking(idBooking, statusOfBooking);
       onCancel();
+      message.success('Booking cancelled successfully!');
+      setTab('3');
     } catch (error) {
       console.log(error);
+      message.error('Failed to cancel booking. Please try again later.');
     } finally {
       setLoading(false);
     }
@@ -53,7 +63,10 @@ const BookingItem = ({
     setLoading(true);
     try {
       await deleteBooking(idBooking);
+      message.success('Booking deleted successfully!');
+      setTab('3');
     } catch (error) {
+      message.error('Failed to delete booking. Please try again later.');
       console.log(error);
     } finally {
       setLoading(false);
@@ -93,18 +106,34 @@ const BookingItem = ({
     return diffInHours > 24;
   };
 
-  // Handler for input changes to set the dirty state
-  const handleInputChange = () => {
-    setIsDirty(true);
+  const calculateServicePrice = (services: IRoomService[]) => {
+    return services.reduce((total, service) => total + (service.priceOfService || 0), 0);
   };
+
+  const servicePrice = calculateServicePrice(booking.services);
+  const totalPrice = booking.priceOfRoom + servicePrice;
+
+  const uniqueServices = (services: IRoomService[]) => {
+    const seen = new Map();
+    return services.filter((service) => {
+      const key = `${service.idService}-${service.nameService}`;
+      if (seen.has(key)) {
+        return false;
+      }
+      seen.set(key, true);
+      return true;
+    });
+  };
+
+  const uniqueServiceList = uniqueServices(booking.services);
 
   return (
     <Card bordered={false} className={styles.card}>
       <Row gutter={16}>
         <Col span={4} lg={4} md={24} sm={24} xs={24}>
           <Image
-            width={100}
-            height={100}
+            width={120}
+            height={120}
             src={booking?.linkOfPhoto?.toLocaleString()}
             alt="Room Image"
             style={{ borderRadius: 10 }}
@@ -112,7 +141,7 @@ const BookingItem = ({
         </Col>
         <Col span={20} lg={20} md={24} sm={24} xs={24}>
           <Row>
-            <Col span={10} lg={10} md={12} sm={12} xs={24}>
+            <Col span={10} lg={8} md={12} sm={12} xs={24}>
               <Title level={4}>Room {booking.roomNumber}</Title>
               <Text>
                 <p className={styles.title}>Date booking: </p>
@@ -130,40 +159,44 @@ const BookingItem = ({
               </Text>
               <br />
             </Col>
-            <Col span={5} lg={5} md={12} sm={12} xs={24}>
+            <Col span={5} lg={4} md={12} sm={12} xs={24}>
               <Title level={5}>Service</Title>
-              <Text>
-                <p className={styles.title}>{booking.nameService} </p>
-              </Text>
-            </Col>
-            <Col span={5} lg={5} md={12} sm={12} xs={24}>
-              <Title level={5}>Summary</Title>
-              <Text>
-                <p className={styles.title}>Price room: </p>
-                {booking.priceOfRoom}$
-              </Text>
-              <br />
-              <Text>
-                <p className={styles.title}>Price service: </p> {booking.priceOfService}$
-              </Text>
-              <br />
-              <Text>
-                <p className={styles.title}>Discount: </p>10%
-              </Text>
-              <br />
-              <hr />
-              <Text>
-                {' '}
-                <p className={styles.title}>Total: </p>{' '}
-                {booking.priceOfRoom +
-                  booking.priceOfService -
-                  ((booking.priceOfRoom + booking.priceOfService) * 10) / 100}
-                $
-              </Text>
+              {uniqueServiceList.length > 0 ? (
+                uniqueServiceList.map((service, index) => (
+                  <Text key={index} className={styles.listService}>
+                    {service.nameService && service.numberOfService ? (
+                      <p className={styles.contentService}>
+                        {service.nameService} x {service.numberOfService}
+                      </p>
+                    ) : (
+                      <p className={styles.contentService}>N/A</p>
+                    )}
+                  </Text>
+                ))
+              ) : (
+                <Text>N/A</Text>
+              )}
             </Col>
             <Col span={4} lg={4} md={12} sm={12} xs={24}>
               <Title level={5}>Payment</Title>
-              <Text>Zalo Pay</Text>
+              <Text>{booking.paymentMethod || 'N/A'}</Text>
+            </Col>
+            <Col span={5} lg={6} md={12} sm={12} xs={24}>
+              <Title level={5}>Summary</Title>
+              <Text>
+                <p className={styles.title}>Price room: </p>
+                {booking.priceOfRoom.toLocaleString('de-DE')}VND
+              </Text>
+              <br />
+              <Text>
+                <p className={styles.title}>Price service: </p> {servicePrice.toLocaleString('de-DE')} VND
+              </Text>
+              <br />
+              <br />
+              <hr />
+              <Text>
+                <p className={styles.title}>Total: </p> {totalPrice.toLocaleString('de-DE')} VND
+              </Text>
             </Col>
             <Col
               span={24}
@@ -243,7 +276,13 @@ const BookingItem = ({
                             type="primary"
                             onClick={handleFeedbackSubmit}
                             loading={loading}
-                            disabled={!isDirty}
+                            disabled={
+                              !isDirty ||
+                              !feedbackData.titleRating ||
+                              !feedbackData.contentRating ||
+                              feedbackData.starRating < 1 ||
+                              feedbackData.starRating > 5
+                            }
                           >
                             Submit
                           </Button>,
@@ -260,7 +299,7 @@ const BookingItem = ({
                               value={feedbackData.titleRating}
                               onChange={(e) => {
                                 setFeedbackData({ ...feedbackData, titleRating: e.target.value });
-                                handleInputChange();
+                                setIsDirty(true);
                               }}
                             />
                           </Form.Item>
@@ -275,23 +314,27 @@ const BookingItem = ({
                               value={feedbackData.contentRating}
                               onChange={(e) => {
                                 setFeedbackData({ ...feedbackData, contentRating: e.target.value });
-                                handleInputChange();
+                                setIsDirty(true);
                               }}
                             />
                           </Form.Item>
-
                           <Form.Item
                             name="starRating"
                             label="Star Rating"
-                            rules={[{ required: true, message: 'Please input the start rating!' }]}
+                            rules={[
+                              { required: true, message: 'Please input the star rating!' },
+                              { type: 'number', min: 1, max: 5, message: 'Star rating must be between 1 and 5' },
+                            ]}
                           >
-                            <Input
+                            <InputNumber
                               placeholder="Star rating"
-                              value={feedbackData.starRating}
-                              onChange={(e) => {
-                                setFeedbackData({ ...feedbackData, starRating: Number(e.target.value) });
-                                handleInputChange();
+                              value={feedbackData.starRating || undefined}
+                              onChange={(value) => {
+                                setFeedbackData({ ...feedbackData, starRating: value as number });
+                                setIsDirty(true);
                               }}
+                              min={1}
+                              max={5}
                             />
                           </Form.Item>
                         </Form>
@@ -300,7 +343,6 @@ const BookingItem = ({
                   )}
                   {booking.statusOfBooking === 'Cancelled' && (
                     <>
-                      <Button type="primary">Re-booking</Button>
                       <Button type="primary" danger onClick={() => setShowConfirmation(true)}>
                         Delete
                       </Button>
