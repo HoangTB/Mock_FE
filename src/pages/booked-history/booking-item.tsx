@@ -111,15 +111,29 @@ const BookingItem = ({
   };
 
   const servicePrice = calculateServicePrice(booking.services);
-  const totalPrice = booking.priceOfRoom + servicePrice - ((booking.priceOfRoom + servicePrice) * 10) / 100;
+  const totalPrice = booking.priceOfRoom + servicePrice;
+
+  const uniqueServices = (services: IRoomService[]) => {
+    const seen = new Map();
+    return services.filter((service) => {
+      const key = `${service.idService}-${service.nameService}`;
+      if (seen.has(key)) {
+        return false;
+      }
+      seen.set(key, true);
+      return true;
+    });
+  };
+
+  const uniqueServiceList = uniqueServices(booking.services);
 
   return (
     <Card bordered={false} className={styles.card}>
       <Row gutter={16}>
         <Col span={4} lg={4} md={24} sm={24} xs={24}>
           <Image
-            width={100}
-            height={100}
+            width={120}
+            height={120}
             src={booking?.linkOfPhoto?.toLocaleString()}
             alt="Room Image"
             style={{ borderRadius: 10 }}
@@ -127,7 +141,7 @@ const BookingItem = ({
         </Col>
         <Col span={20} lg={20} md={24} sm={24} xs={24}>
           <Row>
-            <Col span={10} lg={10} md={12} sm={12} xs={24}>
+            <Col span={10} lg={8} md={12} sm={12} xs={24}>
               <Title level={4}>Room {booking.roomNumber}</Title>
               <Text>
                 <p className={styles.title}>Date booking: </p>
@@ -145,37 +159,40 @@ const BookingItem = ({
               </Text>
               <br />
             </Col>
-            <Col span={5} lg={5} md={12} sm={12} xs={24}>
+            <Col span={5} lg={4} md={12} sm={12} xs={24}>
               <Title level={5}>Service</Title>
-              {booking.services.map((service, index) => (
-                <Text key={index} className={styles.listService}>
-                  <p className={styles.contentService}>{service.nameService}</p>
-                </Text>
-              ))}
-            </Col>
-            <Col span={5} lg={5} md={12} sm={12} xs={24}>
-              <Title level={5}>Summary</Title>
-              <Text>
-                <p className={styles.title}>Price room: </p>
-                {booking.priceOfRoom}VND
-              </Text>
-              <br />
-              <Text>
-                <p className={styles.title}>Price service: </p> {servicePrice}VND
-              </Text>
-              <br />
-              <Text>
-                <p className={styles.title}>Discount: </p>10%
-              </Text>
-              <br />
-              <hr />
-              <Text>
-                <p className={styles.title}>Total: </p> {totalPrice}VND
-              </Text>
+              {uniqueServiceList.length > 0 ? (
+                uniqueServiceList.map((service, index) => (
+                  <Text key={index} className={styles.listService}>
+                    <p className={styles.contentService}>
+                      {service.nameService} x {service.numberOfService}
+                    </p>
+                  </Text>
+                ))
+              ) : (
+                <Text>N/A</Text>
+              )}
             </Col>
             <Col span={4} lg={4} md={12} sm={12} xs={24}>
               <Title level={5}>Payment</Title>
               <Text>{booking.paymentMethod || 'N/A'}</Text>
+            </Col>
+            <Col span={5} lg={6} md={12} sm={12} xs={24}>
+              <Title level={5}>Summary</Title>
+              <Text>
+                <p className={styles.title}>Price room: </p>
+                {booking.priceOfRoom.toLocaleString('de-DE')}VND
+              </Text>
+              <br />
+              <Text>
+                <p className={styles.title}>Price service: </p> {servicePrice.toLocaleString('de-DE')} VND
+              </Text>
+              <br />
+              <br />
+              <hr />
+              <Text>
+                <p className={styles.title}>Total: </p> {totalPrice.toLocaleString('de-DE')} VND
+              </Text>
             </Col>
             <Col
               span={24}
