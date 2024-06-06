@@ -6,6 +6,7 @@ import { deleteBooking, updateStatusOfBooking } from '../../api/booked-history/b
 import moment from 'moment';
 import { createFeedBack } from '../../api/feedback/feedback-api';
 import { IRoomBooking } from '../../types/booked-histoty';
+import { IRoomService } from '../../types/service-history';
 
 const { Title, Text } = Typography;
 
@@ -97,6 +98,13 @@ const BookingItem = ({
     return diffInHours > 24;
   };
 
+  const calculateServicePrice = (services: IRoomService[]) => {
+    return services.reduce((total, service) => total + (service.priceOfService || 0), 0);
+  };
+
+  const servicePrice = calculateServicePrice(booking.services);
+  const totalPrice = booking.priceOfRoom + servicePrice - ((booking.priceOfRoom + servicePrice) * 10) / 100;
+
   return (
     <Card bordered={false} className={styles.card}>
       <Row gutter={16}>
@@ -131,9 +139,11 @@ const BookingItem = ({
             </Col>
             <Col span={5} lg={5} md={12} sm={12} xs={24}>
               <Title level={5}>Service</Title>
-              <Text>
-                <p className={styles.title}>{booking.nameService} </p>
-              </Text>
+              {booking.services.map((service, index) => (
+                <Text key={index} className={styles.listService}>
+                  <p className={styles.contentService}>{service.nameService}</p>
+                </Text>
+              ))}
             </Col>
             <Col span={5} lg={5} md={12} sm={12} xs={24}>
               <Title level={5}>Summary</Title>
@@ -143,7 +153,7 @@ const BookingItem = ({
               </Text>
               <br />
               <Text>
-                <p className={styles.title}>Price service: </p> {booking.priceOfService}VND
+                <p className={styles.title}>Price service: </p> {servicePrice}VND
               </Text>
               <br />
               <Text>
@@ -152,17 +162,12 @@ const BookingItem = ({
               <br />
               <hr />
               <Text>
-                {' '}
-                <p className={styles.title}>Total: </p>{' '}
-                {booking.priceOfRoom +
-                  booking.priceOfService -
-                  ((booking.priceOfRoom + booking.priceOfService) * 10) / 100}
-                VND
+                <p className={styles.title}>Total: </p> {totalPrice}VND
               </Text>
             </Col>
             <Col span={4} lg={4} md={12} sm={12} xs={24}>
               <Title level={5}>Payment</Title>
-              <Text>Zalo Pay</Text>
+              <Text>{booking.paymentMethod || 'N/A'}</Text>
             </Col>
             <Col
               span={24}
@@ -301,7 +306,7 @@ const BookingItem = ({
                               }}
                               min={1}
                               max={5}
-                            />   
+                            />
                           </Form.Item>
                         </Form>
                       </Modal>
