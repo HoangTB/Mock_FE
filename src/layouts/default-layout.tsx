@@ -5,7 +5,7 @@ import Header from '../components/partial/header';
 import Footer from '../components/partial/footer';
 function DefaultLayout() {
   return (
-    <div className="">
+    <div style={{ minHeight: '100vh !important' }}>
       <Header />
       <div className="">
         <Outlet />

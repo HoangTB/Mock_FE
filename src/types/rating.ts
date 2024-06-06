@@ -6,4 +6,5 @@ export interface IRating {
   timeCreated: Dayjs;
   username: string;
   avatar?: string;
+  starRating: number;
 }

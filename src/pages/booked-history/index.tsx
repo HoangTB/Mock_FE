@@ -12,29 +12,35 @@ const BookedHistory = () => {
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('2');
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response = await getAllBookedHistory();
-        setData(response);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const response = await getAllBookedHistory();
+      setData(response);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, []);
 
-  const handleCancelBooking = () => {
+  useEffect(() => {
+    fetchData();
+  }, [activeTab]);
+
+  const handleCancelBooking = async () => {
     setActiveTab('3');
-    getAllBookedHistory();
+    await getAllBookedHistory();
   };
 
-  const handleDeleteBooking = () => {
-    getAllBookedHistory();
+  const handleDeleteBooking = async () => {
+    setActiveTab('3');
+    await getAllBookedHistory();
+    fetchData();
   };
 
   const renderBookingList = (status: 'Pending' | 'Approved' | 'Cancelled') => {
@@ -45,7 +51,16 @@ const BookedHistory = () => {
     }
 
     if (filteredBookings.length === 0) {
-      return <>No data not found</>;
+      return <>
+        <img
+          src="https://i.pinimg.com/originals/49/e5/8d/49e58d5922019b8ec4642a2e2b9291c2.png"
+          alt=""
+          width={400}
+          style={{
+            marginLeft: 200
+          }}
+        />
+      </>;
     }
 
     return filteredBookings.map((booking) => (
@@ -54,6 +69,7 @@ const BookedHistory = () => {
         booking={booking}
         onCancel={handleCancelBooking}
         onDelete={handleDeleteBooking}
+        setTab={setActiveTab}
       />
     ));
   };
