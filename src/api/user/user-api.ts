@@ -79,3 +79,15 @@ export const updateProfile = async (data: any) => {
     console.log(error);
   }
 };
+
+export const checkEmail = async (email: string) => {
+  try {
+    const response = await axios.post(`${domain}/check-email`, { email });
+    return response.data;
+  } catch (error: any) {
+    if (error.response && error.response.status === 409) {
+      throw new Error(error.response.data.message || 'This email already exists in the database. Please login');
+    }
+    throw new Error('An error occurred while checking the email.');
+  }
+};

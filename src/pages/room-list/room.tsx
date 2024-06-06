@@ -32,7 +32,9 @@ const Room = ({ room }: { room: IRoom }) => {
               </div>
             ))
           ) : (
-            <Image src={noData} alt="..." style={{ width: '100%', borderRadius: 10, height: 230 }} />
+            <div>
+              <Image src={noData} alt="..." style={{ width: '100%', borderRadius: 10, height: 230 }} />
+            </div>
           )}
         </Carousel>
         <Title
@@ -52,7 +54,7 @@ const Room = ({ room }: { room: IRoom }) => {
         >
           Room type: {typeRoom}
         </p>
-        <Flex vertical={true} gap={5} style={{lineHeight: 1.5}}>
+        <Flex vertical={true} gap={5} style={{ lineHeight: 1.5 }}>
           <p>Description: {descriptionOfRoom}</p>
           <p>Number of beds: {numberOfBeds}</p>
           <p> Max people: {maxNumberPeopleOfRoom}</p>

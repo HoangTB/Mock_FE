@@ -22,6 +22,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { IBookingRoom, IRoomDetail, IService, IUserInfo } from '../../types/room';
 import CustomButton from '../../components/buttons/submit-button/custom-button';
 import { calculateNewDate } from '../../utils/date-time-format';
+import { checkEmail } from '../../api/user/user-api';
+import moment from 'moment';
 
 const hourOptions: any[] = [];
 
@@ -43,6 +45,8 @@ const BookingRoom = () => {
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedHour, setSelectedHour] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  let [checkinDate, setCheckinDate] = useState('');
+  let [checkoutDate, setCheckoutDate] = useState('');
   const [data, setData] = useState<IBookingRoom>({
     room: {} as IRoomDetail,
     services: [] as IService[],
@@ -71,31 +75,45 @@ const BookingRoom = () => {
     })();
   }, [idRoom]);
 
-  // const onChange = (checkedValues: any) => {
-  //   let sum = data.room.priceOfRoom;
-  //   checkedValues.forEach((item: any) => {
-  //     sum += Number.parseInt(item.priceOfService);
-  //   });
-  //   setSum(sum);
-  // };
-
   const onChangeDate: DatePickerProps['onChange'] = (_, dateStr: any) => {
     setSelectedDate(dateStr);
+    setCheckinDate(dateStr);
     form.setFieldsValue({ checkInDate: dateStr, checkOutDate: calculateNewDate(dateStr, selectedHour) });
   };
 
-  const handleHourChange: SelectProps['onChange'] = (value) => {
+  const handleHourChange: SelectProps['onChange'] = async (value) => {
     setSelectedHour(value);
     setTotal(value * data.room.priceOfRoom);
     form.setFieldsValue({ checkOutDate: calculateNewDate(selectedDate, value) });
+    checkoutDate = calculateNewDate(selectedDate, value);
+    let formatChecinDate = moment(checkinDate).format('YYYY-MM-DDTHH:mm:ss');
+    let formatCheckoutDate = moment(checkoutDate).format('YYYY-MM-DDTHH:mm:ss');
+    try {
+      await roomApi.checkRoomAvailable(formatChecinDate, formatCheckoutDate, data.room.idRoom);
+    } catch (error: any) {
+      alert(error.message);
+    }
   };
 
-  const onFinish: FormProps['onFinish'] = (values) => {
-    values.sum = values.hours * data.room.priceOfRoom;
-    setTotal(values.hours * sum);
-    localStorage.setItem('booking', JSON.stringify(values));
-    navigate(`/booking/${data.room.idRoom}`);
-    setIsDisable(false);
+  const onFinish: FormProps['onFinish'] = async (values) => {
+    try {
+      if (!localStorage.getItem('token')) {
+        await checkEmail(values.email);
+      }
+
+      values.sum = values.hours * data.room.priceOfRoom;
+      setTotal(values.hours * sum);
+      localStorage.setItem('booking', JSON.stringify(values));
+      navigate(`/booking/${data.room.idRoom}`);
+      setIsDisable(false);
+    } catch (error: any) {
+      form.setFields([
+        {
+          name: 'email',
+          errors: [error.message],
+        },
+      ]);
+    }
   };
 
   const disabledDate = (current: any) => {
@@ -244,22 +262,6 @@ const BookingRoom = () => {
                   </Col>
                 </Row>
 
-                {/* <Row style={{ marginTop: '20px' }}>
-                  <Col span={12} md={12} sm={24} xs={24}>
-                    <h1 className={styles.titleService}>Select service: </h1>
-                    <Form.Item name="services">
-                      <Checkbox.Group style={{ width: '100%' }} onChange={onChange}>
-                        <Row gutter={5} style={{ width: '100%' }}>
-                          {data.services.map((item) => (
-                            <Col key={item.idService} span={8} md={8} sm={24} xs={24}>
-                              <Checkbox value={item}>{item.nameService}</Checkbox>
-                            </Col>
-                          ))}
-                        </Row>
-                      </Checkbox.Group>
-                    </Form.Item>
-                  </Col>
-                </Row> */}
                 <hr className={styles.border}></hr>
 
                 <Row style={{ justifyContent: 'center' }}>
