@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, Row, Col, Button, Typography, Tag, Flex, Modal, Form, Input, InputNumber, message } from 'antd';
 import { Image } from 'antd';
 import styles from './styles.module.css';
-import { deleteBooking, getAllBookedHistory, updateStatusOfBooking } from '../../api/booked-history/booked-history-api';
+import { deleteBooking, updateStatusOfBooking } from '../../api/booked-history/booked-history-api';
 import moment from 'moment';
 import { createFeedBack } from '../../api/feedback/feedback-api';
 import { IRoomBooking } from '../../types/booked-histoty';
@@ -164,9 +164,13 @@ const BookingItem = ({
               {uniqueServiceList.length > 0 ? (
                 uniqueServiceList.map((service, index) => (
                   <Text key={index} className={styles.listService}>
-                    <p className={styles.contentService}>
-                      {service.nameService} x {service.numberOfService}
-                    </p>
+                    {service.nameService && service.numberOfService ? (
+                      <p className={styles.contentService}>
+                        {service.nameService} x {service.numberOfService}
+                      </p>
+                    ) : (
+                      <p className={styles.contentService}>N/A</p>
+                    )}
                   </Text>
                 ))
               ) : (
@@ -339,7 +343,6 @@ const BookingItem = ({
                   )}
                   {booking.statusOfBooking === 'Cancelled' && (
                     <>
-                      <Button type="primary">Re-booking</Button>
                       <Button type="primary" danger onClick={() => setShowConfirmation(true)}>
                         Delete
                       </Button>

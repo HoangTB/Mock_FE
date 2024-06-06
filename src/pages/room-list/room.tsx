@@ -1,4 +1,4 @@
-import { Carousel, Col, Flex, Image } from 'antd';
+import { Carousel, Col, Flex, Image, Row } from 'antd';
 import { Button, Typography } from 'antd';
 import React from 'react';
 import { IRoom } from '../../types/room';
@@ -46,7 +46,8 @@ const Room = ({ room }: { room: IRoom }) => {
         </Title>
         <p
           style={{
-            marginBottom: 5,
+            margin: 0,
+            marginBottom: 8,
           }}
         >
           Room type: {typeRoom}

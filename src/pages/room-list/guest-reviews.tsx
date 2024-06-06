@@ -70,7 +70,7 @@ const GuestReviews = ({ ratings }: { ratings: IRating[] }) => {
                       />
                       <Flex vertical align="center">
                         <p>Date: {dayjs(item.timeCreated).format('DD/MM/YYYY')}</p>
-                        <Rate disabled defaultValue={4} />
+                        <Rate disabled defaultValue={item.starRating} />
                         <p style={{ marginTop: '10px', textAlign: 'center' }}>{item.contentRating}</p>
                       </Flex>
                     </Card>
@@ -98,11 +98,11 @@ const GuestReviews = ({ ratings }: { ratings: IRating[] }) => {
                         }}
                       />
                     }
-                    title="Bui Van Sy"
+                    title={item.username}
                   />
                   <Flex vertical align="center" gap={8}>
                     <p>Date: {dayjs(item.timeCreated).format('DD/MM/YYYY')}</p>
-                    <Rate disabled defaultValue={4} />
+                    <Rate disabled defaultValue={item.starRating} />
                     <p style={{ marginTop: '10px', textAlign: 'center' }}>{item.contentRating}</p>
                   </Flex>
                 </Card>
