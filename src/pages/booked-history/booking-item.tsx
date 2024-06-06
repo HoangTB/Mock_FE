@@ -1,67 +1,164 @@
-import React from 'react';
-import { Card, Row, Col, Button, Typography, Tag, Flex } from 'antd';
+import React, { useState } from 'react';
+import { Card, Row, Col, Button, Typography, Tag, Flex, Modal, Form, Input, message } from 'antd';
 import { Image } from 'antd';
-import { IRoomBooking } from '../../types/room';
 import styles from './styles.module.css';
+import { deleteBooking, updateStatusOfBooking } from '../../api/booked-history/booked-history-api';
+import moment from 'moment';
+import { createFeedBack } from '../../api/feedback/feedback-api';
+import { IRoomBooking } from '../../types/booked-histoty';
 
 const { Title, Text } = Typography;
 
-const BookingItem = ({ booking }: { booking: IRoomBooking }) => {
+const BookingItem = ({
+  booking,
+  onCancel,
+  onDelete,
+}: {
+  booking: IRoomBooking;
+  onCancel: () => void;
+  onDelete: () => void;
+}) => {
+  const [loading, setLoading] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [confirmCancel, setConfirmCancel] = useState(false);
+  const [feedbackModalVisible, setFeedbackModalVisible] = useState(false);
+  const [form] = Form.useForm();
+  const [feedbackData, setFeedbackData] = useState({
+    titleRating: '',
+    contentRating: '',
+    starRating: 0,
+    idHotel: booking.idHotel,
+    timeCreated: moment().format('YYYY-MM-DDTHH:mm'),
+  });
+  const [isDirty, setIsDirty] = useState(false); // State to track if any input is dirty
+
+  const cancel = async (idBooking: number, statusOfBooking: string) => {
+    setLoading(true);
+    try {
+      await updateStatusOfBooking(idBooking, statusOfBooking);
+      onCancel();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleConfirmCancel = () => {
+    cancel(booking.idBooking, 'Cancelled');
+    setConfirmCancel(false);
+  };
+
+  const handleDeleteBooking = async (idBooking: number) => {
+    setLoading(true);
+    try {
+      await deleteBooking(idBooking);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+      onDelete();
+    }
+  };
+
+  const handleConfirmDelete = () => {
+    handleDeleteBooking(booking.idBooking);
+    setShowConfirmation(false);
+  };
+
+  const handleFeedbackSubmit = async () => {
+    try {
+      setLoading(true);
+      await createFeedBack(
+        feedbackData.titleRating,
+        feedbackData.contentRating,
+        feedbackData.starRating,
+        feedbackData.idHotel,
+        feedbackData.timeCreated,
+      );
+      setLoading(false);
+      setFeedbackModalVisible(false);
+      form.resetFields();
+      message.success('Feedback submitted successfully!');
+    } catch (error) {
+      setLoading(false);
+      message.error('Failed to submit feedback. Please try again later.');
+    }
+  };
+
+  const isCancelable = () => {
+    const currentTime = moment();
+    const bookingTime = moment(booking.startDateBooking.toString());
+    const diffInHours = bookingTime.diff(currentTime, 'hours');
+    return diffInHours > 24;
+  };
+
+  // Handler for input changes to set the dirty state
+  const handleInputChange = () => {
+    setIsDirty(true);
+  };
+
   return (
     <Card bordered={false} className={styles.card}>
       <Row gutter={16}>
         <Col span={4} lg={4} md={24} sm={24} xs={24}>
-          <Image width={100} height={100} src={booking.images[0]} alt="Room Image" style={{ borderRadius: 10 }} />
+          <Image
+            width={100}
+            height={100}
+            src={booking?.linkOfPhoto?.toLocaleString()}
+            alt="Room Image"
+            style={{ borderRadius: 10 }}
+          />
         </Col>
         <Col span={20} lg={20} md={24} sm={24} xs={24}>
           <Row>
             <Col span={10} lg={10} md={12} sm={12} xs={24}>
-              <Title level={4}>{booking.nameRoom}</Title>
+              <Title level={4}>Room {booking.roomNumber}</Title>
               <Text>
-                <p className={styles.title}>Booking Date: </p>
-                {new Date(booking.bookingDate).toLocaleString()}
+                <p className={styles.title}>Date booking: </p>
+                {moment(booking?.dateBooking.toString()).format('YYYY-MM-DD HH:mm:ss')}
               </Text>
               <br />
               <Text>
                 <p className={styles.title}>From Date: </p>
-                {new Date(booking.fromDate).toLocaleString()}
+                {moment(booking?.startDateBooking.toString()).format('YYYY-MM-DD HH:mm:ss')}
               </Text>
               <br />
               <Text>
                 <p className={styles.title}>To Date: </p>
-                {new Date(booking.toDate).toLocaleString()}
+                {moment(booking?.endDateBooking.toString()).format('YYYY-MM-DD HH:mm:ss')}
               </Text>
               <br />
             </Col>
             <Col span={5} lg={5} md={12} sm={12} xs={24}>
               <Title level={5}>Service</Title>
-              {booking.service.map((srv, index) => (
-                <Text key={index}>
-                  {srv}
-                  <br />
-                </Text>
-              ))}
+              <Text>
+                <p className={styles.title}>{booking.nameService} </p>
+              </Text>
             </Col>
             <Col span={5} lg={5} md={12} sm={12} xs={24}>
               <Title level={5}>Summary</Title>
               <Text>
                 <p className={styles.title}>Price room: </p>
-                {booking.price}$
+                {booking.priceOfRoom}$
               </Text>
               <br />
               <Text>
-                <p className={styles.title}>Price service: </p> {booking.total - booking.price}$
+                <p className={styles.title}>Price service: </p> {booking.priceOfService}$
               </Text>
               <br />
               <Text>
-                <p className={styles.title}>Discount: </p>
-                0$
+                <p className={styles.title}>Discount: </p>10%
               </Text>
               <br />
               <hr />
               <Text>
                 {' '}
-                <p className={styles.title}>Total: </p> {booking.total}$
+                <p className={styles.title}>Total: </p>{' '}
+                {booking.priceOfRoom +
+                  booking.priceOfService -
+                  ((booking.priceOfRoom + booking.priceOfService) * 10) / 100}
+                $
               </Text>
             </Col>
             <Col span={4} lg={4} md={12} sm={12} xs={24}>
@@ -88,34 +185,143 @@ const BookingItem = ({ booking }: { booking: IRoomBooking }) => {
                   >
                     Status:{' '}
                   </p>
-                  {booking.bookingStatus === 'booking' && <Tag color="#f50">Pending</Tag>}
-                  {booking.bookingStatus === 'approve' && <Tag color="#2db7f5">Approved</Tag>}
-                  {booking.bookingStatus === 'cancel' && <Tag color="#cd201f">Cancelled</Tag>}
+                  {booking.statusOfBooking === 'Pending' && <Tag color="#f50">Pending</Tag>}
+                  {booking.statusOfBooking === 'Approved' && <Tag color="#2db7f5">Approved</Tag>}
+                  {booking.statusOfBooking === 'Cancelled' && <Tag color="#cd201f">Cancelled</Tag>}
                 </Text>
-                {booking.bookingStatus === 'booking' && (
-                  <Button type="primary" danger>
-                    CANCEL
-                  </Button>
-                )}
-                {booking.bookingStatus === 'approve' && (
-                  <Button
-                    type="primary"
-                    danger
-                    style={{
-                      background: '#f50',
-                    }}
-                  >
-                    Feedback
-                  </Button>
-                )}
-                {booking.bookingStatus === 'cancel' && (
-                  <Flex gap={10}>
-                    <Button type="primary">Re-booking</Button>
-                    <Button type="primary" danger>
-                      Delete
-                    </Button>
-                  </Flex>
-                )}
+                <Flex gap={10}>
+                  {booking.statusOfBooking === 'Pending' && (
+                    <>
+                      <Button
+                        type="primary"
+                        danger
+                        onClick={() => setConfirmCancel(true)}
+                        loading={loading}
+                        disabled={!isCancelable()}
+                      >
+                        CANCEL
+                      </Button>
+                      <Modal
+                        title="Confirm"
+                        open={confirmCancel}
+                        onCancel={() => setConfirmCancel(false)}
+                        footer={[
+                          <Button key="back" onClick={() => setConfirmCancel(false)}>
+                            No
+                          </Button>,
+                          <Button key="submit" type="primary" danger onClick={handleConfirmCancel} loading={loading}>
+                            Yes
+                          </Button>,
+                        ]}
+                      >
+                        Are you sure you want to cancel this booking?
+                      </Modal>
+                    </>
+                  )}
+                  {booking.statusOfBooking === 'Approved' && (
+                    <>
+                      <Button
+                        type="primary"
+                        danger
+                        style={{
+                          background: '#f50',
+                        }}
+                        onClick={() => setFeedbackModalVisible(true)}
+                      >
+                        Feedback
+                      </Button>
+                      <Modal
+                        title="Feedback"
+                        open={feedbackModalVisible}
+                        onCancel={() => setFeedbackModalVisible(false)}
+                        footer={[
+                          <Button key="back" onClick={() => setFeedbackModalVisible(false)}>
+                            Cancel
+                          </Button>,
+                          <Button
+                            key="submit"
+                            type="primary"
+                            onClick={handleFeedbackSubmit}
+                            loading={loading}
+                            disabled={!isDirty}
+                          >
+                            Submit
+                          </Button>,
+                        ]}
+                      >
+                        <Form form={form} layout="vertical">
+                          <Form.Item
+                            name="title"
+                            label="Title"
+                            rules={[{ required: true, message: 'Please input the title!' }]}
+                          >
+                            <Input
+                              placeholder="Enter title"
+                              value={feedbackData.titleRating}
+                              onChange={(e) => {
+                                setFeedbackData({ ...feedbackData, titleRating: e.target.value });
+                                handleInputChange();
+                              }}
+                            />
+                          </Form.Item>
+                          <Form.Item
+                            name="content"
+                            label="Content"
+                            rules={[{ required: true, message: 'Please input the content!' }]}
+                          >
+                            <Input.TextArea
+                              rows={4}
+                              placeholder="Enter content"
+                              value={feedbackData.contentRating}
+                              onChange={(e) => {
+                                setFeedbackData({ ...feedbackData, contentRating: e.target.value });
+                                handleInputChange();
+                              }}
+                            />
+                          </Form.Item>
+
+                          <Form.Item
+                            name="starRating"
+                            label="Star Rating"
+                            rules={[{ required: true, message: 'Please input the start rating!' }]}
+                          >
+                            <Input
+                              placeholder="Star rating"
+                              value={feedbackData.starRating}
+                              onChange={(e) => {
+                                setFeedbackData({ ...feedbackData, starRating: Number(e.target.value) });
+                                handleInputChange();
+                              }}
+                            />
+                          </Form.Item>
+                        </Form>
+                      </Modal>
+                    </>
+                  )}
+                  {booking.statusOfBooking === 'Cancelled' && (
+                    <>
+                      <Button type="primary">Re-booking</Button>
+                      <Button type="primary" danger onClick={() => setShowConfirmation(true)}>
+                        Delete
+                      </Button>
+                      <Modal
+                        title="Confirm"
+                        open={showConfirmation}
+                        onCancel={() => setShowConfirmation(false)}
+                        footer={[
+                          <Button key="cancel" onClick={() => setShowConfirmation(false)}>
+                            Cancel
+                          </Button>,
+                          <Button key="confirm" type="primary" danger onClick={handleConfirmDelete}>
+                            Confirm
+                          </Button>,
+                        ]}
+                      >
+                        Are you sure you want to delete this booking?
+                      </Modal>
+                    </>
+                  )}
+                </Flex>
               </Flex>
             </Col>
           </Row>

@@ -4,6 +4,11 @@ import { Form, FormProps, Input, Checkbox, message, notification } from 'antd';
 import CustomButton from '../../components/buttons/submit-button/custom-button';
 import { register } from '../../api/user/user-api';
 import { IUser } from '../../types/user';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { JwtPayloads } from '../../types/jwt-payload';
+import { jwtDecode } from 'jwt-decode';
+import { setToken } from '../../redux/authSlide';
 import '../../i18n/i18n'
 import { useTranslation } from 'react-i18next'
 type NotificationType = 'success' | 'info' | 'warning' | 'error';
@@ -11,7 +16,6 @@ type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
 function RegisterPage() {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [form] = Form.useForm();
   const [api, contextHolder] = notification.useNotification();
 
@@ -21,6 +25,8 @@ function RegisterPage() {
   const changeLanguage = (lng: 'en' | 'jp') => {
     i18n.changeLanguage(lng)
   }
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onFinish: FormProps['onFinish'] = async (values) => {
     const { RePassword, ...filteredValues } = values;
@@ -29,11 +35,14 @@ function RegisterPage() {
     try {
       const token = await register(filteredValues as IUser);
       if (token) {
-        localStorage.setItem('token', token);
-        openNotificationWithIcon('success');
-      }
+        localStorage.setItem('token', token.accessToken);
+        localStorage.setItem('roleList', JSON.stringify(token.roleList));
 
-      window.location.href = '/';
+        const decodedToken: JwtPayloads = jwtDecode(token.accessToken);
+        const user = { username: decodedToken.username, avatar: decodedToken.avatar };
+        dispatch(setToken({ token: token.accessToken, user }));
+        navigate('/');
+      }
     } catch (error: any) {
       form.setFields([
         {
@@ -52,13 +61,14 @@ function RegisterPage() {
 
   const openNotificationWithIcon = (type: NotificationType) => {
     api[type]({
-      message: t('success'),
+      message: 'Register successfully',
       description: 'You have successfully registered and login!',
     });
   };
 
   return (
     <div className={styles['register-page']}>
+      {contextHolder}
       <div className={styles['form-content']}>
         <div className={styles['form-header']}>
           <p className={styles.title}>{t('create')}</p>
@@ -104,7 +114,13 @@ function RegisterPage() {
           <Form.Item
             label= {t('phone')}
             name="phone"
-            rules={[{ required: true, message: t('error-phone') }]}
+            rules={[
+              { required: true, message: 'Please input your phone number!' },
+              {
+                pattern: new RegExp(/^[0-9]{10}$/),
+                message: 'Please enter a valid phone number!',
+              },
+            ]}
           >
             <Input className={styles['input-form']} />
           </Form.Item>
@@ -112,7 +128,14 @@ function RegisterPage() {
           <Form.Item
             label={t('id-number')}
             name="idNumber"
-            rules={[{ required: true, message: t('error-id-number') }]}
+            rules={[
+              { required: true, message: 'Please input your id number!' },
+              {
+                // only number and no limit length
+                pattern: new RegExp(/^[0-9]*$/),
+                message: 'Please enter a valid id number!',
+              },
+            ]}
           >
             <Input className={styles['input-form']} />
           </Form.Item>
@@ -148,7 +171,16 @@ function RegisterPage() {
             <Input.Password className={styles['input-form']} />
           </Form.Item>
 
-          <Form.Item valuePropName="checked">
+          <Form.Item
+            valuePropName="checked"
+            name="agreement"
+            rules={[
+              {
+                validator: (_, value) =>
+                  value ? Promise.resolve() : Promise.reject(new Error('You must accept the terms and conditions')),
+              },
+            ]}
+          >
             <Checkbox>
              {t('by')} <a href="#">{t('team-of')}</a> {t('and')} <a href="#">{t('privacy-policy')}</a>
             </Checkbox>
@@ -159,8 +191,6 @@ function RegisterPage() {
               {loading ? t('register...') : t('register')}
             </CustomButton>
           </Form.Item>
-
-          {error && <div className={styles.error}>{error}</div>}
         </Form>
       </div>
     </div>

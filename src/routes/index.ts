@@ -24,8 +24,9 @@ import Completed from '../pages/payment-completed';
 import HomePage from '../pages/home';
 import RegisterPage from '../pages/register';
 import withAdminAuth from '../utils/hoc/auth-admin';
-import withUserAuth from '../utils/hoc/auth-user';
+import WithUserAuth from '../utils/hoc/auth-user';
 import PageNotFound from '../components/errors';
+import WithLoginAuth from '../utils/hoc/auth-login';
 
 const routes: RouteObject[] = [
   {
@@ -42,7 +43,7 @@ const routes: RouteObject[] = [
         Component: HomePage,
       },
       {
-        path: '/rooms/:id',
+        path: '/branch/:idHotel',
         Component: RoomList,
       },
       {
@@ -55,37 +56,37 @@ const routes: RouteObject[] = [
         children: [
           {
             path: '/edit-profile',
-            Component: withUserAuth(EditProfile),
+            Component: WithUserAuth(EditProfile),
           },
           {
             path: '/booked-history',
-            Component: withUserAuth(BookedHistory),
+            Component: WithUserAuth(BookedHistory),
           },
-          { path: '/voted-history', Component: withUserAuth(VoteHistory) },
+          { path: '/voted-history', Component: WithUserAuth(VoteHistory) },
         ],
       },
       {
-        path: '/booking/:id',
+        path: '/booking/:idRoom',
         Component: Payment,
       },
       {
         path: '/login',
-        Component: LoginPage,
+        Component: WithLoginAuth(LoginPage),
       },
       {
         path: '/forgot',
-        Component: ForgotPassword,
+        Component: WithLoginAuth(ForgotPassword),
       },
       {
         path: '/reset/:id',
-        Component: ResetPassword,
+        Component: WithLoginAuth(ResetPassword),
       },
       {
         path: '/booking/completed',
         Component: Completed,
       },
       {
-        path: '/booking',
+        path: '/branch/room/:idRoom',
         Component: BookingRoom,
       },
       {

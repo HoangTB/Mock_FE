@@ -1,128 +1,91 @@
-import React from 'react';
-import { Col, Row, Tabs, TabsProps, Typography } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Col, Row, Tabs, Typography } from 'antd';
 import styles from './styles.module.css';
-import { IRoomBooking } from '../../types/room';
 import BookingItem from './booking-item';
+import { getAllBookedHistory } from '../../api/booked-history/booked-history-api';
+import { IRoomBooking } from '../../types/booked-histoty';
 
 const { Title } = Typography;
 
 const BookedHistory = () => {
-  const bookingList: IRoomBooking[] = [
-    {
-      roomID: '1',
-      images: [
-        'https://cdn.autonomous.ai/production/ecm/230907/10-Home-Reading-Room-Ideas-to-Curl-up-With-a-Book-in-20231.webp',
-      ],
-      nameRoom: 'Room 1',
-      typeRoom: 'Single',
-      description: 'A cozy single room.',
-      price: 50,
-      status: 'empty',
-      bookingDate: '2024-05-15T00:00:00Z',
-      fromDate: '2024-05-16T00:00:00Z',
-      toDate: '2024-05-17T00:00:00Z',
-      service: ['Laundry Service', 'Catering Service'],
-      total: 105,
-      bookingStatus: 'booking',
-    },
-    {
-      roomID: '4',
-      images: [
-        'https://cdn.autonomous.ai/production/ecm/230907/10-Home-Reading-Room-Ideas-to-Curl-up-With-a-Book-in-20231.webp',
-      ],
-      nameRoom: 'Room 1',
-      typeRoom: 'Single',
-      description: 'A cozy single room.',
-      price: 50,
-      status: 'empty',
-      bookingDate: '2024-05-15T00:00:00Z',
-      fromDate: '2024-05-16T00:00:00Z',
-      toDate: '2024-05-17T00:00:00Z',
-      service: ['Laundry Service', 'Catering Service'],
-      total: 105,
-      bookingStatus: 'booking',
-    },
-    {
-      roomID: '2',
-      images: [
-        'https://cdn.autonomous.ai/production/ecm/230907/10-Home-Reading-Room-Ideas-to-Curl-up-With-a-Book-in-20231.webp',
-      ],
-      nameRoom: 'Room 2',
-      typeRoom: 'Double',
-      description: 'A spacious double room.',
-      price: 80,
-      status: 'full',
-      bookingDate: '2024-05-16T00:00:00Z',
-      fromDate: '2024-05-18T00:00:00Z',
-      toDate: '2024-05-19T00:00:00Z',
-      service: ['Currency Exchange'],
-      total: 85,
-      bookingStatus: 'cancel',
-    },
-    {
-      roomID: '2',
-      images: [
-        'https://cdn.autonomous.ai/production/ecm/230907/10-Home-Reading-Room-Ideas-to-Curl-up-With-a-Book-in-20231.webp',
-      ],
-      nameRoom: 'Room 3',
-      typeRoom: 'Double',
-      description: 'A spacious double room.',
-      price: 80,
-      status: 'full',
-      bookingDate: '2024-05-16T00:00:00Z',
-      fromDate: '2024-05-18T00:00:00Z',
-      toDate: '2024-05-19T00:00:00Z',
-      service: ['Currency Exchange'],
-      total: 85,
-      bookingStatus: 'approve',
-    },
-  ];
+  const [data, setData] = useState<IRoomBooking[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState('2');
 
-  const renderBookingList = (status: 'approve' | 'cancel' | 'booking') => {
-    return (
-      <>
-        {bookingList
-          .filter((item) => item.bookingStatus === status)
-          .map((booking) => (
-            <BookingItem key={booking.roomID} booking={booking} />
-          ))}
-      </>
-    );
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await getAllBookedHistory();
+        setData(response);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleCancelBooking = () => {
+    setActiveTab('3');
+    getAllBookedHistory();
+  };
+
+  const handleDeleteBooking = () => {
+    getAllBookedHistory();
+  };
+
+  const renderBookingList = (status: 'Pending' | 'Approved' | 'Cancelled') => {
+    const filteredBookings = data.filter((item) => item.statusOfBooking === status);
+
+    if (loading) {
+      return <div>Loading...</div>;
+    }
+
+    if (filteredBookings.length === 0) {
+      return <>No data not found</>;
+    }
+
+    return filteredBookings.map((booking) => (
+      <BookingItem
+        key={booking.idBooking}
+        booking={booking}
+        onCancel={handleCancelBooking}
+        onDelete={handleDeleteBooking}
+      />
+    ));
   };
 
   const items = [
     {
-      label: 'Booking',
+      label: 'Approved',
       key: '1',
-      children: renderBookingList('booking'),
+      children: renderBookingList('Approved'),
     },
     {
-      label: 'Approve',
+      label: 'Pending',
       key: '2',
-      children: renderBookingList('approve'),
+      children: renderBookingList('Pending'),
     },
     {
-      label: 'Cancel',
+      label: 'Cancelled',
       key: '3',
-      children: renderBookingList('cancel'),
+      children: renderBookingList('Cancelled'),
     },
   ];
-  const renderTabBar: TabsProps['renderTabBar'] = (props, DefaultTabBar) => <DefaultTabBar {...props} />;
+
   return (
-    <div>
+    <div className={styles.container}>
       <Row>
         <Col span={24}>
-          <Title
-            level={3}
-            style={{
-              textAlign: 'center',
-            }}
-          >
+          <Title level={3} style={{ textAlign: 'center' }}>
             Booked History
           </Title>
         </Col>
         <div className={styles.tabs}>
-          <Tabs defaultActiveKey="1" renderTabBar={renderTabBar} items={items} size="large" />
+          <Tabs activeKey={activeTab} onChange={setActiveTab} items={items} size="large" />
         </div>
       </Row>
     </div>

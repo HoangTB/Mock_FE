@@ -1,6 +1,7 @@
 import React from 'react';
 import { HomeOutlined, InfoCircleOutlined, CheckOutlined, SmileOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Steps } from 'antd';
+import { Link, useLocation } from 'react-router-dom';
 import styles from './style.module.css';
 import '../../i18n/i18n'
 import { useTranslation } from 'react-i18next'
@@ -12,35 +13,50 @@ const StepByStep = () => {
   const changeLanguage = (lng: 'en' | 'jp') => {
     i18n.changeLanguage(lng)
   }
+  const location = useLocation();
+
+  // Kiểm tra đường dẫn hiện tại và đặt trạng thái cho mỗi bước dựa trên đó
+  const getStatus = (path: any) => {
+    if (location.pathname === path) {
+      return 'finish';
+    } else {
+      return 'wait';
+    }
+  };
+
   return (
     <Steps
       responsive
       style={{
-        marginTop: 30,
+        margin: '30px 0',
       }}
       items={[
         {
-          title: t('selectHotel'),
-          status: 'wait',
-          icon: <HomeOutlined className={styles.icon} />,
+          title: 'Select hotel',
+          status: getStatus('/'),
+          icon: (
+            <Link to="/">
+              <HomeOutlined className={styles.icon} />
+            </Link>
+          ),
         },
         {
-          title: t('selectRoom'),
+          title: 'Select room',
           status: 'wait',
           icon: <LoadingOutlined className={styles.icon} />,
         },
         {
-          title: t('selectInformation'),
+          title: 'Select information',
           status: 'wait',
           icon: <InfoCircleOutlined className={styles.icon} />,
         },
         {
-          title: t('bookRoom'),
+          title: 'Booking room',
           status: 'finish',
           icon: <CheckOutlined className={styles.icon} />,
         },
         {
-          title: t('completed'),
+          title: 'Completed',
           status: 'wait',
           icon: <SmileOutlined className={styles.icon} />,
         },

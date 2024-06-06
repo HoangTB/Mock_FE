@@ -1,98 +1,22 @@
 import { CarOutlined, DesktopOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Flex, Row, Typography } from 'antd';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Container from '../../components/container';
 import StepByStep from '../../components/step-by-step';
 import { IRoom } from '../../types/room';
 import GuestReviews from './guest-reviews';
 import styles from './styles.module.css';
 import Filters from './filter';
-import Room from './rooms';
 import '../../i18n/i18n'
 import { useTranslation } from 'react-i18next'
+import Room from './room';
+import { roomApi } from '../../api/room/room-api';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ratingApi } from '../../api/rating/rating-api';
+import { IRating } from '../../types/rating';
+import { IHotel } from '../../types/hotel';
 
 const { Title } = Typography;
-
-const roomList: IRoom[] = [
-  {
-    roomID: 'room1',
-    images: [
-      'https://static.wixstatic.com/media/ce70af_e1480b25dd7f4009a7341151ac180d43~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_e1480b25dd7f4009a7341151ac180d43~mv2.jpg',
-      'https://static.wixstatic.com/media/ce70af_07962d29b57648269a0333502d0a992c~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_07962d29b57648269a0333502d0a992c~mv2.jpg',
-      'https://static.wixstatic.com/media/ce70af_e3ae2313d5ad4ccca5e449bdf0518da0~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_e3ae2313d5ad4ccca5e449bdf0518da0~mv2.jpg',
-    ],
-    description: 'A cozy room with a beautiful view.',
-    nameRoom: 'Deluxe Room',
-    typeRoom: 'Double',
-    price: 20,
-    status: 'empty',
-  },
-  {
-    roomID: 'room2',
-    images: [
-      'https://static.wixstatic.com/media/ce70af_e1480b25dd7f4009a7341151ac180d43~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_e1480b25dd7f4009a7341151ac180d43~mv2.jpg',
-      'https://static.wixstatic.com/media/ce70af_07962d29b57648269a0333502d0a992c~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_07962d29b57648269a0333502d0a992c~mv2.jpg',
-      'https://static.wixstatic.com/media/ce70af_e3ae2313d5ad4ccca5e449bdf0518da0~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_e3ae2313d5ad4ccca5e449bdf0518da0~mv2.jpg',
-    ],
-    description: 'Spacious suite with modern amenities.',
-    nameRoom: 'Executive Suite',
-    typeRoom: 'Single',
-    price: 20,
-    status: 'empty',
-  },
-  {
-    roomID: 'room3',
-    images: [
-      'https://static.wixstatic.com/media/ce70af_e1480b25dd7f4009a7341151ac180d43~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_e1480b25dd7f4009a7341151ac180d43~mv2.jpg',
-      'https://static.wixstatic.com/media/ce70af_07962d29b57648269a0333502d0a992c~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_07962d29b57648269a0333502d0a992c~mv2.jpg',
-      'https://static.wixstatic.com/media/ce70af_e3ae2313d5ad4ccca5e449bdf0518da0~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_e3ae2313d5ad4ccca5e449bdf0518da0~mv2.jpg',
-    ],
-    description: 'Spacious suite with modern amenities.',
-    nameRoom: 'Executive Suite',
-    typeRoom: 'Single',
-    price: 20,
-    status: 'full',
-  },
-  {
-    roomID: 'room4',
-    images: [
-      'https://static.wixstatic.com/media/ce70af_e1480b25dd7f4009a7341151ac180d43~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_e1480b25dd7f4009a7341151ac180d43~mv2.jpg',
-      'https://static.wixstatic.com/media/ce70af_07962d29b57648269a0333502d0a992c~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_07962d29b57648269a0333502d0a992c~mv2.jpg',
-      'https://static.wixstatic.com/media/ce70af_e3ae2313d5ad4ccca5e449bdf0518da0~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_e3ae2313d5ad4ccca5e449bdf0518da0~mv2.jpg',
-    ],
-    description: 'A cozy room with a beautiful view.',
-    nameRoom: 'Deluxe Room',
-    typeRoom: 'Double',
-    price: 20,
-    status: 'empty',
-  },
-  {
-    roomID: 'room5',
-    images: [
-      'https://static.wixstatic.com/media/ce70af_e1480b25dd7f4009a7341151ac180d43~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_e1480b25dd7f4009a7341151ac180d43~mv2.jpg',
-      'https://static.wixstatic.com/media/ce70af_07962d29b57648269a0333502d0a992c~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_07962d29b57648269a0333502d0a992c~mv2.jpg',
-      'https://static.wixstatic.com/media/ce70af_e3ae2313d5ad4ccca5e449bdf0518da0~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_e3ae2313d5ad4ccca5e449bdf0518da0~mv2.jpg',
-    ],
-    description: 'Spacious suite with modern amenities.',
-    nameRoom: 'Executive Suite',
-    typeRoom: 'Single',
-    price: 20,
-    status: 'empty',
-  },
-  {
-    roomID: 'room6',
-    images: [
-      'https://static.wixstatic.com/media/ce70af_e1480b25dd7f4009a7341151ac180d43~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_e1480b25dd7f4009a7341151ac180d43~mv2.jpg',
-      'https://static.wixstatic.com/media/ce70af_07962d29b57648269a0333502d0a992c~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_07962d29b57648269a0333502d0a992c~mv2.jpg',
-      'https://static.wixstatic.com/media/ce70af_e3ae2313d5ad4ccca5e449bdf0518da0~mv2.jpg/v1/fill/w_768,h_461,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/ce70af_e3ae2313d5ad4ccca5e449bdf0518da0~mv2.jpg',
-    ],
-    description: 'Spacious suite with modern amenities.',
-    nameRoom: 'Executive Suite',
-    typeRoom: 'Single',
-    price: 20,
-    status: 'full',
-  },
-];
 
 const RoomList = () => {
   const { t } = useTranslation('roomList');
@@ -101,6 +25,48 @@ const RoomList = () => {
   const changeLanguage = (lng: 'en' | 'jp') => {
     i18n.changeLanguage(lng)
   }
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [roomList, setRoomList] = useState<{
+    rooms: IRoom[];
+    hotel: IHotel;
+  }>({
+    hotel: {
+      addressHotel: '',
+      city: '',
+      idHotel: '',
+      imageUrl: '',
+      nameHotel: '',
+      phoneNumberHotel: '',
+      ratings: [],
+      rooms: [],
+    },
+    rooms: [],
+  });
+  const [ratingList, setRatingList] = useState<IRating[]>([]);
+  const { idHotel } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    (async () => {
+      if (idHotel) {
+        const data = await roomApi.getRoomList(idHotel, '');
+        const ratings = await ratingApi.getRatingByIdHotel(idHotel);
+        setRatingList(ratings);
+        setRoomList(data);
+        setIsLoading(true);
+      }
+    })();
+  }, []);
+  const handleSearch = async (queryParams: any) => {
+    if (idHotel) {
+      const query = new URLSearchParams(queryParams);
+      const data = await roomApi.getRoomList(idHotel, queryParams);
+      navigate({ search: query.toString() });
+      setIsLoading(true);
+      setRoomList(data);
+    }
+  };
+
   return (
     <div>
       <div
@@ -108,10 +74,19 @@ const RoomList = () => {
           position: 'relative',
         }}
       >
-        <div className={styles.banner}></div>
+        <div
+          className={styles.banner}
+          style={{
+            backgroundImage: `url(${roomList.hotel.imageUrl})`,
+            backgroundPosition: 'center',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'inherit',
+          }}
+        ></div>
         <div className={styles.content}>
           <Title level={2} className={styles.title}>
             {t('welcome')}
+            Welcome to {roomList.hotel.nameHotel}
           </Title>
           <Title
             level={4}
@@ -136,11 +111,11 @@ const RoomList = () => {
         </div>
       </div>
       <Container>
-        <Filters />
+        <Filters onSearch={handleSearch} />
 
         <StepByStep />
 
-        <Title level={3}>Hotel BK - Ha Noi</Title>
+        <Title level={3}>{roomList.hotel.nameHotel}</Title>
 
         <div>
           <Title level={4}>{t('benefit')}</Title>
@@ -181,11 +156,23 @@ const RoomList = () => {
         </div>
 
         <Row gutter={[10, 10]}>
-          {roomList.map((room, index) => (
-            <Room room={room} key={index} />
-          ))}
-
-          <div
+          {isLoading && (
+            <>
+              {roomList.rooms.length > 0 ? (
+                roomList.rooms.map((room, index) => <Room room={room} key={index} />)
+              ) : (
+                <img
+                  src="https://i.pinimg.com/originals/49/e5/8d/49e58d5922019b8ec4642a2e2b9291c2.png"
+                  alt=""
+                  width={500}
+                  style={{
+                    margin: 'auto',
+                  }}
+                />
+              )}
+            </>
+          )}
+          {/* <div
             style={{
               display: 'flex',
               justifyContent: 'center',
@@ -196,10 +183,10 @@ const RoomList = () => {
             <Button type="dashed" size="middle">
               {t('load more')}
             </Button>
-          </div>
+          </div> */}
         </Row>
 
-        <GuestReviews />
+        {isLoading && <GuestReviews ratings={ratingList} />}
       </Container>
     </div>
   );
