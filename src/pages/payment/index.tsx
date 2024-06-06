@@ -26,7 +26,7 @@ import {
   ZaloResponse,
 } from '../../api/payment/response/vnpay.response';
 import Dropdown from 'antd/es/dropdown/dropdown';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { roomApi } from '../../api/room/room-api';
 import { IBookingRoom, IRoomDetail, IService, IUserInfo } from '../../types/room';
 const { Paragraph } = Typography;
@@ -48,9 +48,14 @@ const UserInfoForm = () => {
     user: {} as IUserInfo,
   });
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const storedBooking = localStorage.getItem('booking');
     const bookingLocal: BookingDataLocalResponse = storedBooking ? JSON.parse(storedBooking) : {};
+    if (!bookingLocal) {
+      navigate(`/branch/room/${idRoom}`);
+    }
     setDataBooking(bookingLocal);
     (async () => {
       if (idRoom) {

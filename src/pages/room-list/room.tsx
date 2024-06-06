@@ -1,4 +1,4 @@
-import { Carousel, Col, Flex, Image } from 'antd';
+import { Carousel, Col, Flex, Image, Row } from 'antd';
 import { Button, Typography } from 'antd';
 import React from 'react';
 import { IRoom } from '../../types/room';
@@ -47,54 +47,54 @@ const Room = ({ room }: { room: IRoom }) => {
         <p
           style={{
             margin: 0,
+            marginBottom: 8,
           }}
         >
           {typeRoom}
         </p>
-        <Flex vertical={true} gap={5}>
+        <Flex vertical={true} gap={8} style={{ marginBottom: 4 }}>
           <p>{descriptionOfRoom}</p>
           <p>Number of beds: {numberOfBeds}</p>
           <p> Max people: {maxNumberPeopleOfRoom}</p>
         </Flex>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-          }}
-        >
-          <Title
-            level={3}
-            style={{
-              margin: 0,
-            }}
-          >
-            Price: {priceOfRoom.toLocaleString('de-DE')} VND
-          </Title>
-          {available ? (
-            <Button
-              type="primary"
-              size="middle"
+        <Row gutter={[8, 8]} justify="space-between">
+          <Col span={12} lg={24} md={24} sm={24} xs={24}>
+            <Title
+              level={5}
               style={{
-                background: 'var(--primary-color)',
-              }}
-              onClick={() => navigate(`/branch/room/${idRoom}`)}
-            >
-              <HomeOutlined />
-              Book now
-            </Button>
-          ) : (
-            <Button
-              size="middle"
-              disabled
-              style={{
-                background: 'red',
-                color: '#fff',
+                margin: 0,
               }}
             >
-              Full Room
-            </Button>
-          )}
-        </div>
+              Price: {priceOfRoom.toLocaleString('de-DE')} VND
+            </Title>
+          </Col>
+          <Col span={12} lg={24} md={24} sm={24} xs={24}>
+            {available ? (
+              <Button
+                type="primary"
+                size="middle"
+                style={{
+                  background: 'var(--primary-color)',
+                }}
+                onClick={() => navigate(`/branch/room/${idRoom}`)}
+              >
+                <HomeOutlined />
+                Book now
+              </Button>
+            ) : (
+              <Button
+                size="middle"
+                disabled
+                style={{
+                  background: 'red',
+                  color: '#fff',
+                }}
+              >
+                Full Room
+              </Button>
+            )}
+          </Col>
+        </Row>
       </div>
     </Col>
   );
