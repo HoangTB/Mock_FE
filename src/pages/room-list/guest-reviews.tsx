@@ -19,7 +19,7 @@ const GuestReviews = ({ ratings }: { ratings: IRating[] }) => {
   };
 
   const chunkedReviews = chunkArray(ratings, 3);
-  console.log({ chunkedReviews, ratings });
+  // console.log({ chunkedReviews, ratings });
 
   return (
     <div
