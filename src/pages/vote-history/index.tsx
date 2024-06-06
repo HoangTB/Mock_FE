@@ -191,88 +191,89 @@ const VoteHistory = () => {
           </Col>
         </Row>
 
-      <Modal
-        title="Edit Voted"
-        open={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        footer={[
-          <Button key="back" onClick={handleCancel}>
-            Cancel
-          </Button>,
-          <Button key="submit" type="primary" onClick={handleOk} disabled={isSubmitDisabled}>
-            Save
-          </Button>,
-        ]}
-        className={styles.modal}
-      >
-        {currentRecord && (
-          <Form form={form} className={styles.formUpdate} onValuesChange={onValuesChange}>
-            <Flex gap={10} align="center">
-              <label htmlFor="title" className={styles.label}>
-                Title
-              </label>
-              <Form.Item
-                name="title"
-                className={styles.inputLabel}
-                rules={[{ required: true, message: 'Please input the title!' }]}
-              >
-                <Input />
-              </Form.Item>
-            </Flex>
-            <Flex gap={10} align="center">
-              <label htmlFor="content" className={styles.label}>
-                Content
-              </label>
-              <Form.Item
-                name="content"
-                className={styles.inputLabel}
-                rules={[{ required: true, message: 'Please input the content!' }]}
-              >
-                <Input />
-              </Form.Item>
-            </Flex>
-            <Flex gap={10} align="center">
-              <label htmlFor="starRating" className={styles.label}>
-                Star Rating
-              </label>
-              <Form.Item
-                name="starRating"
-                className={styles.inputLabel}
-                rules={[
-                  { required: true, message: 'Please input the star rating!' },
-                  {
-                    validator: (_, value) => {
-                      if (typeof value !== 'number' || value < 1 || value > 5) {
-                        return Promise.reject('Star rating must be a number between 1 and 5');
-                      }
-                      return Promise.resolve();
+        <Modal
+          title="Edit Voted"
+          open={isModalVisible}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          footer={[
+            <Button key="back" onClick={handleCancel}>
+              Cancel
+            </Button>,
+            <Button key="submit" type="primary" onClick={handleOk} disabled={isSubmitDisabled}>
+              Save
+            </Button>,
+          ]}
+          className={styles.modal}
+        >
+          {currentRecord && (
+            <Form form={form} className={styles.formUpdate} onValuesChange={onValuesChange}>
+              <Flex gap={10} align="center">
+                <label htmlFor="title" className={styles.label}>
+                  Title
+                </label>
+                <Form.Item
+                  name="title"
+                  className={styles.inputLabel}
+                  rules={[{ required: true, message: 'Please input the title!' }]}
+                >
+                  <Input />
+                </Form.Item>
+              </Flex>
+              <Flex gap={10} align="center">
+                <label htmlFor="content" className={styles.label}>
+                  Content
+                </label>
+                <Form.Item
+                  name="content"
+                  className={styles.inputLabel}
+                  rules={[{ required: true, message: 'Please input the content!' }]}
+                >
+                  <Input />
+                </Form.Item>
+              </Flex>
+              <Flex gap={10} align="center">
+                <label htmlFor="starRating" className={styles.label}>
+                  Star Rating
+                </label>
+                <Form.Item
+                  name="starRating"
+                  className={styles.inputLabel}
+                  rules={[
+                    { required: true, message: 'Please input the star rating!' },
+                    {
+                      validator: (_, value) => {
+                        if (typeof value !== 'number' || value < 1 || value > 5) {
+                          return Promise.reject('Star rating must be a number between 1 and 5');
+                        }
+                        return Promise.resolve();
+                      },
                     },
-                  },
-                ]}
-              >
-                <InputNumber min={1} max={5} style={{ width: '100%' }} />
-              </Form.Item>
-            </Flex>
-            <Flex gap={10} align="center">
-              <label htmlFor="hotel" className={styles.label}>
-                Hotel
-              </label>
-              <Form.Item name="hotel" className={styles.inputLabel}>
-                <Input readOnly disabled />
-              </Form.Item>
-            </Flex>
-            <Flex gap={10} align="center">
-              <label htmlFor="timeCreated" className={styles.label}>
-                Time Created
-              </label>
-              <Form.Item name="timeCreated" className={styles.inputLabel}>
-                <Input readOnly disabled />
-              </Form.Item>
-            </Flex>
-          </Form>
-        )}
-      </Modal>
+                  ]}
+                >
+                  <InputNumber min={1} max={5} style={{ width: '100%' }} />
+                </Form.Item>
+              </Flex>
+              <Flex gap={10} align="center">
+                <label htmlFor="hotel" className={styles.label}>
+                  Hotel
+                </label>
+                <Form.Item name="hotel" className={styles.inputLabel}>
+                  <Input readOnly disabled />
+                </Form.Item>
+              </Flex>
+              <Flex gap={10} align="center">
+                <label htmlFor="timeCreated" className={styles.label}>
+                  Time Created
+                </label>
+                <Form.Item name="timeCreated" className={styles.inputLabel}>
+                  <Input readOnly disabled />
+                </Form.Item>
+              </Flex>
+            </Form>
+          )}
+        </Modal>
+      </div>
     </>
   );
 };

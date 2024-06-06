@@ -148,9 +148,7 @@
   .rowLeft {
     gap: 30px;
   }
-  .title {
-    display: none !important;
-  }
+
 }
 
 @media (max-width: 490px) {
@@ -158,6 +156,6 @@
     gap: 30px;
   }
   .roomElement {
-    display: none;
+    flex-direction: column;
   }
 }
