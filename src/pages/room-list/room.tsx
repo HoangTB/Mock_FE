@@ -28,11 +28,11 @@ const Room = ({ room }: { room: IRoom }) => {
           {images.length > 0 ? (
             images.map((image, index) => (
               <div key={index}>
-                <Image src={image} alt={`Image ${index + 1}`} style={{ width: '100%', borderRadius: 10 }} />
+                <Image src={image} alt={`Image ${index + 1}`} style={{ width: '100%', borderRadius: 10, height: 230 }} />
               </div>
             ))
           ) : (
-            <Image src={noData} alt="..." style={{ width: '100%', borderRadius: 10 }} />
+            <Image src={noData} alt="..." style={{ width: '100%', borderRadius: 10, height: 230 }} />
           )}
         </Carousel>
         <Title
@@ -46,13 +46,13 @@ const Room = ({ room }: { room: IRoom }) => {
         </Title>
         <p
           style={{
-            margin: 0,
+            marginBottom: 5,
           }}
         >
-          {typeRoom}
+          Room type: {typeRoom}
         </p>
-        <Flex vertical={true} gap={5}>
-          <p>{descriptionOfRoom}</p>
+        <Flex vertical={true} gap={5} style={{lineHeight: 1.5}}>
+          <p>Description: {descriptionOfRoom}</p>
           <p>Number of beds: {numberOfBeds}</p>
           <p> Max people: {maxNumberPeopleOfRoom}</p>
         </Flex>
@@ -60,6 +60,7 @@ const Room = ({ room }: { room: IRoom }) => {
           style={{
             display: 'flex',
             justifyContent: 'space-between',
+            marginTop: 15
           }}
         >
           <Title

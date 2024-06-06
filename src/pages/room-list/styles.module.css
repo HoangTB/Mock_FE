@@ -37,3 +37,8 @@
 .icon svg {
   font-size: 40px;
 }
+
+:global(.ant-image ) {
+  width: 100%;
+}
+
