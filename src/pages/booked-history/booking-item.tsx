@@ -130,13 +130,13 @@ const BookingItem = ({
               </Text>
               <br />
             </Col>
-            <Col span={5} lg={5} md={12} sm={12} xs={24}>
+            <Col span={5} lg={4} md={12} sm={12} xs={24}>
               <Title level={5}>Service</Title>
               <Text>
                 <p className={styles.title}>{booking.nameService} </p>
               </Text>
             </Col>
-            <Col span={5} lg={5} md={12} sm={12} xs={24}>
+            <Col span={5} lg={6} md={12} sm={12} xs={24}>
               <Title level={5}>Summary</Title>
               <Text>
                 <p className={styles.title}>Price room: </p>

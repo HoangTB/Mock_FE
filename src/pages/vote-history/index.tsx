@@ -158,75 +158,77 @@ const VoteHistory = () => {
 
   return (
     <>
-      <Row>
-        <Col span={24} className={styles.title}>
-          <Title level={3}>Voted History</Title>
-        </Col>
-        <Col span={24} className={styles.colTable}>
-          <Table columns={columns} dataSource={voteHistory} className={styles.table} />
-        </Col>
-      </Row>
+      <div className={styles.container}>
+        <Row>
+          <Col span={24} className={styles.title}>
+            <Title level={3}>Voted History</Title>
+          </Col>
+          <Col span={24} className={styles.colTable}>
+            <Table columns={columns} dataSource={voteHistory} className={styles.table} />
+          </Col>
+        </Row>
 
-      <Modal
-        title="Edit Voted"
-        open={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        footer={[
-          <Button key="back" onClick={handleCancel}>
-            Cancel
-          </Button>,
-          <Button key="submit" type="primary" onClick={handleOk}>
-            Save
-          </Button>,
-        ]}
-        className={styles.modal}
-      >
-        {currentRecord && (
-          <Form form={form} className={styles.formUpdate}>
-            <Flex gap={10} align="center">
-              <label htmlFor="title" className={styles.label}>
-                Title
-              </label>
-              <Form.Item name="title" className={styles.inputLabel}>
-                <Input />
-              </Form.Item>
-            </Flex>
-            <Flex gap={10} align="center">
-              <label htmlFor="content" className={styles.label}>
-                Content
-              </label>
-              <Form.Item name="content" className={styles.inputLabel}>
-                <Input />
-              </Form.Item>
-            </Flex>
-            <Flex gap={10} align="center">
-              <label htmlFor="starRating" className={styles.label}>
-                Star Rating
-              </label>
-              <Form.Item name="starRating" className={styles.inputLabel}>
-                <Input />
-              </Form.Item>
-            </Flex>
-            <Flex gap={10} align="center" justify="center">
-              <label htmlFor="hotel" className={styles.label}>
-                Hotel
-              </label>
-              <Form.Item name="hotel" className={styles.inputLabel}>
-                <Input readOnly disabled />
-              </Form.Item>
-            </Flex>
-            <Flex gap={10} align="center">
-              <label htmlFor="timeCreated" className={styles.label}>
-                Time Created
-              </label>
-              <Form.Item name="timeCreated" className={styles.inputLabel}>
-                <Input readOnly disabled />
-              </Form.Item>
-            </Flex>
-          </Form>
-        )}
-      </Modal>
+        <Modal
+          title="Edit Voted"
+          open={isModalVisible}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          footer={[
+            <Button key="back" onClick={handleCancel}>
+              Cancel
+            </Button>,
+            <Button key="submit" type="primary" onClick={handleOk}>
+              Save
+            </Button>,
+          ]}
+          className={styles.modal}
+        >
+          {currentRecord && (
+            <Form form={form} className={styles.formUpdate}>
+              <Flex gap={10} align="center">
+                <label htmlFor="title" className={styles.label}>
+                  Title
+                </label>
+                <Form.Item name="title" className={styles.inputLabel}>
+                  <Input />
+                </Form.Item>
+              </Flex>
+              <Flex gap={10} align="center">
+                <label htmlFor="content" className={styles.label}>
+                  Content
+                </label>
+                <Form.Item name="content" className={styles.inputLabel}>
+                  <Input />
+                </Form.Item>
+              </Flex>
+              <Flex gap={10} align="center">
+                <label htmlFor="starRating" className={styles.label}>
+                  Star Rating
+                </label>
+                <Form.Item name="starRating" className={styles.inputLabel}>
+                  <Input />
+                </Form.Item>
+              </Flex>
+              <Flex gap={10} align="center" justify="center">
+                <label htmlFor="hotel" className={styles.label}>
+                  Hotel
+                </label>
+                <Form.Item name="hotel" className={styles.inputLabel}>
+                  <Input readOnly disabled />
+                </Form.Item>
+              </Flex>
+              <Flex gap={10} align="center">
+                <label htmlFor="timeCreated" className={styles.label}>
+                  Time Created
+                </label>
+                <Form.Item name="timeCreated" className={styles.inputLabel}>
+                  <Input readOnly disabled />
+                </Form.Item>
+              </Flex>
+            </Form>
+          )}
+        </Modal>
+      </div>
     </>
   );
 };
