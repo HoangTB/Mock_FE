@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, Row, Col, Button, Typography, Tag, Flex, Modal, Form, Input, InputNumber, message } from 'antd';
 import { Image } from 'antd';
 import styles from './styles.module.css';
-import { deleteBooking, updateStatusOfBooking } from '../../api/booked-history/booked-history-api';
+import { deleteBooking, getAllBookedHistory, updateStatusOfBooking } from '../../api/booked-history/booked-history-api';
 import moment from 'moment';
 import { createFeedBack } from '../../api/feedback/feedback-api';
 import { IRoomBooking } from '../../types/booked-histoty';
@@ -14,10 +14,12 @@ const BookingItem = ({
   booking,
   onCancel,
   onDelete,
+  setTab,
 }: {
   booking: IRoomBooking;
   onCancel: () => void;
   onDelete: () => void;
+  setTab: (tab: string) => void;
 }) => {
   const [loading, setLoading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -42,8 +44,11 @@ const BookingItem = ({
     try {
       await updateStatusOfBooking(idBooking, statusOfBooking);
       onCancel();
+      message.success('Booking cancelled successfully!');
+      setTab('3');
     } catch (error) {
       console.log(error);
+      message.error('Failed to cancel booking. Please try again later.');
     } finally {
       setLoading(false);
     }
@@ -58,7 +63,10 @@ const BookingItem = ({
     setLoading(true);
     try {
       await deleteBooking(idBooking);
+      message.success('Booking deleted successfully!');
+      setTab('3');
     } catch (error) {
+      message.error('Failed to delete booking. Please try again later.');
       console.log(error);
     } finally {
       setLoading(false);
@@ -103,15 +111,29 @@ const BookingItem = ({
   };
 
   const servicePrice = calculateServicePrice(booking.services);
-  const totalPrice = booking.priceOfRoom + servicePrice - ((booking.priceOfRoom + servicePrice) * 10) / 100;
+  const totalPrice = booking.priceOfRoom + servicePrice;
+
+  const uniqueServices = (services: IRoomService[]) => {
+    const seen = new Map();
+    return services.filter((service) => {
+      const key = `${service.idService}-${service.nameService}`;
+      if (seen.has(key)) {
+        return false;
+      }
+      seen.set(key, true);
+      return true;
+    });
+  };
+
+  const uniqueServiceList = uniqueServices(booking.services);
 
   return (
     <Card bordered={false} className={styles.card}>
       <Row gutter={16}>
         <Col span={4} lg={4} md={24} sm={24} xs={24}>
           <Image
-            width={100}
-            height={100}
+            width={120}
+            height={120}
             src={booking?.linkOfPhoto?.toLocaleString()}
             alt="Room Image"
             style={{ borderRadius: 10 }}
@@ -119,7 +141,7 @@ const BookingItem = ({
         </Col>
         <Col span={20} lg={20} md={24} sm={24} xs={24}>
           <Row>
-            <Col span={10} lg={10} md={12} sm={12} xs={24}>
+            <Col span={10} lg={8} md={12} sm={12} xs={24}>
               <Title level={4}>Room {booking.roomNumber}</Title>
               <Text>
                 <p className={styles.title}>Date booking: </p>
@@ -139,35 +161,38 @@ const BookingItem = ({
             </Col>
             <Col span={5} lg={4} md={12} sm={12} xs={24}>
               <Title level={5}>Service</Title>
-              {booking.services.map((service, index) => (
-                <Text key={index} className={styles.listService}>
-                  <p className={styles.contentService}>{service.nameService}</p>
-                </Text>
-              ))}
+              {uniqueServiceList.length > 0 ? (
+                uniqueServiceList.map((service, index) => (
+                  <Text key={index} className={styles.listService}>
+                    <p className={styles.contentService}>
+                      {service.nameService} x {service.numberOfService}
+                    </p>
+                  </Text>
+                ))
+              ) : (
+                <Text>N/A</Text>
+              )}
+            </Col>
+            <Col span={4} lg={4} md={12} sm={12} xs={24}>
+              <Title level={5}>Payment</Title>
+              <Text>{booking.paymentMethod || 'N/A'}</Text>
             </Col>
             <Col span={5} lg={6} md={12} sm={12} xs={24}>
               <Title level={5}>Summary</Title>
               <Text>
                 <p className={styles.title}>Price room: </p>
-                {booking.priceOfRoom}VND
+                {booking.priceOfRoom.toLocaleString('de-DE')}VND
               </Text>
               <br />
               <Text>
-                <p className={styles.title}>Price service: </p> {servicePrice}VND
+                <p className={styles.title}>Price service: </p> {servicePrice.toLocaleString('de-DE')} VND
               </Text>
               <br />
-              <Text>
-                <p className={styles.title}>Discount: </p>10%
-              </Text>
               <br />
               <hr />
               <Text>
-                <p className={styles.title}>Total: </p> {totalPrice}VND
+                <p className={styles.title}>Total: </p> {totalPrice.toLocaleString('de-DE')} VND
               </Text>
-            </Col>
-            <Col span={4} lg={4} md={12} sm={12} xs={24}>
-              <Title level={5}>Payment</Title>
-              <Text>{booking.paymentMethod || 'N/A'}</Text>
             </Col>
             <Col
               span={24}
