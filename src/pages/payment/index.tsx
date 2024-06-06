@@ -35,7 +35,6 @@ const UserInfoForm = () => {
   const noData = 'https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg';
   const [value, setValue] = useState(1);
   const [isChecked, setIsChecked] = useState(false);
-  const [isCheckboxError, setIsCheckboxError] = useState(false);
   const [selectedKey, setSelectedKey] = useState('');
   const { idRoom } = useParams();
   const [servicePrice, setServicePrice] = useState(0);
@@ -136,7 +135,6 @@ const UserInfoForm = () => {
   // Checkbox
   const handleCheckboxChange = (e: CheckboxChangeEvent) => {
     setIsChecked(e.target.checked);
-    setIsCheckboxError(false);
   };
 
   // Pay
@@ -144,7 +142,6 @@ const UserInfoForm = () => {
     e.preventDefault();
     if (!isChecked) {
       message.error('Please click on the checkbox if you agree to the terms and conditions');
-      setIsCheckboxError(true);
       return;
     }
     const users: UsersRequest = {
@@ -248,7 +245,7 @@ const UserInfoForm = () => {
                   </Radio>
 
                   <Checkbox
-                    className={`${styles.checkbox} ${isCheckboxError ? styles.errorCheckbox : ''}`}
+                    className={styles.checkbox}
                     onChange={handleCheckboxChange}
                   >
                     By ckicking this, I argree to trave Team & Condition and privacy Policy

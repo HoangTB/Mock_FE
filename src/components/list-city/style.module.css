@@ -17,7 +17,7 @@
 
 .cityList {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   flex-wrap: wrap;
 }
 
@@ -31,6 +31,11 @@
   transition:
     transform 0.3s,
     box-shadow 0.3s;
+}
+
+.cityCard > a {
+  text-decoration: none;
+  color: black;
 }
 
 .cityCard:hover {
@@ -48,6 +53,7 @@
   font-size: 20px;
   font-weight: bold;
   margin: 1rem 0;
+  text-transform: uppercase;
 }
 
 /* Responsive Styles */
