@@ -8,7 +8,8 @@ export class VnpayAPI {
     const url: string = `${domain}/vnpay/post`;
     try {
       const response = await axios.post(url, params);
-      console.log(response.data);
+      // console.log(response);
+      // console.log(response.data);
 
       return response.data;
     } catch (error) {

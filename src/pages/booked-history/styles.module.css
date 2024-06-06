@@ -27,4 +27,16 @@
 
 .container {
   min-height: 70vh !important;
+  /* min-height: 100vh !important; */
+}
+
+.listService {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 5px;
+}
+
+.contentService {
+  padding: 0 !important;
+  margin: 0 !important;
 }
