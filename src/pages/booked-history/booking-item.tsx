@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, Row, Col, Button, Typography, Tag, Flex, Modal, Form, Input, InputNumber, message } from 'antd';
 import { Image } from 'antd';
 import styles from './styles.module.css';
-import { deleteBooking, updateStatusOfBooking } from '../../api/booked-history/booked-history-api';
+import { deleteBooking, getAllBookedHistory, updateStatusOfBooking } from '../../api/booked-history/booked-history-api';
 import moment from 'moment';
 import { createFeedBack } from '../../api/feedback/feedback-api';
 import { IRoomBooking } from '../../types/booked-histoty';
@@ -14,10 +14,12 @@ const BookingItem = ({
   booking,
   onCancel,
   onDelete,
+  setTab,
 }: {
   booking: IRoomBooking;
   onCancel: () => void;
   onDelete: () => void;
+  setTab: (tab: string) => void;
 }) => {
   const [loading, setLoading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -42,8 +44,11 @@ const BookingItem = ({
     try {
       await updateStatusOfBooking(idBooking, statusOfBooking);
       onCancel();
+      message.success('Booking cancelled successfully!');
+      setTab('3');
     } catch (error) {
       console.log(error);
+      message.error('Failed to cancel booking. Please try again later.');
     } finally {
       setLoading(false);
     }
@@ -58,7 +63,10 @@ const BookingItem = ({
     setLoading(true);
     try {
       await deleteBooking(idBooking);
+      message.success('Booking deleted successfully!');
+      setTab('3');
     } catch (error) {
+      message.error('Failed to delete booking. Please try again later.');
       console.log(error);
     } finally {
       setLoading(false);

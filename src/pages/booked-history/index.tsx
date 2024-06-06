@@ -12,29 +12,35 @@ const BookedHistory = () => {
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('2');
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response = await getAllBookedHistory();
-        setData(response);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const response = await getAllBookedHistory();
+      setData(response);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, []);
 
-  const handleCancelBooking = () => {
+  useEffect(() => {
+    fetchData();
+  }, [activeTab]);
+
+  const handleCancelBooking = async () => {
     setActiveTab('3');
-    getAllBookedHistory();
+    await getAllBookedHistory();
   };
 
-  const handleDeleteBooking = () => {
-    getAllBookedHistory();
+  const handleDeleteBooking = async () => {
+    setActiveTab('3');
+    await getAllBookedHistory();
+    fetchData();
   };
 
   const renderBookingList = (status: 'Pending' | 'Approved' | 'Cancelled') => {
@@ -54,6 +60,7 @@ const BookedHistory = () => {
         booking={booking}
         onCancel={handleCancelBooking}
         onDelete={handleDeleteBooking}
+        setTab={setActiveTab}
       />
     ));
   };
