@@ -74,7 +74,9 @@ const RoomList = () => {
             backgroundSize: 'cover',
             backgroundRepeat: 'inherit',
           }}
-        ></div>
+        >
+          <div className={styles['gradient-overlay']} />
+        </div>
         <div className={styles.content}>
           <Title level={2} className={styles.title}>
             Welcome to {roomList.hotel.nameHotel}
