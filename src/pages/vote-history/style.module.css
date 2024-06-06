@@ -44,3 +44,7 @@
   width: 100%;
   text-align: left;
 }
+
+.container {
+  min-height: 70vh !important;
+}

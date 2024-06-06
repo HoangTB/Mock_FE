@@ -214,7 +214,7 @@ const BookingRoom = () => {
                   </Col>
                   <Col span={24} md={24} sm={24} xs={24} className={styles.roomBorder3}>
                     <Flex className={styles.dateBook}>
-                      <Col span={11}>
+                      <Col span={11} md={11} sm={11} xs={24}>
                         <Form.Item
                           label={<span className={styles.labelStyle}>Check-in date: </span>}
                           labelCol={{ span: 24 }}
@@ -240,7 +240,7 @@ const BookingRoom = () => {
                           <Input className={styles.inputStyle} disabled />
                         </Form.Item>
                       </Col>
-                      <Col span={12}>
+                      <Col span={12} md={12} sm={12} xs={24}>
                         <Form.Item
                           name="hours"
                           label={<span className={styles.labelStyle}>Hours Booking</span>}

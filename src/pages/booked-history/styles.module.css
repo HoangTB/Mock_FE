@@ -26,6 +26,7 @@
 }
 
 .container {
+  min-height: 70vh !important;
   /* min-height: 100vh !important; */
 }
 
