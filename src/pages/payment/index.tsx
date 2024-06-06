@@ -50,6 +50,7 @@ const UserInfoForm = () => {
   useEffect(() => {
     const storedBooking = localStorage.getItem('booking');
     const bookingLocal: BookingDataLocalResponse = storedBooking ? JSON.parse(storedBooking) : {};
+
     setDataBooking(bookingLocal);
     (async () => {
       if (idRoom) {

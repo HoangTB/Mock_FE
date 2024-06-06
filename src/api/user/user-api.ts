@@ -23,7 +23,7 @@ export const register = async (user: IUser) => {
 export const login = async (data: ILogin) => {
   try {
     const response = await axios.post(`${domain}/auth/login`, data);
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     if ((error as any).response && (error as any).response.data) {
@@ -77,5 +77,17 @@ export const updateProfile = async (data: any) => {
     return response.data;
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const checkEmail = async (email: string) => {
+  try {
+    const response = await axios.post(`${domain}/check-email`, { email });
+    return response.data;
+  } catch (error: any) {
+    if (error.response && error.response.status === 409) {
+      throw new Error(error.response.data.message || 'This email already exists in the database. Please login');
+    }
+    throw new Error('An error occurred while checking the email.');
   }
 };
