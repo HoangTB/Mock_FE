@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { VnpayRequest } from './request/vnpay.request';
-import { VnpayResponse } from './response/vnpay.response';
+import { MomoResponse, VnpayResponse, ZaloResponse } from './response/vnpay.response';
 
 const domain = process.env.REACT_APP_API_URL;
 export class VnpayAPI {
@@ -9,6 +9,7 @@ export class VnpayAPI {
     try {
       const response = await axios.post(url, params);
       // console.log(response);
+      // console.log(response.data);
 
       return response.data;
     } catch (error) {
@@ -17,15 +18,27 @@ export class VnpayAPI {
     }
   }
 
-  // static async returnAPI(params){
-  //   const url: string = `${domain}/vnpay/return`;
-  //   try {
-  //     const response = await axios.get(url, params);
-  //     console.log(response);
+  static async momoPost(params: VnpayRequest): Promise<MomoResponse> {
+    const url: string = `${domain}/momo/post`;
+    try {
+      const response = await axios.post(url, params);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
 
-  //   } catch (error) {
-  //      console.log(error);
-  //     throw error;
-  //   }
-  // }
+  static async zaloPost(params: VnpayRequest): Promise<ZaloResponse> {
+    const url: string = `${domain}/zalopay/post`;
+    try {
+      const response = await axios.post(url, params);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
 }
