@@ -9,11 +9,22 @@ import { useDispatch } from 'react-redux';
 import { JwtPayloads } from '../../types/jwt-payload';
 import { jwtDecode } from 'jwt-decode';
 import { setToken } from '../../redux/authSlide';
+import '../../i18n/i18n'
+import { useTranslation } from 'react-i18next'
+type NotificationType = 'success' | 'info' | 'warning' | 'error';
+
 
 function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const [api, contextHolder] = notification.useNotification();
+
+  const { t } = useTranslation('register');
+  const { i18n } = useTranslation();
+
+  const changeLanguage = (lng: 'en' | 'jp') => {
+    i18n.changeLanguage(lng)
+  }
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -48,14 +59,21 @@ function RegisterPage() {
     console.log('Failed:', errorInfo);
   };
 
+  const openNotificationWithIcon = (type: NotificationType) => {
+    api[type]({
+      message: 'Register successfully',
+      description: 'You have successfully registered and login!',
+    });
+  };
+
   return (
     <div className={styles['register-page']}>
       {contextHolder}
       <div className={styles['form-content']}>
         <div className={styles['form-header']}>
-          <p className={styles.title}>Create an account</p>
+          <p className={styles.title}>{t('create')}</p>
           <p className={styles.subtitle}>
-            <a href="./login">log in instead</a>
+            <a href="./login">{t('login')}</a>
           </p>
         </div>
 
@@ -71,22 +89,22 @@ function RegisterPage() {
           className={styles['register-form']}
         >
           <Form.Item
-            label="Full name"
+            label={t('full-name')}
             name="name"
             colon={false}
-            rules={[{ required: true, message: 'Please input your full name!!' }]}
+            rules={[{ required: true, message: t('error-full-name') }]}
           >
             <Input className={styles['input-form']} />
           </Form.Item>
 
           <Form.Item
-            label="Email"
+            label= {t('email')}
             name="email"
             rules={[
-              { required: true, message: 'Please input your email!' },
+              { required: true, message: t('error-email') },
               {
                 type: 'email',
-                message: 'The input is not valid E-mail!',
+                message: t('error-email-format'),
               },
             ]}
           >
@@ -94,7 +112,7 @@ function RegisterPage() {
           </Form.Item>
 
           <Form.Item
-            label="Phone number"
+            label= {t('phone')}
             name="phone"
             rules={[
               { required: true, message: 'Please input your phone number!' },
@@ -108,7 +126,7 @@ function RegisterPage() {
           </Form.Item>
 
           <Form.Item
-            label="ID Number"
+            label={t('id-number')}
             name="idNumber"
             rules={[
               { required: true, message: 'Please input your id number!' },
@@ -123,29 +141,29 @@ function RegisterPage() {
           </Form.Item>
 
           <Form.Item
-            label="Password"
+            label= {t('password')}
             name="password"
-            rules={[{ required: true, message: 'Please input your password!' }]}
+            rules={[{ required: true, message: t('error-password') }]}
           >
             <Input.Password className={styles['input-form']} />
           </Form.Item>
 
           <Form.Item
-            label="Confirm Password"
+            label= {t('confirm-password')}
             name="RePassword"
             dependencies={['password']}
             hasFeedback
             rules={[
               {
                 required: true,
-                message: 'Please input your password!!',
+                message: t('error-confirm-password'),
               },
               ({ getFieldValue }) => ({
                 validator(_, value) {
                   if (!value || getFieldValue('password') === value) {
                     return Promise.resolve();
                   }
-                  return Promise.reject(new Error('Password not match!'));
+                  return Promise.reject(new Error(t('error-password-match')));
                 },
               }),
             ]}
@@ -164,13 +182,13 @@ function RegisterPage() {
             ]}
           >
             <Checkbox>
-              By creating an account, I agree to our <a href="#">Terms of use</a> và <a href="#">Privacy Policy</a>
+             {t('by')} <a href="#">{t('team-of')}</a> {t('and')} <a href="#">{t('privacy-policy')}</a>
             </Checkbox>
           </Form.Item>
 
           <Form.Item className={styles.customBtn}>
             <CustomButton type="primary" htmlType="submit" loading={loading}>
-              {loading ? 'Registering...' : 'Register'}
+              {loading ? t('register...') : t('register')}
             </CustomButton>
           </Form.Item>
         </Form>

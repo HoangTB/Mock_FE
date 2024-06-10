@@ -1,5 +1,5 @@
 import { CarOutlined, DesktopOutlined, UserOutlined } from '@ant-design/icons';
-import { Flex, Row, Typography } from 'antd';
+import { Button, Flex, Row, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ratingApi } from '../../api/rating/rating-api';
@@ -13,10 +13,17 @@ import Filters from './filter';
 import GuestReviews from './guest-reviews';
 import Room from './room';
 import styles from './styles.module.css';
+import { useTranslation } from 'react-i18next';
 
 const { Title } = Typography;
 
 const RoomList = () => {
+  const { t } = useTranslation('roomList');
+  const { i18n } = useTranslation();
+
+  const changeLanguage = (lng: 'en' | 'jp') => {
+    i18n.changeLanguage(lng)
+  }
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [roomList, setRoomList] = useState<{
     rooms: IRoom[];
@@ -79,11 +86,20 @@ const RoomList = () => {
         </div>
         <div className={styles.content}>
           <Title level={2} className={styles.title}>
+            {/* {t('welcome')} */}
             Welcome to {roomList.hotel.nameHotel}
           </Title>
-          <Title level={4} className={styles.title}>
-            Where every stay is unique
+          <Title
+            level={4}
+            style={{
+              padding: 0,
+              margin: 0,
+              color: '#fff',
+            }}
+          >
+            {t('where every')}
           </Title>
+
         </div>
       </div>
       <Container>
@@ -94,19 +110,19 @@ const RoomList = () => {
         <Title level={3}>{roomList.hotel.nameHotel}</Title>
 
         <div>
-          <Title level={4}>Benefit</Title>
+          <Title level={4}>{t('benefit')}</Title>
           <Flex gap="middle">
             <div className={styles.flex}>
               <CarOutlined className={styles.icon} />
-              <p>Car parking</p>
+              <p>{t('car parking')}</p>
             </div>
             <div className={styles.flex}>
               <DesktopOutlined className={styles.icon} />
-              <p>Tivi</p>
+              <p>{t('tivi')}</p>
             </div>
             <div className={styles.flex}>
               <UserOutlined className={styles.icon} />
-              <p>Service 24/24</p>
+              <p>{t('service')}</p>
             </div>
           </Flex>
         </div>
@@ -118,7 +134,7 @@ const RoomList = () => {
               margin: 0,
             }}
           >
-            View all room
+            {t('view all room')}
           </Title>
         </div>
 

@@ -3,8 +3,16 @@ import { HomeOutlined, InfoCircleOutlined, CheckOutlined, SmileOutlined, Loading
 import { Steps } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
 import styles from './style.module.css';
+import '../../i18n/i18n'
+import { useTranslation } from 'react-i18next'
 
 const StepByStep = () => {
+  const { t } = useTranslation('step');
+  const { i18n } = useTranslation();
+
+  const changeLanguage = (lng: 'en' | 'jp') => {
+    i18n.changeLanguage(lng)
+  }
   const location = useLocation();
 
   // Kiểm tra đường dẫn hiện tại và đặt trạng thái cho mỗi bước dựa trên đó
@@ -24,7 +32,7 @@ const StepByStep = () => {
       }}
       items={[
         {
-          title: 'Select hotel',
+          title: t('selectHotel'),
           status: getStatus('/'),
           icon: (
             <Link to="/">
@@ -33,7 +41,7 @@ const StepByStep = () => {
           ),
         },
         {
-          title: 'Select room',
+          title: t('selectRoom'),
           status: getStatus('/rooms/1'),
           icon: (
             <Link to="/">
@@ -42,16 +50,16 @@ const StepByStep = () => {
           ),
         },
         {
-          title: 'Select information',
+          title: t('selectInformation'),
           status: getStatus('/booking'),
           icon: (
-            <Link to="/">
+            <Link to="/booking">
               <InfoCircleOutlined className={styles.icon} />
             </Link>
           ),
         },
         {
-          title: 'Booking room',
+          title: t('bookRoom'),
           status: getStatus('/booking/1'),
           icon: (
             <Link to="/">
@@ -60,7 +68,7 @@ const StepByStep = () => {
           ),
         },
         {
-          title: 'Completed',
+          title: t('completed'),
           status: getStatus('/booking/completed'),
           icon: (
             <Link to="/">

@@ -2,6 +2,8 @@ import { SearchOutlined } from '@ant-design/icons';
 import { Button, Col, DatePicker, Form, Row, Select, Typography, message } from 'antd';
 import dayjs, { Dayjs } from 'dayjs';
 import React, { useState } from 'react';
+import '../../i18n/i18n'
+import { useTranslation } from 'react-i18next';
 
 const { Title } = Typography;
 
@@ -9,10 +11,14 @@ interface FilterProps {
   onSearch: (query: any) => void;
 }
 
+
+
 const RoomSearch: React.FC<FilterProps> = ({ onSearch }) => {
   const [fromDate, setFromDate] = useState<Dayjs>(dayjs());
   const [toDate, setToDate] = useState<Dayjs>(dayjs().add(2, 'hour'));
   const [form] = Form.useForm();
+
+  
 
   const handleFromDateChange = (date: Dayjs | null) => {
     form.setFieldsValue({ fromDate: date });
@@ -54,6 +60,13 @@ const RoomSearch: React.FC<FilterProps> = ({ onSearch }) => {
       });
   };
 
+  const { t } = useTranslation('filter');
+  const { i18n } = useTranslation();
+
+  const changeLanguage = (lng: 'en' | 'jp') => {
+    i18n.changeLanguage(lng)
+  }
+
   return (
     <div style={{ marginTop: 20, border: '1px solid #ccc', padding: 20, borderRadius: 10 }}>
       <Form initialValues={filters} form={form}>
@@ -61,7 +74,7 @@ const RoomSearch: React.FC<FilterProps> = ({ onSearch }) => {
           <Col xs={24} sm={12} md={6}>
             <div>
               <Title level={5} style={{ padding: 0, margin: 0 }}>
-                From
+              {t('from')}
               </Title>
               <Form.Item name="fromDate">
                 <DatePicker
@@ -76,7 +89,7 @@ const RoomSearch: React.FC<FilterProps> = ({ onSearch }) => {
           <Col xs={24} sm={12} md={6}>
             <div>
               <Title level={5} style={{ padding: 0, margin: 0 }}>
-                To
+              {t('to')}
               </Title>
               <Form.Item name="toDate">
                 <DatePicker
@@ -92,16 +105,16 @@ const RoomSearch: React.FC<FilterProps> = ({ onSearch }) => {
           <Col xs={24} sm={12} md={6}>
             <div>
               <Title level={5} style={{ padding: 0, margin: 0 }}>
-                Room type
+              {t('roomType')}
               </Title>
               <Form.Item name="typeRoom">
                 <Select
                   defaultValue="lucy"
                   style={{ width: '100%' }}
                   options={[
-                    { value: 'ALL', label: 'ALL' },
-                    { value: 'VIP', label: 'VIP' },
-                    { value: 'Normal', label: 'Normal' },
+                    { value: 'ALL', label: (t('all')) },
+                    { value: 'VIP', label: (t('vip')) },
+                    { value: 'Normal', label: (t('normal')) },
                   ]}
                 />
               </Form.Item>
@@ -122,7 +135,7 @@ const RoomSearch: React.FC<FilterProps> = ({ onSearch }) => {
               onClick={handleOnSearch}
             >
               <SearchOutlined />
-              Search
+              {t('search')}
             </Button>
           </Col>
         </Row>
