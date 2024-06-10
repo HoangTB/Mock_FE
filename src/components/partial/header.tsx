@@ -68,9 +68,12 @@ function Header() {
   const { t } = useTranslation('header');
   const { i18n } = useTranslation();
 
+
   const changeLanguage = (lng: 'en' | 'jp') => {
-    i18n.changeLanguage(lng)  
+    i18n.changeLanguage(lng);
+    localStorage.setItem("lng", lng);
   }
+
 
   const handleLinkClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     event.preventDefault();
@@ -133,7 +136,7 @@ function Header() {
             labelInValue
 
             onChange={(item) => changeLanguage(item.value)}
-            defaultValue={options[0]}
+            defaultValue={options.filter(item =>item.value === localStorage.getItem("lng"))[0]}
             options={options}
           />
         </div>

@@ -7,5 +7,14 @@
     "tivi": "Tivi",
     "service": "Service 24/24",
     "view all room": "View all room",
-    "load more" : "Load more"
+    "load more" : "Load more",
+    "room number": "Room number",
+    "room type": "Room type",
+    "description": "Description",
+    "number of bed": "Number of beds: ",
+    "max people": "Max people",
+    "price": "Price",
+    "full room": "Full room",
+    "guest review": "Guest Reviews",
+    "date": "Date"
 }

@@ -59,7 +59,7 @@ const defaultNS = 'aboutUs'
 
 i18n.use(initReactI18next).init({
     resources,
-    lng: 'en',
+    lng: localStorage.getItem("lng") || "en",
     ns: ['header', 'footer', 'carousel', 'listCity','aboutUs','contact','roomList','step','register', 'filter'],
     fallbackLng: 'jp',
     defaultNS,

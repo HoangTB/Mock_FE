@@ -4,10 +4,19 @@ import { chunkArray } from '../../utils/common';
 import { ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import { IRating } from '../../types/rating';
 import dayjs from 'dayjs';
+import { useTranslation } from 'react-i18next';
 
 const { Title } = Typography;
 
 const GuestReviews = ({ ratings }: { ratings: IRating[] }) => {
+
+  const { t } = useTranslation('roomList');
+  const { i18n } = useTranslation();
+
+  const changeLanguage = (lng: 'en' | 'jp') => {
+    i18n.changeLanguage(lng)
+  }
+  
   const carouselRef = useRef<any>(null);
 
   const handleNext = () => {
@@ -36,7 +45,7 @@ const GuestReviews = ({ ratings }: { ratings: IRating[] }) => {
           marginBottom: 40,
         }}
       >
-        Guest Reviews
+        {t('guest review')}
       </Title>
       <Carousel
         autoplay
@@ -69,7 +78,7 @@ const GuestReviews = ({ ratings }: { ratings: IRating[] }) => {
                         title={item.username}
                       />
                       <Flex vertical align="center">
-                        <p>Date: {dayjs(item.timeCreated).format('DD/MM/YYYY')}</p>
+                        <p>{t('date')}: {dayjs(item.timeCreated).format('DD/MM/YYYY')}</p>
                         <Rate disabled defaultValue={item.starRating} />
                         <p style={{ marginTop: '10px', textAlign: 'center' }}>{item.contentRating}</p>
                       </Flex>
@@ -101,7 +110,7 @@ const GuestReviews = ({ ratings }: { ratings: IRating[] }) => {
                     title={item.username}
                   />
                   <Flex vertical align="center" gap={8}>
-                    <p>Date: {dayjs(item.timeCreated).format('DD/MM/YYYY')}</p>
+                    <p>{t('date')}: {dayjs(item.timeCreated).format('DD/MM/YYYY')}</p>
                     <Rate disabled defaultValue={item.starRating} />
                     <p style={{ marginTop: '10px', textAlign: 'center' }}>{item.contentRating}</p>
                   </Flex>

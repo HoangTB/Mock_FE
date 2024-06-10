@@ -4,10 +4,17 @@ import React from 'react';
 import { IRoom } from '../../types/room';
 import { HomeOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const { Title } = Typography;
 
 const Room = ({ room }: { room: IRoom }) => {
+  const { t } = useTranslation('roomList');
+  const { i18n } = useTranslation();
+
+  const changeLanguage = (lng: 'en' | 'jp') => {
+    i18n.changeLanguage(lng)
+  }
   const noData = 'https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg';
   const {
     idRoom,
@@ -48,7 +55,7 @@ const Room = ({ room }: { room: IRoom }) => {
             marginBottom: 10,
           }}
         >
-          Room number: {roomNumber}
+          {t('room number')}:  {roomNumber}
         </Title>
         <p
           style={{
@@ -56,12 +63,12 @@ const Room = ({ room }: { room: IRoom }) => {
             marginBottom: 8,
           }}
         >
-          Room type: {typeRoom}
+          {t('room type')}:  {typeRoom}
         </p>
         <Flex vertical={true} gap={5} style={{ lineHeight: 1.5 }}>
-          <p>Description: {descriptionOfRoom}</p>
-          <p>Number of beds: {numberOfBeds}</p>
-          <p> Max people: {maxNumberPeopleOfRoom}</p>
+          <p>{t('description')}: {descriptionOfRoom}</p>
+          <p>{t('number of bed')}: {numberOfBeds}</p>
+          <p>{t('max people')}: {maxNumberPeopleOfRoom}</p>
         </Flex>
         <Row>
           <Col lg={24} md={24} sm={24} xs={24}>
@@ -71,7 +78,7 @@ const Room = ({ room }: { room: IRoom }) => {
                 margin: 0,
               }}
             >
-              Price: {priceOfRoom.toLocaleString('de-DE')} VND
+              {t('price')}: {priceOfRoom.toLocaleString('de-DE')} VND
             </Title>
           </Col>
           <Col lg={24} md={24} sm={24} xs={24}>
@@ -85,7 +92,7 @@ const Room = ({ room }: { room: IRoom }) => {
                 onClick={() => navigate(`/branch/room/${idRoom}`)}
               >
                 <HomeOutlined />
-                Book now
+                {t('book now')}
               </Button>
             ) : (
               <Button

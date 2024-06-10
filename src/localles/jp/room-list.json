@@ -6,5 +6,15 @@
     "car parking":"駐車場",
     "tivi": "ティヴィ",
     "service": "サービス 24/24",
-    "view all room": "すべての部屋を見る"
+    "view all room": "すべての部屋を見る",
+    "load more" : "もっと読み込む",
+    "room number": "部屋番号",
+    "room type": "部屋タイプ",
+    "description": "説明",
+    "number of bed": "ベッド数: ",
+    "max people": "最大人数",
+    "price": "価格",
+    "full room": "満室",
+    "guest review": "ゲストレビュー",
+    "date": "日時"
 }
