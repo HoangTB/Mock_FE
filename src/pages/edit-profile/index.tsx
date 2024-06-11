@@ -107,13 +107,32 @@ const EditProfile = () => {
         </Col>
         <Col xs={24} sm={24} md={16} lg={18}>
           <Form form={form} layout="vertical" onFinish={onFinish} initialValues={initialValue || undefined}>
-            <Form.Item label="Full Name" name="userName">
+            <Form.Item label="Full Name" name="userName" rules={[{ required: true, message: "Please input user name!!" }]}>
               <Input />
             </Form.Item>
-            <Form.Item label="Email" name="email">
+            <Form.Item
+              label="Email"
+              name="email"
+              rules={[
+                { required: true, message: "Please input your email!" },
+                {
+                  type: 'email',
+                  message: "The input is not valid E-mail!",
+                },
+              ]}>
               <Input disabled />
             </Form.Item>
-            <Form.Item label="CCCD" name="identificationCard">
+            <Form.Item
+              label="CCCD"
+              name="identificationCard"
+              rules={[
+                { required: true, message: 'Please input your Identification Card number!' },
+                {
+                  // only number and no limit length
+                  pattern: new RegExp(/^[0-9]*$/),
+                  message: 'Please enter a valid Identification Card number!',
+                },
+              ]}>
               <Input />
             </Form.Item>
             <Form.Item label="Gender" name="gender">
@@ -122,8 +141,17 @@ const EditProfile = () => {
                 <Option value={false}>Female</Option>
               </Select>
             </Form.Item>
-            <Form.Item label="Phone" name="phoneNumber">
-              <Input />
+            <Form.Item
+              label="Phone"
+              name="phoneNumber"
+              rules={[
+                { required: true, message: 'Please input your phone number!' },
+                {
+                  pattern: new RegExp(/^[0-9]{10}$/),
+                  message: 'Please enter a valid phone number!',
+                },
+              ]}>
+              <Input maxLength={10} />
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit" style={{ background: 'var(--primary-color)' }}>
