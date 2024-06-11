@@ -3,6 +3,7 @@ import { Row, Col, Form, Input, Button, Avatar, Typography, Select, message } fr
 import { CameraOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { getProfile, updateProfile } from '../../api/user/user-api';
+import { useTranslation } from 'react-i18next';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -18,6 +19,12 @@ interface InitialValueProps {
 const EditProfile = () => {
   const [form] = Form.useForm();
   const [initialValue, setInitialValue] = useState<InitialValueProps | null>(null);
+  const { t } = useTranslation('edit');
+  const { i18n } = useTranslation();
+
+  const changeLanguage = (lng: 'en' | 'jp') => {
+    i18n.changeLanguage(lng)
+  }
 
   useEffect(() => {
     const fetchInitialValues = async () => {
@@ -89,7 +96,7 @@ const EditProfile = () => {
       <Row>
         <Col span={24}>
           <Title level={3} style={{ textAlign: 'center' }}>
-            Edit profile
+          {t('edit profile')}
           </Title>
         </Col>
       </Row>
@@ -101,17 +108,17 @@ const EditProfile = () => {
               {initialValue?.userName}
             </Title>
             <Button type="primary" style={{ background: 'var(--primary-color)' }}>
-              <CameraOutlined /> Change avatar
+              <CameraOutlined /> {t('avatar')}
             </Button>
           </div>
         </Col>
         <Col xs={24} sm={24} md={16} lg={18}>
           <Form form={form} layout="vertical" onFinish={onFinish} initialValues={initialValue || undefined}>
-            <Form.Item label="Full Name" name="userName" rules={[{ required: true, message: "Please input user name!!" }]}>
+            <Form.Item label={(t('full name'))} name="userName" rules={[{ required: true, message: (t('user name')) }]}>
               <Input />
             </Form.Item>
             <Form.Item
-              label="Email"
+              label={(t('email'))}
               name="email"
               rules={[
                 { required: true, message: "Please input your email!" },
@@ -123,39 +130,39 @@ const EditProfile = () => {
               <Input disabled />
             </Form.Item>
             <Form.Item
-              label="CCCD"
+              label={(t('id number'))}
               name="identificationCard"
               rules={[
-                { required: true, message: 'Please input your Identification Card number!' },
+                { required: true, message: (t('identification card')) },
                 {
                   // only number and no limit length
                   pattern: new RegExp(/^[0-9]*$/),
-                  message: 'Please enter a valid Identification Card number!',
+                  message: (t('valid identification card')) ,
                 },
               ]}>
               <Input />
             </Form.Item>
-            <Form.Item label="Gender" name="gender">
+            <Form.Item label={(t('gender'))} name="gender">
               <Select>
-                <Option value={true}>Male</Option>
-                <Option value={false}>Female</Option>
+                <Option value={true}>{t('male')}</Option>
+                <Option value={false}>{t('female')}</Option>
               </Select>
             </Form.Item>
             <Form.Item
-              label="Phone"
+              label={(t('phone'))}
               name="phoneNumber"
               rules={[
-                { required: true, message: 'Please input your phone number!' },
+                { required: true, message: (t('phone number')) },
                 {
                   pattern: new RegExp(/^[0-9]{10}$/),
-                  message: 'Please enter a valid phone number!',
+                  message: (t('valid phone number')),
                 },
               ]}>
               <Input maxLength={10} />
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit" style={{ background: 'var(--primary-color)' }}>
-                Save changes
+              {t('save')}
               </Button>
             </Form.Item>
           </Form>

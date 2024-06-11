@@ -4,6 +4,7 @@ import styles from './styles.module.css';
 import BookingItem from './booking-item';
 import { getAllBookedHistory } from '../../api/booked-history/booked-history-api';
 import { IRoomBooking } from '../../types/booked-histoty';
+import { useTranslation } from 'react-i18next';
 
 const { Title } = Typography;
 
@@ -23,6 +24,13 @@ const BookedHistory = () => {
       setLoading(false);
     }
   };
+
+  const { t } = useTranslation('edit');
+  const { i18n } = useTranslation();
+
+  const changeLanguage = (lng: 'en' | 'jp') => {
+    i18n.changeLanguage(lng)
+  }
 
   useEffect(() => {
     fetchData();
@@ -76,17 +84,17 @@ const BookedHistory = () => {
 
   const items = [
     {
-      label: 'Approved',
+      label: (t('approved')),
       key: '1',
       children: renderBookingList('Approved'),
     },
     {
-      label: 'Pending',
+      label: (t('pending')),
       key: '2',
       children: renderBookingList('Pending'),
     },
     {
-      label: 'Cancelled',
+      label: (t('cancelled')),
       key: '3',
       children: renderBookingList('Cancelled'),
     },
@@ -97,7 +105,7 @@ const BookedHistory = () => {
       <Row>
         <Col span={24}>
           <Title level={3} style={{ textAlign: 'center' }}>
-            Booked History
+          {(t('booked history'))}
           </Title>
         </Col>
         <div className={styles.tabs}>

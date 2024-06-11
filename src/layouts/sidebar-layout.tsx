@@ -3,11 +3,19 @@ import { Col, Layout, Menu, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import Container from '../components/container';
+import { useTranslation } from 'react-i18next';
 
 const SidebarLayout = () => {
   const location = useLocation();
   const [menuMode, setMenuMode] = useState<'inline' | 'horizontal'>('inline');
   const [width, setWidth] = useState<number>(250);
+
+  const { t } = useTranslation('edit');
+  const { i18n } = useTranslation();
+
+  const changeLanguage = (lng: 'en' | 'jp') => {
+    i18n.changeLanguage(lng)
+  }
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(max-width: 768px)');
@@ -64,13 +72,13 @@ const SidebarLayout = () => {
               }}
             >
               <Menu.Item key="/edit-profile" icon={<UserOutlined />}>
-                <Link to="/edit-profile">Edit Profile</Link>
+                <Link to="/edit-profile">{t('edit profile')}</Link>
               </Menu.Item>
               <Menu.Item key="/booked-history" icon={<SettingOutlined />}>
-                <Link to="/booked-history">Booked History</Link>
+                <Link to="/booked-history">{t('booked history')}</Link>
               </Menu.Item>
               <Menu.Item key="/voted-history" icon={<UserOutlined />}>
-                <Link to="/voted-history">Voted History </Link>
+                <Link to="/voted-history">{t('voted history')}</Link>
               </Menu.Item>
             </Menu>
           </Layout.Sider>

@@ -115,10 +115,10 @@ function RegisterPage() {
             label= {t('phone')}
             name="phone"
             rules={[
-              { required: true, message: 'Please input your phone number!' },
+              { required: true, message: t('error-phone') },
               {
                 pattern: new RegExp(/^[0-9]{10}$/),
-                message: 'Please enter a valid phone number!',
+                message: t('error-phone-invalid'),
               },
             ]}
           >
@@ -129,11 +129,11 @@ function RegisterPage() {
             label={t('id-number')}
             name="idNumber"
             rules={[
-              { required: true, message: 'Please input your id number!' },
+              { required: true, message: t('error-id-number') },
               {
                 // only number and no limit length
                 pattern: new RegExp(/^[0-9]*$/),
-                message: 'Please enter a valid id number!',
+                message: t('error-id-number-invalid'),
               },
             ]}
           >
@@ -143,7 +143,12 @@ function RegisterPage() {
           <Form.Item
             label= {t('password')}
             name="password"
-            rules={[{ required: true, message: t('error-password') }]}
+            rules={[{ required: true, message: t('error-password') },
+              {
+                pattern: new RegExp(/^(?:[一-龠ぁ-ゔァ-ヴーa-zA-Z0-9ａ-ｚＡ-Ｚ０-９々〆〤ヶ]+){8,32}$/),
+                message: t('error-password-invalid'),
+              },
+            ]}
           >
             <Input.Password className={styles['input-form']} />
           </Form.Item>

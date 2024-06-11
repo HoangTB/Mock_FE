@@ -19,6 +19,7 @@ import { Voted } from '../../types/voted';
 import { DashOutlined } from '@ant-design/icons';
 import { deleteRating, getAllVoteHistory, updateVoteHistory } from '../../api/vote-history/vote-history-api';
 import styles from './style.module.css';
+import { useTranslation } from 'react-i18next';
 
 const VoteHistory = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -40,6 +41,13 @@ const VoteHistory = () => {
       console.error('Error fetching vote history:', error);
     }
   };
+
+  const { t } = useTranslation('edit');
+  const { i18n } = useTranslation();
+
+  const changeLanguage = (lng: 'en' | 'jp') => {
+    i18n.changeLanguage(lng)
+  }
 
   const showModal = (record: Voted) => {
     setCurrentRecord(record);
@@ -131,27 +139,27 @@ const VoteHistory = () => {
 
   const columns: TableProps<Voted>['columns'] = [
     {
-      title: 'Title',
+      title: t('title'),
       dataIndex: 'titleRating',
       key: 'titleRating',
     },
     {
-      title: 'Content',
+      title: t('content'),
       dataIndex: 'contentRating',
       key: 'contentRating',
     },
     {
-      title: 'Star Rating',
+      title: t('star rating'),
       dataIndex: 'starRating',
       key: 'starRating',
     },
     {
-      title: 'Hotel',
+      title: t('hotel'),
       dataIndex: 'nameHotel',
       key: 'nameHotel',
     },
     {
-      title: 'Time Created',
+      title: t('time created'),
       dataIndex: 'timeCreated',
       key: 'timeCreated',
       render: (timeCreated: string) => formatDate(timeCreated),
@@ -184,7 +192,7 @@ const VoteHistory = () => {
       <div className={styles.container}>
         <Row>
           <Col span={24} className={styles.title}>
-            <Title level={3}>Voted History</Title>
+            <Title level={3}>{t('voted history')}</Title>
           </Col>
           <Col span={24} className={styles.colTable}>
             <Table columns={columns} dataSource={voteHistory} className={styles.table} />

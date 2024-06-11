@@ -23,6 +23,8 @@ import FILTER_EN from '../localles/en/filter.json';
 import FILTER_JP from '../localles/jp/filter.json';
 import LOGIN_EN from '../localles/en/login.json';
 import LOGIN_JP from '../localles/jp/login.json';
+import EDIT_EN from '../localles/en/edit-profile.json';
+import EDIT_JP from '../localles/jp/edit-profile.json';
 
 export const localles = {
     en: 'English',
@@ -41,7 +43,8 @@ const resources = {
         step: STEP_EN,
         register: REGISTER_EN,
         filter: FILTER_EN,
-        login: LOGIN_EN
+        login: LOGIN_EN,
+        edit: EDIT_EN
     },
 
     jp: {
@@ -55,7 +58,8 @@ const resources = {
         step: STEP_JP,
         register: REGISTER_JP,
         filter: FILTER_JP,
-        login: LOGIN_JP
+        login: LOGIN_JP,
+        edit: EDIT_JP
     }
 }
 
@@ -64,7 +68,7 @@ const defaultNS = 'aboutUs'
 i18n.use(initReactI18next).init({
     resources,
     lng: localStorage.getItem("lng") || "en",
-    ns: ['header', 'footer', 'carousel', 'listCity','aboutUs','contact','roomList','step','register', 'filter', 'login'],
+    ns: ['header', 'footer', 'carousel', 'listCity','aboutUs','contact','roomList','step','register', 'filter', 'login', 'edit'],
     fallbackLng: 'jp',
     defaultNS,
     interpolation: {
