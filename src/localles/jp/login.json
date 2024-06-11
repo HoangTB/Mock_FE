@@ -1,0 +1,13 @@
+{
+    "login": "ログイン",
+    "email address": "メールアドレス",
+    "error-email": "メールアドレスを入力してください!",
+    "logging in": "ログイン 中...",
+    "password": "パスワード",
+    "error-password": "パスワードを入力してください!",
+    "invalid-password": "無効なパスワード",
+    "forgot": "パスワードをお忘れですか?",
+    "log in": "ログイン",
+    "don have account": "アカウントをお持ちではありませんか?",
+    "sign up": "サインアップ"
+}

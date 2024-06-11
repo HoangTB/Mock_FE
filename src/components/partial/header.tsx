@@ -86,7 +86,7 @@ function Header() {
   const items: MenuProps['items'] = [
     {
       key: '1',
-      label: <Link to="/edit-profile">Profile</Link>,
+      label: <Link to="/edit-profile">{t('profile')}</Link>,
     },
     ...(isAdmin
       ? [
@@ -100,7 +100,7 @@ function Header() {
       key: '2',
       label: (
         // logout
-        <p onClick={handleLogout}>Logout</p>
+        <p onClick={handleLogout}>{t('logout')}</p>
       ),
     },
   ];

@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { setToken } from '../../redux/authSlide';
 import { JwtPayloads } from '../../types/jwt-payload';
 import { jwtDecode } from 'jwt-decode';
+import { useTranslation } from 'react-i18next';
 
 interface LoginFormValues {
   email: string;
@@ -20,6 +21,13 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const [form] = Form.useForm();
+
+  const { t } = useTranslation('login');
+  const { i18n } = useTranslation();
+
+  const changeLanguage = (lng: 'en' | 'jp') => {
+    i18n.changeLanguage(lng)
+  }
 
   const onFinish = async (values: LoginFormValues) => {
     setLoading(true);
@@ -69,7 +77,7 @@ const LoginPage = () => {
   return (
     <div className={styles['layout']}>
       <div className={styles['form-content']}>
-        <p className={styles.title}>Login</p>
+        <p className={styles.title}>{t('login')}</p>
         <br></br>
         <Form
           form={form}
@@ -82,33 +90,33 @@ const LoginPage = () => {
           layout="vertical"
         >
           <Form.Item
-            label="Email address"
+            label={t('email address')}
             name="email"
             colon={false}
-            rules={[{ required: true, message: 'Please input your Email!' }]}
+            rules={[{ required: true, message: t('error-email') }]}
           >
             <Input className={styles['input-form']} />
           </Form.Item>
 
           <Form.Item
-            label="Password"
+            label={t('password')}
             name="password"
             colon={false}
-            rules={[{ required: true, message: 'Please input your Password!' }]}
+            rules={[{ required: true, message: t('error-password') }]}
           >
             <Input.Password className={styles['input-form']} />
           </Form.Item>
           <Form.Item className={styles.customText}>
-            <a href="./forgot">Forgot your password</a>
+            <a href="./forgot">{t('forgot')}</a>
           </Form.Item>
           <Form.Item className={styles.customBtn}>
             <CustomButton type="primary" htmlType="submit" loading={loading}>
-              {loading ? 'Logging in...' : 'Log in'}
+              {loading ? (t('logging in')) : (t('log in'))}
             </CustomButton>
           </Form.Item>
         </Form>
         <p>
-          Don’t have an account? <a href="./register">Sign up</a>
+        {t('don have account')} <a href="./register">{t('sign up')}</a>
         </p>
       </div>
     </div>

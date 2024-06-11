@@ -4,5 +4,7 @@
     "contact": "コンタクト",
     "about us": "私たちについて",
     "login": "ログイン",
-    "language": "日本語"
+    "language": "日本語",
+    "profile":"プロフィール",
+    "logout": "ログアウト"
 }

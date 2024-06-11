@@ -4,5 +4,7 @@
     "contact": "Contact",
     "about us": "About Us",
     "login": "Login",
-    "language":"Japanese"
+    "language":"Japanese",
+    "profile":"Profile",
+    "logout": "Logout"
 }
